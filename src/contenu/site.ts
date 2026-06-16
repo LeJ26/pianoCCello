@@ -51,6 +51,24 @@ export const site = {
   },
 };
 
+// ═════ RÉPERTOIRE (section « Notre répertoire ») ═════
+// Deux colonnes : les créations du duo, et le grand répertoire interprété.
+// Ajoute ou retire simplement une ligne dans les listes.
+export const repertoire = {
+  creations: {
+    titre: 'Créations originales',
+    texte:
+      'Des compositions signées Clémentine Roques, écrites pour le dialogue du piano et du violoncelle — un univers poétique, intime et chaleureux.',
+    pieces: ['Voyage', 'Rêverie', 'Suite poétique', '… et bien d’autres en concert'],
+  },
+  grandRepertoire: {
+    titre: 'Grand répertoire',
+    texte:
+      'Le duo revisite aussi les grandes pages de la musique de chambre, choisies pour leur émotion et leur lyrisme.',
+    compositeurs: ['Robert Schumann', 'Franz Schubert', 'Ludwig van Beethoven', 'Wolfgang A. Mozart'],
+  },
+};
+
 // ═════ BIOS DES ARTISTES (section « Qui sommes-nous ») ═════
 export const artistes = [
   {

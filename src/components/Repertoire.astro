@@ -1,0 +1,66 @@
+---
+import { repertoire } from '../contenu/site';
+import SeparateurNotes from './SeparateurNotes.astro';
+
+const { creations, grandRepertoire } = repertoire;
+---
+
+<section id="repertoire" class="relative py-28 sm:py-36 bg-ivoire-50 border-y border-encre/5 overflow-hidden">
+  {/* Clé de sol line art en filigrane décoratif */}
+  <svg
+    viewBox="0 0 100 240"
+    fill="none"
+    stroke="#B89B5E"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    class="absolute -right-6 top-1/2 -translate-y-1/2 h-[120%] opacity-10 pointer-events-none"
+    aria-hidden="true"
+  >
+    <path d="M52 10 C 30 30, 30 70, 50 90 C 75 115, 78 160, 55 185 C 38 203, 18 195, 18 172 C 18 155, 35 150, 45 162 C 52 170, 48 182, 38 182 M52 10 C 70 25, 72 55, 55 90 L 45 200 C 42 220, 28 225, 22 215" />
+  </svg>
+
+  <div class="container-prose relative">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">Au programme</p>
+      <h2 class="titre-section mt-4">Notre répertoire</h2>
+    </div>
+
+    <SeparateurNotes />
+
+    <div class="grid md:grid-cols-2 gap-12 lg:gap-20 max-w-4xl mx-auto">
+      {/* Créations originales */}
+      <div class="reveal">
+        <h3 class="font-serif text-3xl text-encre flex items-center gap-3">
+          <span class="text-or text-2xl">♪</span>
+          {creations.titre}
+        </h3>
+        <p class="prose-serif mt-4 text-base">{creations.texte}</p>
+        <ul class="mt-6 space-y-2 font-serif text-lg text-encre/80">
+          {creations.pieces.map((p) => (
+            <li class="flex items-center gap-3">
+              <span class="h-px w-5 bg-or shrink-0"></span>
+              {p}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Grand répertoire */}
+      <div class="reveal" style="--reveal-delay: 150ms">
+        <h3 class="font-serif text-3xl text-encre flex items-center gap-3">
+          <span class="text-or text-2xl">♫</span>
+          {grandRepertoire.titre}
+        </h3>
+        <p class="prose-serif mt-4 text-base">{grandRepertoire.texte}</p>
+        <ul class="mt-6 space-y-2 font-serif text-lg text-encre/80">
+          {grandRepertoire.compositeurs.map((c) => (
+            <li class="flex items-center gap-3">
+              <span class="h-px w-5 bg-or shrink-0"></span>
+              {c}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

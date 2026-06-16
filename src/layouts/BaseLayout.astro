@@ -74,7 +74,22 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
     })} />
   </head>
   <body>
+    {/* Barre de progression de défilement (fin trait or en haut de page) */}
+    <div id="scroll-progress" class="fixed top-0 left-0 z-50 h-0.5 bg-or origin-left" style="width:100%; transform: scaleX(0)"></div>
+
     <slot />
+
+    {/* Bouton retour en haut */}
+    <button
+      id="back-to-top"
+      type="button"
+      aria-label="Revenir en haut de la page"
+      class="fixed bottom-6 right-6 z-40 w-12 h-12 flex items-center justify-center bg-encre text-ivoire shadow-lift opacity-0 translate-y-3 pointer-events-none transition-all duration-400 ease-soft hover:bg-or hover:-translate-y-0.5"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
 
     {/* Script global : révélations au scroll + lightbox + tracé de traits */}
     <script>
@@ -128,6 +143,26 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
           document.body.style.overflow = '';
         }
       });
+
+      // — Barre de progression + bouton retour en haut —
+      const progress = document.getElementById('scroll-progress');
+      const backToTop = document.getElementById('back-to-top');
+      const onScrollUI = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+        if (progress) progress.style.transform = `scaleX(${scrolled})`;
+        if (backToTop) {
+          const show = h.scrollTop > 500;
+          backToTop.classList.toggle('opacity-0', !show);
+          backToTop.classList.toggle('translate-y-3', !show);
+          backToTop.classList.toggle('pointer-events-none', !show);
+        }
+      };
+      onScrollUI();
+      window.addEventListener('scroll', onScrollUI, { passive: true });
+      backToTop?.addEventListener('click', () =>
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      );
     </script>
 
     {/* Lightbox commune — utilisée par la galerie */}
