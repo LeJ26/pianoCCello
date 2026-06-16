@@ -90,9 +90,11 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
 
       {/* Formulaire */}
       <form
+        id="form-reservation"
         action={action}
         method={method}
         enctype={enctype}
+        data-formspree={usingFormspree ? 'oui' : 'non'}
         class="reveal bg-ivoire text-encre p-8 sm:p-10 shadow-lift"
         style="--reveal-delay: 150ms"
       >
@@ -155,8 +157,15 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
         </div>
 
         <button type="submit" class="btn-encre mt-8 w-full sm:w-auto">
-          Envoyer
+          <span data-label-defaut>Envoyer</span>
+          <span data-label-envoi class="hidden">Envoi…</span>
         </button>
+
+        {/* Message d'erreur (affiché si l'envoi échoue) */}
+        <p id="form-erreur" class="hidden mt-4 text-sm text-red-700 font-sans">
+          Une erreur est survenue. Réessayez, ou écrivez-nous directement à
+          <a href={`mailto:${site.contact.email}`} class="underline">{site.contact.email}</a>.
+        </p>
 
         {!usingFormspree && (
           <p class="mt-4 text-xs text-encre/50 font-sans">
@@ -164,6 +173,61 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
           </p>
         )}
       </form>
+
+      {/* Confirmation après envoi réussi (Formspree) */}
+      <div
+        id="form-merci"
+        class="hidden bg-ivoire text-encre p-8 sm:p-10 shadow-lift text-center"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B89B5E" stroke-width="1.4" class="w-12 h-12 mx-auto">
+          <circle cx="12" cy="12" r="10" />
+          <path d="m8 12 3 3 5-6" />
+        </svg>
+        <h3 class="font-serif text-3xl mt-4">Merci !</h3>
+        <p class="prose-serif text-base mt-3">
+          Votre demande a bien été envoyée. Nous vous répondrons très vite pour
+          construire ensemble votre concert.
+        </p>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('form-reservation') as HTMLFormElement | null;
+  if (form && form.dataset.formspree === 'oui') {
+    const merci = document.getElementById('form-merci');
+    const erreur = document.getElementById('form-erreur');
+    const btn = form.querySelector('button[type="submit"]');
+    const labelDefaut = form.querySelector('[data-label-defaut]');
+    const labelEnvoi = form.querySelector('[data-label-envoi]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      erreur?.classList.add('hidden');
+      btn?.setAttribute('disabled', 'true');
+      labelDefaut?.classList.add('hidden');
+      labelEnvoi?.classList.remove('hidden');
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.classList.add('hidden');
+          merci?.classList.remove('hidden');
+          merci?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error('Réponse non OK');
+        }
+      } catch {
+        erreur?.classList.remove('hidden');
+      } finally {
+        btn?.removeAttribute('disabled');
+        labelDefaut?.classList.remove('hidden');
+        labelEnvoi?.classList.add('hidden');
+      }
+    });
+  }
+</script>

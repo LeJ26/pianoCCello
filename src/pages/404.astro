@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../contenu/site';
+import LineArtCoquelicot from '../components/LineArtCoquelicot.astro';
+---
+
+<BaseLayout titre={`Page introuvable — ${site.nom}`} description="Cette page n'existe pas.">
+  <main class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
+    <div class="absolute -top-10 -left-10 w-72 opacity-15 pointer-events-none rotate-6">
+      <LineArtCoquelicot />
+    </div>
+    <div class="absolute -bottom-10 -right-10 w-72 opacity-15 pointer-events-none -rotate-12">
+      <LineArtCoquelicot />
+    </div>
+
+    <div class="relative reveal">
+      <p class="font-script text-7xl sm:text-8xl text-or">404</p>
+      <h1 class="titre-section mt-4">Cette page s'est tue</h1>
+      <p class="prose-serif max-w-md mx-auto mt-6">
+        La page que vous cherchez n'existe pas ou a été déplacée.
+        Revenons à la mélodie principale.
+      </p>
+      <div class="mt-10">
+        <a href="/" class="btn-encre">Retour à l'accueil</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

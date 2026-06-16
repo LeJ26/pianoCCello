@@ -10,12 +10,23 @@ Site vitrine + boutique de partitions pour le duo de musique de chambre
 
 ## 📁 Ce qu'il y a dans ce dossier
 
-| Dossier | À quoi ça sert |
+| Dossier / fichier | À quoi ça sert |
 |---|---|
-| `src/contenu/` | **C'est là que tu modifies presque tout** : textes, partitions, concerts |
-| `src/components/` | Les briques visuelles du site (à ne toucher que si tu veux changer le design) |
+| `src/contenu/site.ts` | Nom, baseline, contact, **bios**, **répertoire**, **mentions légales**, SEO |
+| `src/contenu/partitions.ts` | La **boutique** : liste des partitions à vendre |
+| `src/contenu/concerts.ts` | La **galerie** : liste des concerts (date, lieu, photo) |
+| `src/contenu/formules.ts` | Les **formules / tarifs** de concert |
+| `src/components/` | Les briques visuelles (à toucher seulement pour changer le design) |
 | `public/images/` | Toutes les photos du site |
-| `public/` | Favicon, carte de visite, fichiers publics |
+| `public/` | Favicon, icônes, carte de visite, fichiers publics |
+
+> 👉 **L'essentiel de ce que tu modifieras est dans le dossier `src/contenu/`.**
+> Tout y est commenté en français.
+
+### Les sections du site (dans l'ordre)
+Accueil (bannière 3D piano + violoncelle) · Qui sommes-nous · Notre répertoire ·
+Partitions (boutique) · Galerie de concerts · Nos formules · Réserver. Plus une
+page **Mentions légales** (lien en bas de page).
 
 ---
 
@@ -40,10 +51,32 @@ Modifie ce qu'il faut, sauvegarde — c'est tout.
 3. Copie un bloc existant, change la date, le lieu et le nom du fichier photo.
    Les concerts se trient automatiquement par date (du plus récent au plus ancien).
 
+### Modifier une formule / un tarif
+
+Ouvre **`src/contenu/formules.ts`**. Tu peux changer le titre, la durée, le
+prix (par défaut « Sur devis ») et la liste des prestations. Mets
+`misEnAvant: true` sur **une seule** formule pour la mettre en valeur.
+
+### Modifier le répertoire ou les bios
+
+Tout est dans **`src/contenu/site.ts`** (sections `repertoire` et `artistes`).
+
+### Compléter les mentions légales
+
+Dans **`src/contenu/site.ts`**, section `legal` : remplace les champs marqués
+« À COMPLÉTER » (statut, hébergeur…) avant la mise en ligne.
+
 ### Remplacer une photo existante
 
 Garde le même nom de fichier dans `public/images/` et écrase l'ancienne photo
 avec la nouvelle. C'est tout. (Format paysage recommandé, ~1600 px de large.)
+
+### Changer la bannière 3D (piano + violoncelle)
+
+Le piano et le violoncelle 3D sont dans **`src/components/ThreeScene.astro`**.
+En haut du script, un bloc **REGLAGES** permet d'ajuster facilement la taille,
+l'angle de vue, la vitesse et l'écartement. Pour mettre ton propre modèle 3D
+(`.glb`), suis le commentaire **`REMPLACER LE MODÈLE 3D ICI`**.
 
 ---
 
