@@ -1,37 +1,33 @@
 ---
 // ════════════════════════════════════════════════════════════════════════
-//  SCÈNE 3D — HERO
+//  SCÈNE 3D — HERO :  PIANO À QUEUE  +  VIOLONCELLE  (line art animé)
 //
-//  Une forme filaire « line art » qui tourne doucement et réagit
-//  légèrement à la souris. Volontairement sobre pour rester
-//  dans l'esprit noir & blanc / dessin au trait du duo.
+//  Les deux instruments sont entièrement dessinés en « fil de fer »
+//  (arêtes uniquement) pour rester dans l'esprit noir & blanc / dessin
+//  au trait du duo. L'ensemble oscille doucement (vue 3/4) et réagit
+//  légèrement à la souris.
+//
+//  👉 RÉGLAGES RAPIDES : voir le bloc « REGLAGES » en haut du script
+//     (échelle, angle de vue, vitesse, écartement piano/violoncelle).
 //
 //  👉 REMPLACER LE MODÈLE 3D ICI :
-//  Si tu veux mettre ton propre modèle 3D (.glb), suis ces étapes :
+//  Pour utiliser ton propre modèle (.glb) à la place :
 //    1. Mets ton fichier dans `public/models/mon-modele.glb`
-//    2. Décommente l'import GLTFLoader dans le script ci-dessous
-//    3. Remplace la création de la géométrie filaire par le chargement GLB
-//
-//  Le composant est isolé pour qu'on puisse le remplacer facilement
-//  sans toucher au reste du site.
+//    2. Importe le GLTFLoader de three/examples
+//    3. Remplace l'appel à buildEnsemble() par le chargement du .glb
+//  Tout est isolé dans ce composant : le reste du site n'y touche pas.
 // ════════════════════════════════════════════════════════════════════════
 ---
 
 <div class="relative aspect-square w-full max-w-md mx-auto">
-  {/* Cercle décoratif derrière la scène 3D */}
-  <div
-    class="absolute inset-4 rounded-full border border-or/40 pointer-events-none"
-    aria-hidden="true"
-  ></div>
-  <div
-    class="absolute inset-12 rounded-full border border-encre/10 pointer-events-none"
-    aria-hidden="true"
-  ></div>
+  {/* Cercles décoratifs derrière la scène 3D */}
+  <div class="absolute inset-4 rounded-full border border-or/40 pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute inset-12 rounded-full border border-encre/10 pointer-events-none" aria-hidden="true"></div>
 
   <canvas
     id="three-canvas"
     class="relative w-full h-full"
-    aria-label="Animation 3D décorative — silhouette filaire du duo violoncelle et piano"
+    aria-label="Animation 3D décorative — piano à queue et violoncelle dessinés au trait"
   ></canvas>
 </div>
 
@@ -42,14 +38,204 @@
   if (canvas) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // ════════════════ REGLAGES ════════════════
+    const SCALE = 0.6;        // taille globale de l'ensemble
+    const ANGLE_VUE = -0.5;   // angle de base (vue 3/4) en radians
+    const TILT = 0.16;        // inclinaison vers l'avant (on voit le dessus)
+    const VITESSE = 0.22;     // vitesse de l'oscillation
+    const AMPLITUDE = 0.15;   // amplitude de l'oscillation
+    const ECART_PIANO = -0.5; // décalage horizontal du piano
+    const ECART_CELLO = 1.9;  // décalage horizontal du violoncelle
+    // ═══════════════════════════════════════════
+
+    const COULEUR_ENCRE = 0x1a1a1a;
+    const COULEUR_OR = 0xb89b5e;
+    const matEncre = new THREE.LineBasicMaterial({ color: COULEUR_ENCRE, transparent: true, opacity: 0.8 });
+    const matEncreLeger = new THREE.LineBasicMaterial({ color: COULEUR_ENCRE, transparent: true, opacity: 0.5 });
+    const matOr = new THREE.LineBasicMaterial({ color: COULEUR_OR, transparent: true, opacity: 0.85 });
+
+    // Petit utilitaire : un segment de droite entre deux points
+    const segs = (coords: number[], mat: THREE.LineBasicMaterial) => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(coords, 3));
+      return new THREE.LineSegments(g, mat);
+    };
+
+    // ──────────────────────────────────────────────────────────────
+    //  PIANO À QUEUE
+    // ──────────────────────────────────────────────────────────────
+    function pianoSilhouette() {
+      // Vue de dessus : côté droit (gauche du clavier) droit = « ceinture »,
+      // côté courbe = flanc cintré, queue à l'arrière.
+      const s = new THREE.Shape();
+      s.moveTo(-1.5, 0);                                  // avant gauche
+      s.lineTo(1.35, 0);                                  // bord avant (clavier)
+      s.bezierCurveTo(1.75, 0.9, 1.55, 2.05, 0.95, 2.85); // flanc cintré
+      s.bezierCurveTo(0.55, 3.25, 0.0, 3.4, -0.65, 3.45); // queue
+      s.lineTo(-1.5, 3.45);                               // arrière
+      s.closePath();                                      // ceinture (retour)
+      return s;
+    }
+
+    function buildPiano() {
+      const piano = new THREE.Group();
+      const caseH = 0.38; // épaisseur de la caisse
+
+      // Corps (caisse) — silhouette extrudée, posée à plat
+      const corpsGeo = new THREE.ExtrudeGeometry(pianoSilhouette(), {
+        depth: caseH, bevelEnabled: false, curveSegments: 24,
+      });
+      corpsGeo.computeBoundingBox();
+      const bb = corpsGeo.boundingBox!;
+      const cx = (bb.min.x + bb.max.x) / 2;
+      const cy = (bb.min.y + bb.max.y) / 2;
+      corpsGeo.translate(-cx, -cy, 0); // centrer en x et en profondeur
+      const corps = new THREE.LineSegments(new THREE.EdgesGeometry(corpsGeo, 25), matEncre);
+      corps.rotation.x = -Math.PI / 2; // coucher à plat (y = hauteur)
+      piano.add(corps);
+
+      const spineX = bb.min.x - cx; // position de la « ceinture » (charnière) en x
+
+      // Couvercle ouvert — même silhouette, fine, articulée sur la ceinture
+      const lidGeo = new THREE.ExtrudeGeometry(pianoSilhouette(), {
+        depth: 0.04, bevelEnabled: false, curveSegments: 24,
+      });
+      lidGeo.translate(-cx, -cy, 0);
+      const lid = new THREE.LineSegments(new THREE.EdgesGeometry(lidGeo, 25), matEncre);
+      lid.rotation.x = -Math.PI / 2;
+      lid.position.x = -spineX; // amener la charnière à l'origine du pivot
+      const lidPivot = new THREE.Group();
+      lidPivot.position.set(spineX, caseH, 0);
+      lidPivot.add(lid);
+      const angleOuverture = 0.9; // ~51° d'ouverture
+      lidPivot.rotation.z = angleOuverture;
+      piano.add(lidPivot);
+
+      // Béquille (tige dorée qui tient le couvercle)
+      const d = 1.5; // distance le long du couvercle
+      const propX = spineX + d * Math.cos(angleOuverture);
+      const propY = caseH + d * Math.sin(angleOuverture);
+      piano.add(segs([propX, caseH, 0.9, propX, propY, 0.9], matOr));
+
+      // Pieds (3 lignes verticales)
+      const legLen = 1.35;
+      [[-1.4, 1.45], [1.25, 1.35], [0.0, -1.55]].forEach(([lx, lz]) => {
+        piano.add(segs([lx, 0, lz, lx, -legLen, lz], matEncre));
+      });
+
+      // Clavier (cadre + touches) sur le dessus, à l'avant
+      const kb: number[] = [];
+      const zAv = 1.68, zAr = 1.24, y = caseH + 0.005, xMin = -1.2, xMax = 1.2;
+      kb.push(xMin, y, zAv, xMax, y, zAv,  xMin, y, zAr, xMax, y, zAr,
+              xMin, y, zAv, xMin, y, zAr,  xMax, y, zAv, xMax, y, zAr);
+      const n = 14;
+      for (let i = 1; i < n; i++) {
+        const x = xMin + (i * (xMax - xMin)) / n;
+        kb.push(x, y, zAv, x, y, zAr);
+      }
+      piano.add(segs(kb, matEncreLeger));
+
+      return piano;
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  VIOLONCELLE  (silhouette filaire, debout)
+    // ──────────────────────────────────────────────────────────────
+    function buildCello() {
+      const cello = new THREE.Group();
+
+      // Demi-profil droit (de bas en haut), x ≥ 0
+      const demiProfil: [number, number][] = [
+        [0.55, -2.15], [1.05, -1.78], [1.22, -1.30], [1.06, -0.82],
+        [0.60, -0.32], [0.70, 0.08], [1.02, 0.50], [0.90, 0.90],
+        [0.42, 1.12], [0.18, 1.28], [0.16, 1.98], [0.24, 2.18], [0.16, 2.42],
+      ];
+      const pts: THREE.Vector3[] = [];
+      pts.push(new THREE.Vector3(0, -2.32, 0));
+      demiProfil.forEach(([x, y]) => pts.push(new THREE.Vector3(x, y, 0)));
+      pts.push(new THREE.Vector3(0, 2.5, 0));
+      [...demiProfil].reverse().forEach(([x, y]) => pts.push(new THREE.Vector3(-x, y, 0)));
+
+      const courbe = new THREE.CatmullRomCurve3(pts, true, 'catmullrom', 0.5);
+      const contour = courbe.getPoints(240).map((p) => new THREE.Vector2(p.x, p.y));
+      const forme = new THREE.Shape(contour);
+
+      const prof = 0.42;
+      const corpsGeo = new THREE.ExtrudeGeometry(forme, {
+        depth: prof, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05,
+        bevelSegments: 2, curveSegments: 1,
+      });
+      corpsGeo.translate(0, 0, -prof / 2);
+      cello.add(new THREE.LineSegments(new THREE.EdgesGeometry(corpsGeo, 18), matEncre));
+
+      const zF = prof / 2 + 0.07;
+      // Cordes dorées
+      const cordes: number[] = [];
+      [-0.18, -0.06, 0.06, 0.18].forEach((x) => cordes.push(x, 2.05, zF, x * 0.42, -1.75, zF));
+      cello.add(segs(cordes, matOr));
+      // Chevalet + cordier
+      cello.add(segs([
+        -0.28, -0.55, zF, 0.28, -0.55, zF,
+        0, -1.7, zF, -0.16, -2.0, zF,
+        0, -1.7, zF, 0.16, -2.0, zF,
+      ], matEncre));
+      // Ouïes en « f »
+      [1, -1].forEach((s) => {
+        const c = new THREE.CubicBezierCurve3(
+          new THREE.Vector3(s * 0.42, 0.15, zF), new THREE.Vector3(s * 0.30, -0.1, zF),
+          new THREE.Vector3(s * 0.52, -0.5, zF), new THREE.Vector3(s * 0.40, -0.85, zF)
+        );
+        cello.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(c.getPoints(24)), matEncre));
+      });
+
+      return cello;
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  COMPOSITION
+    // ──────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-    });
+    const piano = buildPiano();
+    piano.position.set(ECART_PIANO, 0, 0);
+
+    const cello = buildCello();
+    cello.scale.setScalar(0.55);
+    cello.position.set(ECART_CELLO, -0.1, 0.1);
+    // On contre-tourne le violoncelle (+y) pour qu'il reste de face même
+    // quand l'ensemble est en vue 3/4 — sinon sa silhouette plate s'aplatit.
+    cello.rotation.set(0, 0.35, 0.1);
+
+    const ensemble = new THREE.Group();
+    ensemble.add(piano, cello);
+    ensemble.scale.setScalar(SCALE);
+    ensemble.position.y = -0.45;
+    scene.add(ensemble);
+
+    // Particules dorées (poussière musicale)
+    const particleGeo = new THREE.BufferGeometry();
+    const N = 70;
+    const positions = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 7;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 7;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4 - 1;
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particles = new THREE.Points(
+      particleGeo,
+      new THREE.PointsMaterial({ color: COULEUR_OR, size: 0.025, transparent: true, opacity: 0.55 })
+    );
+    scene.add(particles);
+
+    // ──────────────────────────────────────────────────────────────
+    //  RENDU + ANIMATION
+    // ──────────────────────────────────────────────────────────────
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 6.5);
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -58,140 +244,13 @@
       camera.updateProjectionMatrix();
     };
 
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 0, 5);
-
-    // ══════════════════════════════════════════════════════════════
-    // VIOLONCELLE FILAIRE (line art 3D)
-    // La silhouette du violoncelle est tracée par des points, lissée,
-    // puis légèrement extrudée pour donner du volume. On affiche
-    // uniquement les arêtes (edges) pour garder l'esprit « dessin au trait ».
-    // À remplacer par un GLTF (voir commentaires en tête du composant).
-    // ══════════════════════════════════════════════════════════════
-
-    // Demi-profil droit du violoncelle (de bas en haut), x ≥ 0.
-    const demiProfil: [number, number][] = [
-      [0.55, -2.15],
-      [1.05, -1.78],
-      [1.22, -1.30],  // bas du corps (large)
-      [1.06, -0.82],
-      [0.60, -0.32],  // taille (échancrure en C)
-      [0.70, 0.08],
-      [1.02, 0.50],   // haut du corps (large)
-      [0.90, 0.90],
-      [0.42, 1.12],   // épaule
-      [0.18, 1.28],   // début du manche
-      [0.16, 1.98],   // manche
-      [0.24, 2.18],   // chevillier
-      [0.16, 2.42],   // volute (simplifiée)
-    ];
-
-    // Boucle fermée : bas-centre → côté droit (bas→haut) → haut-centre →
-    // côté gauche (miroir, haut→bas) → retour bas-centre.
-    const pts: THREE.Vector3[] = [];
-    pts.push(new THREE.Vector3(0, -2.32, 0));
-    demiProfil.forEach(([x, y]) => pts.push(new THREE.Vector3(x, y, 0)));
-    pts.push(new THREE.Vector3(0, 2.5, 0));
-    [...demiProfil].reverse().forEach(([x, y]) => pts.push(new THREE.Vector3(-x, y, 0)));
-
-    // Lissage du contour (courbe de Catmull-Rom fermée)
-    const courbe = new THREE.CatmullRomCurve3(pts, true, 'catmullrom', 0.5);
-    const contour = courbe.getPoints(240).map((p) => new THREE.Vector2(p.x, p.y));
-    const forme = new THREE.Shape(contour);
-
-    // Extrusion fine + léger biseau pour donner du relief au trait
-    const profondeur = 0.42;
-    const corpsGeo = new THREE.ExtrudeGeometry(forme, {
-      depth: profondeur,
-      bevelEnabled: true,
-      bevelThickness: 0.05,
-      bevelSize: 0.05,
-      bevelSegments: 2,
-      curveSegments: 1,
-    });
-    corpsGeo.translate(0, 0, -profondeur / 2); // centrer en profondeur
-
-    const material = new THREE.LineBasicMaterial({
-      color: 0x1a1a1a,
-      transparent: true,
-      opacity: 0.78,
-    });
-    const corps = new THREE.LineSegments(new THREE.EdgesGeometry(corpsGeo, 18), material);
-
-    // Groupe qui contient tout le violoncelle (corps + détails)
-    const lines = new THREE.Group();
-    lines.add(corps);
-
-    const zFront = profondeur / 2 + 0.07; // face avant, pour poser les détails
-
-    // — Cordes (4 lignes dorées, du chevillier au cordier) —
-    const corPositions: number[] = [];
-    const xCordes = [-0.18, -0.06, 0.06, 0.18];
-    xCordes.forEach((x) => {
-      corPositions.push(x, 2.05, zFront, x * 0.42, -1.75, zFront);
-    });
-    const cordesGeo = new THREE.BufferGeometry();
-    cordesGeo.setAttribute('position', new THREE.Float32BufferAttribute(corPositions, 3));
-    const cordesMat = new THREE.LineBasicMaterial({ color: 0xb89b5e, transparent: true, opacity: 0.85 });
-    lines.add(new THREE.LineSegments(cordesGeo, cordesMat));
-
-    // — Chevalet + cordier (petits traits) —
-    const detailPos = [
-      -0.28, -0.55, zFront, 0.28, -0.55, zFront, // chevalet
-      0, -1.7, zFront, -0.16, -2.0, zFront,       // cordier (V)
-      0, -1.7, zFront, 0.16, -2.0, zFront,
-    ];
-    const detailGeo = new THREE.BufferGeometry();
-    detailGeo.setAttribute('position', new THREE.Float32BufferAttribute(detailPos, 3));
-    lines.add(new THREE.LineSegments(detailGeo, material));
-
-    // — Ouïes (deux « f » stylisés de part et d'autre du chevalet) —
-    const ouie = (signe: number) => {
-      const courbeOuie = new THREE.CubicBezierCurve3(
-        new THREE.Vector3(signe * 0.42, 0.15, zFront),
-        new THREE.Vector3(signe * 0.30, -0.1, zFront),
-        new THREE.Vector3(signe * 0.52, -0.5, zFront),
-        new THREE.Vector3(signe * 0.40, -0.85, zFront)
-      );
-      const geo = new THREE.BufferGeometry().setFromPoints(courbeOuie.getPoints(24));
-      lines.add(new THREE.Line(geo, material));
-    };
-    ouie(1);
-    ouie(-1);
-
-    // Mise à l'échelle et centrage vertical du violoncelle entier
-    lines.scale.setScalar(0.66);
-    lines.position.y = -0.06;
-    scene.add(lines);
-
-    // Petites particules dorées en arrière-plan (poussière musicale)
-    const particleGeo = new THREE.BufferGeometry();
-    const N = 80;
-    const positions = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 6;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 6;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 4 - 1;
-    }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      color: 0xb89b5e,
-      size: 0.025,
-      transparent: true,
-      opacity: 0.6,
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
-
-    // Réaction à la souris (légère parallaxe)
-    const target = { x: 0, y: 0 };
-    const current = { x: 0, y: 0 };
+    // Réaction à la souris (parallaxe douce)
+    const targetM = { x: 0, y: 0 };
+    const currentM = { x: 0, y: 0 };
     window.addEventListener('pointermove', (e) => {
       const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-      target.x = x;
-      target.y = y;
+      targetM.x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      targetM.y = (e.clientY - rect.top - rect.height / 2) / rect.height;
     });
 
     let raf = 0;
@@ -199,33 +258,27 @@
     const clock = new THREE.Clock();
     const tick = () => {
       const t = clock.getElapsedTime();
-      current.x += (target.x - current.x) * 0.05;
-      current.y += (target.y - current.y) * 0.05;
+      currentM.x += (targetM.x - currentM.x) * 0.05;
+      currentM.y += (targetM.y - currentM.y) * 0.05;
       if (reducedMotion) {
-        lines.rotation.set(0.05, 0.25, 0);
+        ensemble.rotation.set(TILT, ANGLE_VUE, 0);
       } else {
-        // Oscillation douce : le violoncelle reste de face et « respire »
-        lines.rotation.y = current.x * 0.5 + Math.sin(t * 0.32) * 0.45;
-        lines.rotation.x = current.y * 0.28 + Math.sin(t * 0.24) * 0.04;
-        lines.position.y = -0.06 + Math.sin(t * 0.5) * 0.04; // léger flottement
-        particles.rotation.y = t * 0.04;
+        ensemble.rotation.y = ANGLE_VUE + currentM.x * 0.35 + Math.sin(t * VITESSE) * AMPLITUDE;
+        ensemble.rotation.x = TILT + currentM.y * 0.1;
+        ensemble.position.y = -0.45 + Math.sin(t * 0.5) * 0.04; // léger flottement
+        particles.rotation.y = t * 0.03;
       }
       renderer.render(scene, camera);
       if (running) raf = requestAnimationFrame(tick);
     };
 
-    // Ne tourner que quand visible — économie batterie + perf
+    // Ne tourner que quand visible (perf + batterie)
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           running = e.isIntersecting;
-          if (running && !raf) {
-            clock.start();
-            raf = requestAnimationFrame(tick);
-          } else if (!running && raf) {
-            cancelAnimationFrame(raf);
-            raf = 0;
-          }
+          if (running && !raf) { clock.start(); raf = requestAnimationFrame(tick); }
+          else if (!running && raf) { cancelAnimationFrame(raf); raf = 0; }
         });
       },
       { threshold: 0.05 }
