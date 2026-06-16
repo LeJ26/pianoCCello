@@ -27,7 +27,11 @@ const annee = new Date().getFullYear();
 
     <div class="mt-10 pt-6 border-t border-encre/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-encre/50 font-sans">
       <p>© {annee} {site.nom}. Tous droits réservés.</p>
-      <p>Site réalisé avec soin · Astro & Three.js</p>
+      <div class="flex items-center gap-5">
+        <a href="/mentions-legales" class="lien-trait hover:text-encre">Mentions légales</a>
+        <span aria-hidden="true">·</span>
+        <p>Réalisé avec soin · Astro &amp; Three.js</p>
+      </div>
     </div>
   </div>
 </footer>

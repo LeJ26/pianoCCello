@@ -1,0 +1,65 @@
+---
+// Visuel « partition » en line art — utilisé comme illustration de secours
+// dans la boutique quand une partition n'a pas encore d'image.
+// Une portée, une clé de sol stylisée, quelques notes, et un coquelicot en clin d'œil.
+// Animé via `trait-anim` (les traits se dessinent à l'arrivée dans le viewport).
+---
+
+<svg
+  viewBox="0 0 200 250"
+  fill="none"
+  stroke="#1A1A1A"
+  stroke-width="1.3"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="trait-anim w-full h-full"
+  aria-hidden="true"
+  preserveAspectRatio="xMidYMid meet"
+>
+  {/* ── Portée du haut (5 lignes) ── */}
+  <line x1="28" y1="64" x2="180" y2="64" />
+  <line x1="28" y1="76" x2="180" y2="76" />
+  <line x1="28" y1="88" x2="180" y2="88" />
+  <line x1="28" y1="100" x2="180" y2="100" />
+  <line x1="28" y1="112" x2="180" y2="112" />
+
+  {/* Clé de sol stylisée */}
+  <path d="M52 110 C 38 104, 40 86, 56 84 C 70 82, 70 98, 56 100 C 47 101, 46 92, 53 90" />
+  <path d="M53 90 C 58 64, 49 54, 50 44 C 64 50, 64 78, 56 100 C 52 110, 50 118, 47 120" />
+
+  {/* Notes sur la portée du haut */}
+  <line x1="96" y1="58" x2="96" y2="94" stroke-width="1.1" />
+  <ellipse cx="92" cy="94" rx="6" ry="4.5" transform="rotate(-22 92 94)" fill="#1A1A1A" stroke="none" />
+  <line x1="120" y1="46" x2="120" y2="82" stroke-width="1.1" />
+  <ellipse cx="116" cy="82" rx="6" ry="4.5" transform="rotate(-22 116 82)" fill="#1A1A1A" stroke="none" />
+  <line x1="144" y1="52" x2="144" y2="88" stroke-width="1.1" />
+  <ellipse cx="140" cy="88" rx="6" ry="4.5" transform="rotate(-22 140 88)" fill="#1A1A1A" stroke="none" />
+  {/* Barre de liaison (beam) */}
+  <path d="M96 58 L 144 52" stroke-width="2.2" />
+
+  {/* ── Portée du bas (5 lignes) ── */}
+  <line x1="28" y1="158" x2="180" y2="158" />
+  <line x1="28" y1="170" x2="180" y2="170" />
+  <line x1="28" y1="182" x2="180" y2="182" />
+  <line x1="28" y1="194" x2="180" y2="194" />
+  <line x1="28" y1="206" x2="180" y2="206" />
+
+  {/* Notes sur la portée du bas */}
+  <line x1="60" y1="152" x2="60" y2="188" stroke-width="1.1" />
+  <ellipse cx="56" cy="188" rx="6" ry="4.5" transform="rotate(-22 56 188)" fill="#1A1A1A" stroke="none" />
+  <line x1="92" y1="146" x2="92" y2="182" stroke-width="1.1" />
+  <ellipse cx="88" cy="182" rx="6" ry="4.5" transform="rotate(-22 88 182)" fill="#1A1A1A" stroke="none" />
+  {/* Crochet (croche) */}
+  <path d="M92 146 C 100 150, 102 158, 98 164" stroke-width="1.1" />
+  <line x1="132" y1="158" x2="132" y2="200" stroke-width="1.1" />
+  <ellipse cx="128" cy="200" rx="6" ry="4.5" transform="rotate(-22 128 200)" fill="#1A1A1A" stroke="none" />
+
+  {/* ── Coquelicot décoratif en haut à droite ── */}
+  <g stroke-width="1.1">
+    <path d="M168 40 C 160 36, 152 38, 150 30 C 155 25, 164 27, 170 34" />
+    <path d="M170 34 C 178 30, 186 32, 188 25 C 183 20, 174 22, 168 30" />
+    <path d="M169 34 C 165 26, 168 18, 176 16 C 182 22, 178 32, 172 36" />
+    <circle cx="170" cy="33" r="2.4" />
+    <path d="M170 36 C 169 46, 172 56, 170 66" />
+  </g>
+</svg>

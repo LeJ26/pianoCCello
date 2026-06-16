@@ -51,6 +51,30 @@ export const site = {
   },
 };
 
+// ═════ MENTIONS LÉGALES (page /mentions-legales) ═════
+// 👉 Complète les champs marqués « À COMPLÉTER » avant la mise en ligne.
+// Si tu n'es pas une société (simple particulier / association), tu peux
+// laisser le SIRET vide — il sera alors masqué sur la page.
+export const legal = {
+  // Qui édite le site (toi / le duo)
+  editeur: {
+    nom: 'Duo pianCCello',
+    statut: 'À COMPLÉTER (ex. association, micro-entreprise, particulier)',
+    adresse: 'À COMPLÉTER (adresse postale, facultatif)',
+    siret: '', // laisse vide si non applicable
+    email: 'duopianccello@gmail.com',
+    telephone: '06 09 96 77 22',
+    // Personne responsable du contenu du site
+    directeurPublication: 'À COMPLÉTER (nom du responsable)',
+  },
+  // Qui héberge le site (à remplir selon ton choix de mise en ligne)
+  hebergeur: {
+    nom: 'À COMPLÉTER (ex. Netlify, Inc. ou Vercel Inc.)',
+    adresse: 'À COMPLÉTER (adresse de l’hébergeur)',
+    site: 'À COMPLÉTER (ex. https://www.netlify.com)',
+  },
+};
+
 // ═════ RÉPERTOIRE (section « Notre répertoire ») ═════
 // Deux colonnes : les créations du duo, et le grand répertoire interprété.
 // Ajoute ou retire simplement une ligne dans les listes.

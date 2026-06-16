@@ -7,6 +7,7 @@ const liens = [
   { href: '#repertoire', label: 'Répertoire' },
   { href: '#boutique', label: 'Partitions' },
   { href: '#galerie', label: 'Galerie' },
+  { href: '#formules', label: 'Tarifs' },
   { href: '#reserver', label: 'Nous engager' },
 ];
 ---
@@ -23,7 +24,7 @@ const liens = [
     </a>
 
     {/* Navigation desktop */}
-    <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-9 text-sm font-sans tracking-widest2 uppercase">
+    <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-5 lg:gap-7 text-xs lg:text-sm font-sans tracking-widest2 uppercase">
       {liens.map((l) => (
         <a href={l.href} class="lien-trait text-encre/80 hover:text-encre">{l.label}</a>
       ))}

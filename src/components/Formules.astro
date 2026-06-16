@@ -1,0 +1,75 @@
+---
+import { formules, formulesNote } from '../contenu/formules';
+---
+
+<section id="formules" class="relative py-28 sm:py-36 bg-ivoire">
+  <div class="container-prose">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">Nous engager</p>
+      <h2 class="titre-section mt-4">Nos formules</h2>
+      <p class="prose-serif mt-6">
+        Chaque événement est unique : voici nos formules de départ, que nous
+        adaptons toujours à votre lieu et à vos envies.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+      {formules.map((f, i) => (
+        <article
+          class={`reveal relative flex flex-col p-8 transition-all duration-500 ease-soft ${
+            f.misEnAvant
+              ? 'bg-encre text-ivoire shadow-lift md:-mt-4 md:mb-4'
+              : 'carte'
+          }`}
+          style={`--reveal-delay: ${i * 120}ms`}
+        >
+          {f.misEnAvant && (
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-or text-ivoire text-[10px] font-sans tracking-widest2 uppercase px-4 py-1 whitespace-nowrap">
+              Le plus demandé
+            </span>
+          )}
+
+          <h3 class={`font-serif text-3xl ${f.misEnAvant ? 'text-ivoire' : 'text-encre'}`}>
+            {f.titre}
+          </h3>
+          <p class={`text-[10px] font-sans tracking-widest2 uppercase mt-2 ${f.misEnAvant ? 'text-or-light' : 'text-or'}`}>
+            {f.duree}
+          </p>
+
+          <p class={`mt-4 font-serif text-base leading-relaxed ${f.misEnAvant ? 'text-ivoire/80' : 'text-encre/70'}`}>
+            {f.description}
+          </p>
+
+          <ul class={`mt-6 space-y-2.5 text-sm font-sans flex-1 ${f.misEnAvant ? 'text-ivoire/85' : 'text-encre/75'}`}>
+            {f.inclus.map((item) => (
+              <li class="flex items-start gap-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class={`w-4 h-4 mt-0.5 shrink-0 ${f.misEnAvant ? 'text-or-light' : 'text-or'}`}>
+                  <path d="m5 12 4 4L19 7" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <div class={`mt-8 pt-6 flex items-center justify-between border-t ${f.misEnAvant ? 'border-ivoire/20' : 'border-encre/10'}`}>
+            <span class={`font-serif text-2xl ${f.misEnAvant ? 'text-ivoire' : 'text-encre'}`}>
+              {f.prix}
+            </span>
+            <a
+              href="#reserver"
+              class={f.misEnAvant
+                ? 'inline-flex items-center justify-center gap-2 px-5 py-2 text-xs font-sans tracking-widest2 uppercase bg-or text-ivoire transition-all duration-300 ease-soft hover:-translate-y-0.5 hover:shadow-lift'
+                : 'btn-or text-xs px-5 py-2'}
+            >
+              Demander un devis
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p class="text-center mt-12 text-sm text-encre/60 font-sans reveal max-w-xl mx-auto">
+      {formulesNote}
+    </p>
+  </div>
+</section>

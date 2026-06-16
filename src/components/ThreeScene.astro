@@ -62,17 +62,106 @@
     camera.position.set(0, 0, 5);
 
     // ══════════════════════════════════════════════════════════════
-    // Géométrie filaire — un tore noué qui évoque la fluidité musicale.
+    // VIOLONCELLE FILAIRE (line art 3D)
+    // La silhouette du violoncelle est tracée par des points, lissée,
+    // puis légèrement extrudée pour donner du volume. On affiche
+    // uniquement les arêtes (edges) pour garder l'esprit « dessin au trait ».
     // À remplacer par un GLTF (voir commentaires en tête du composant).
     // ══════════════════════════════════════════════════════════════
-    const geometry = new THREE.TorusKnotGeometry(1.1, 0.32, 220, 24, 2, 3);
-    const edges = new THREE.EdgesGeometry(geometry, 25);
+
+    // Demi-profil droit du violoncelle (de bas en haut), x ≥ 0.
+    const demiProfil: [number, number][] = [
+      [0.55, -2.15],
+      [1.05, -1.78],
+      [1.22, -1.30],  // bas du corps (large)
+      [1.06, -0.82],
+      [0.60, -0.32],  // taille (échancrure en C)
+      [0.70, 0.08],
+      [1.02, 0.50],   // haut du corps (large)
+      [0.90, 0.90],
+      [0.42, 1.12],   // épaule
+      [0.18, 1.28],   // début du manche
+      [0.16, 1.98],   // manche
+      [0.24, 2.18],   // chevillier
+      [0.16, 2.42],   // volute (simplifiée)
+    ];
+
+    // Boucle fermée : bas-centre → côté droit (bas→haut) → haut-centre →
+    // côté gauche (miroir, haut→bas) → retour bas-centre.
+    const pts: THREE.Vector3[] = [];
+    pts.push(new THREE.Vector3(0, -2.32, 0));
+    demiProfil.forEach(([x, y]) => pts.push(new THREE.Vector3(x, y, 0)));
+    pts.push(new THREE.Vector3(0, 2.5, 0));
+    [...demiProfil].reverse().forEach(([x, y]) => pts.push(new THREE.Vector3(-x, y, 0)));
+
+    // Lissage du contour (courbe de Catmull-Rom fermée)
+    const courbe = new THREE.CatmullRomCurve3(pts, true, 'catmullrom', 0.5);
+    const contour = courbe.getPoints(240).map((p) => new THREE.Vector2(p.x, p.y));
+    const forme = new THREE.Shape(contour);
+
+    // Extrusion fine + léger biseau pour donner du relief au trait
+    const profondeur = 0.42;
+    const corpsGeo = new THREE.ExtrudeGeometry(forme, {
+      depth: profondeur,
+      bevelEnabled: true,
+      bevelThickness: 0.05,
+      bevelSize: 0.05,
+      bevelSegments: 2,
+      curveSegments: 1,
+    });
+    corpsGeo.translate(0, 0, -profondeur / 2); // centrer en profondeur
+
     const material = new THREE.LineBasicMaterial({
       color: 0x1a1a1a,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.78,
     });
-    const lines = new THREE.LineSegments(edges, material);
+    const corps = new THREE.LineSegments(new THREE.EdgesGeometry(corpsGeo, 18), material);
+
+    // Groupe qui contient tout le violoncelle (corps + détails)
+    const lines = new THREE.Group();
+    lines.add(corps);
+
+    const zFront = profondeur / 2 + 0.07; // face avant, pour poser les détails
+
+    // — Cordes (4 lignes dorées, du chevillier au cordier) —
+    const corPositions: number[] = [];
+    const xCordes = [-0.18, -0.06, 0.06, 0.18];
+    xCordes.forEach((x) => {
+      corPositions.push(x, 2.05, zFront, x * 0.42, -1.75, zFront);
+    });
+    const cordesGeo = new THREE.BufferGeometry();
+    cordesGeo.setAttribute('position', new THREE.Float32BufferAttribute(corPositions, 3));
+    const cordesMat = new THREE.LineBasicMaterial({ color: 0xb89b5e, transparent: true, opacity: 0.85 });
+    lines.add(new THREE.LineSegments(cordesGeo, cordesMat));
+
+    // — Chevalet + cordier (petits traits) —
+    const detailPos = [
+      -0.28, -0.55, zFront, 0.28, -0.55, zFront, // chevalet
+      0, -1.7, zFront, -0.16, -2.0, zFront,       // cordier (V)
+      0, -1.7, zFront, 0.16, -2.0, zFront,
+    ];
+    const detailGeo = new THREE.BufferGeometry();
+    detailGeo.setAttribute('position', new THREE.Float32BufferAttribute(detailPos, 3));
+    lines.add(new THREE.LineSegments(detailGeo, material));
+
+    // — Ouïes (deux « f » stylisés de part et d'autre du chevalet) —
+    const ouie = (signe: number) => {
+      const courbeOuie = new THREE.CubicBezierCurve3(
+        new THREE.Vector3(signe * 0.42, 0.15, zFront),
+        new THREE.Vector3(signe * 0.30, -0.1, zFront),
+        new THREE.Vector3(signe * 0.52, -0.5, zFront),
+        new THREE.Vector3(signe * 0.40, -0.85, zFront)
+      );
+      const geo = new THREE.BufferGeometry().setFromPoints(courbeOuie.getPoints(24));
+      lines.add(new THREE.Line(geo, material));
+    };
+    ouie(1);
+    ouie(-1);
+
+    // Mise à l'échelle et centrage vertical du violoncelle entier
+    lines.scale.setScalar(0.66);
+    lines.position.y = -0.06;
     scene.add(lines);
 
     // Petites particules dorées en arrière-plan (poussière musicale)
@@ -113,10 +202,12 @@
       current.x += (target.x - current.x) * 0.05;
       current.y += (target.y - current.y) * 0.05;
       if (reducedMotion) {
-        lines.rotation.set(0.2, 0.2, 0);
+        lines.rotation.set(0.05, 0.25, 0);
       } else {
-        lines.rotation.x = current.y * 0.4 + Math.sin(t * 0.3) * 0.05;
-        lines.rotation.y = current.x * 0.6 + t * 0.18;
+        // Oscillation douce : le violoncelle reste de face et « respire »
+        lines.rotation.y = current.x * 0.5 + Math.sin(t * 0.32) * 0.45;
+        lines.rotation.x = current.y * 0.28 + Math.sin(t * 0.24) * 0.04;
+        lines.position.y = -0.06 + Math.sin(t * 0.5) * 0.04; // léger flottement
         particles.rotation.y = t * 0.04;
       }
       renderer.render(scene, camera);

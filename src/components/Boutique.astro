@@ -1,5 +1,6 @@
 ---
 import { partitions } from '../contenu/partitions';
+import LineArtPartition from './LineArtPartition.astro';
 ---
 
 <section id="boutique" class="relative py-28 sm:py-36 bg-ivoire-50 border-y border-encre/5">
@@ -23,23 +24,12 @@ import { partitions } from '../contenu/partitions';
             style={`--reveal-delay: ${i * 100}ms`}
           >
             {/* Visuel de la partition */}
-            <div class="aspect-[4/5] bg-ivoire-200 relative overflow-hidden zoom-doux">
+            <div class="group aspect-[4/5] bg-ivoire-200 relative overflow-hidden zoom-doux">
               {p.image ? (
                 <img src={p.image} alt={`Partition « ${p.titre} »`} class="w-full h-full object-cover" loading="lazy" />
               ) : (
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <svg viewBox="0 0 120 160" fill="none" stroke="#1A1A1A" stroke-width="1.4" class="w-24 opacity-30 trait-anim">
-                    {/* Notes sur portée stylisée */}
-                    <line x1="10" y1="30" x2="110" y2="30" />
-                    <line x1="10" y1="50" x2="110" y2="50" />
-                    <line x1="10" y1="70" x2="110" y2="70" />
-                    <line x1="10" y1="90" x2="110" y2="90" />
-                    <line x1="10" y1="110" x2="110" y2="110" />
-                    <path d="M 25 110 C 25 95, 45 90, 45 75 L 45 35" />
-                    <circle cx="22" cy="110" r="6" fill="#1A1A1A" />
-                    <path d="M 70 100 C 70 88, 85 85, 85 70 L 85 30" />
-                    <circle cx="67" cy="100" r="6" fill="#1A1A1A" />
-                  </svg>
+                <div class="absolute inset-0 flex items-center justify-center p-8 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                  <LineArtPartition />
                 </div>
               )}
               <span class="absolute top-3 left-3 bg-ivoire/90 backdrop-blur text-encre/80 text-[10px] font-sans tracking-widest2 uppercase px-3 py-1">
