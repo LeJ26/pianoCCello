@@ -1,0 +1,169 @@
+---
+import { site } from '../contenu/site';
+
+// Si tu mets un lien Formspree dans `site.formulaireUrl`,
+// le formulaire l'utilisera. Sinon il bascule en mailto:.
+const usingFormspree = site.formulaireUrl !== 'FORMULAIRE_A_REMPLIR';
+const action = usingFormspree ? site.formulaireUrl : `mailto:${site.contact.email}`;
+const method = usingFormspree ? 'POST' : 'GET';
+const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/plain';
+---
+
+<section id="reserver" class="relative py-28 sm:py-36 bg-encre text-ivoire overflow-hidden">
+  {/* Décor line art en filigrane */}
+  <svg
+    viewBox="0 0 600 200"
+    fill="none"
+    stroke="#B89B5E"
+    stroke-width="0.6"
+    class="absolute -top-8 left-0 right-0 w-full opacity-30 pointer-events-none"
+    aria-hidden="true"
+  >
+    <path d="M0 100 Q 150 20, 300 100 T 600 100" />
+    <path d="M0 120 Q 150 40, 300 120 T 600 120" />
+  </svg>
+
+  <div class="container-prose relative">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+      {/* Texte / coordonnées */}
+      <div class="reveal">
+        <p class="surtitre text-or">Réserver</p>
+        <h2 class="titre-section mt-4 text-ivoire">Réservez votre concert</h2>
+        <p class="font-serif text-lg text-ivoire/80 mt-6 leading-relaxed">
+          Mariage, événement privé, concert intimiste, médiathèque, salle de concert…
+          Nous nous déplaçons partout en Île-de-France et adaptons notre programme à
+          votre événement.
+        </p>
+
+        <div class="mt-10 space-y-5 font-sans text-ivoire/90">
+          <a
+            href={`tel:${site.contact.telephoneLien}`}
+            class="group flex items-center gap-4 hover:text-or transition-colors duration-300"
+          >
+            <span class="w-10 h-10 border border-or/60 flex items-center justify-center shrink-0 group-hover:bg-or/10 transition">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" class="w-4 h-4">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-[10px] tracking-widest2 uppercase text-ivoire/50">Téléphone</span>
+              <span class="font-serif text-2xl">{site.contact.telephone}</span>
+            </span>
+          </a>
+
+          <a
+            href={`mailto:${site.contact.email}`}
+            class="group flex items-center gap-4 hover:text-or transition-colors duration-300"
+          >
+            <span class="w-10 h-10 border border-or/60 flex items-center justify-center shrink-0 group-hover:bg-or/10 transition">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" class="w-4 h-4">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-10 7L2 7" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-[10px] tracking-widest2 uppercase text-ivoire/50">Email</span>
+              <span class="font-serif text-lg lien-trait">{site.contact.email}</span>
+            </span>
+          </a>
+
+          <a
+            href={site.contact.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 hover:text-or transition-colors duration-300"
+          >
+            <span class="w-10 h-10 border border-or/60 flex items-center justify-center shrink-0 group-hover:bg-or/10 transition">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" class="w-4 h-4">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-[10px] tracking-widest2 uppercase text-ivoire/50">Instagram</span>
+              <span class="font-serif text-lg lien-trait">@{site.contact.instagram}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      {/* Formulaire */}
+      <form
+        action={action}
+        method={method}
+        enctype={enctype}
+        class="reveal bg-ivoire text-encre p-8 sm:p-10 shadow-lift"
+        style="--reveal-delay: 150ms"
+      >
+        <p class="surtitre mb-2">Formulaire</p>
+        <h3 class="font-serif text-2xl mb-6">Parlez-nous de votre événement</h3>
+
+        <div class="space-y-5">
+          <label class="block">
+            <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Nom</span>
+            <input
+              type="text"
+              name="nom"
+              required
+              class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
+            />
+          </label>
+
+          <label class="block">
+            <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Email</span>
+            <input
+              type="email"
+              name="email"
+              required
+              class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
+            />
+          </label>
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            <label class="block">
+              <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Type d'événement</span>
+              <select
+                name="type"
+                class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
+              >
+                <option>Concert privé</option>
+                <option>Mariage</option>
+                <option>Médiathèque / salle</option>
+                <option>Autre</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Date souhaitée</span>
+              <input
+                type="date"
+                name="date"
+                class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
+              />
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Message</span>
+            <textarea
+              name="message"
+              rows="4"
+              required
+              class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg resize-none transition-colors"
+            ></textarea>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-encre mt-8 w-full sm:w-auto">
+          Envoyer
+        </button>
+
+        {!usingFormspree && (
+          <p class="mt-4 text-xs text-encre/50 font-sans">
+            (Le formulaire ouvrira votre client mail pour le moment.)
+          </p>
+        )}
+      </form>
+    </div>
+  </div>
+</section>

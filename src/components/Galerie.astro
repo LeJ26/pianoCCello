@@ -1,0 +1,63 @@
+---
+import { concerts } from '../contenu/concerts';
+
+// Trier du plus récent au plus ancien
+const concertsTries = [...concerts].sort((a, b) => b.date.localeCompare(a.date));
+
+// Formatage de la date en français
+const formatDateFr = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+};
+---
+
+<section id="galerie" class="relative py-28 sm:py-36 bg-ivoire">
+  <div class="container-prose">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">En scène</p>
+      <h2 class="titre-section mt-4">Galerie de concerts</h2>
+      <p class="prose-serif mt-6">
+        Quelques instants captés lors de nos concerts en Île-de-France.
+        Cliquez sur une photo pour l'agrandir.
+      </p>
+    </div>
+
+    <div class="mt-16 grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {concertsTries.map((c, i) => {
+        const dateFr = formatDateFr(c.date);
+        const caption = `${c.lieu} · ${dateFr}`;
+        const altPhoto = `Concert du duo — ${c.lieu}, ${dateFr}`;
+        return (
+          <button
+            type="button"
+            data-lightbox
+            data-src={c.photo}
+            data-alt={altPhoto}
+            data-caption={caption}
+            class={`reveal zoom-doux group relative block w-full overflow-hidden shadow-soft hover:shadow-lift transition-shadow duration-500 ease-soft ${i === 0 ? 'col-span-2 row-span-2 aspect-[4/3]' : 'aspect-square'}`}
+            style={`--reveal-delay: ${i * 80}ms`}
+            aria-label={`Agrandir : ${caption}`}
+          >
+            <img
+              src={c.photo}
+              alt={altPhoto}
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-encre/80 via-encre/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-left text-ivoire opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-soft">
+              <p class="font-serif text-base sm:text-lg leading-tight">{c.lieu}</p>
+              <p class="font-sans text-[10px] tracking-widest2 uppercase mt-1 text-ivoire/80">
+                {dateFr}
+              </p>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import { site } from '../contenu/site';
+import ThreeScene from './ThreeScene.astro';
+import LineArtCoquelicot from './LineArtCoquelicot.astro';
+---
+
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-28 pb-20">
+  {/* Coquelicot line art décoratif en arrière-plan */}
+  <div class="absolute top-24 -left-20 sm:left-4 w-72 sm:w-96 opacity-30 pointer-events-none select-none">
+    <LineArtCoquelicot />
+  </div>
+  <div class="absolute bottom-10 -right-16 sm:right-4 w-72 sm:w-96 opacity-25 rotate-12 pointer-events-none select-none">
+    <LineArtCoquelicot />
+  </div>
+
+  <div class="container-prose relative grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    {/* Texte */}
+    <div class="reveal">
+      <p class="surtitre mb-6">{site.lieu}</p>
+      <h1 class="font-script text-6xl sm:text-7xl lg:text-[8rem] leading-[0.95] text-encre">
+        {site.nom}
+      </h1>
+      <div class="mt-6 flex items-center gap-4">
+        <span class="h-px w-12 bg-or"></span>
+        <span class="surtitre">{site.baseline}</span>
+      </div>
+      <p class="mt-8 prose-serif max-w-lg">
+        {site.accroche}
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="#reserver" class="btn-encre">Réserver un concert</a>
+        <a href="#boutique" class="btn-or">Découvrir les partitions</a>
+      </div>
+    </div>
+
+    {/* Scène 3D Three.js */}
+    <div class="reveal" style="--reveal-delay: 200ms">
+      <ThreeScene />
+    </div>
+  </div>
+
+  {/* Indicateur scroll */}
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-encre/40">
+    <span class="text-[10px] font-sans tracking-widest2 uppercase">Découvrir</span>
+    <span class="h-10 w-px bg-current animate-pulse"></span>
+  </div>
+</section>

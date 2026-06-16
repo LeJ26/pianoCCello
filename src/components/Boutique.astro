@@ -1,0 +1,83 @@
+---
+import { partitions } from '../contenu/partitions';
+---
+
+<section id="boutique" class="relative py-28 sm:py-36 bg-ivoire-50 border-y border-encre/5">
+  <div class="container-prose">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">Boutique</p>
+      <h2 class="titre-section mt-4">Partitions originales</h2>
+      <p class="prose-serif mt-6">
+        Achetez et téléchargez instantanément les compositions originales du duo,
+        au format PDF de haute qualité. Pensé pour les musiciens amateurs comme
+        professionnels.
+      </p>
+    </div>
+
+    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {partitions.map((p, i) => {
+        const indisponible = p.acheterUrl === 'LIEN_PAIEMENT_A_REMPLIR';
+        return (
+          <article
+            class="carte reveal flex flex-col"
+            style={`--reveal-delay: ${i * 100}ms`}
+          >
+            {/* Visuel de la partition */}
+            <div class="aspect-[4/5] bg-ivoire-200 relative overflow-hidden zoom-doux">
+              {p.image ? (
+                <img src={p.image} alt={`Partition « ${p.titre} »`} class="w-full h-full object-cover" loading="lazy" />
+              ) : (
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <svg viewBox="0 0 120 160" fill="none" stroke="#1A1A1A" stroke-width="1.4" class="w-24 opacity-30 trait-anim">
+                    {/* Notes sur portée stylisée */}
+                    <line x1="10" y1="30" x2="110" y2="30" />
+                    <line x1="10" y1="50" x2="110" y2="50" />
+                    <line x1="10" y1="70" x2="110" y2="70" />
+                    <line x1="10" y1="90" x2="110" y2="90" />
+                    <line x1="10" y1="110" x2="110" y2="110" />
+                    <path d="M 25 110 C 25 95, 45 90, 45 75 L 45 35" />
+                    <circle cx="22" cy="110" r="6" fill="#1A1A1A" />
+                    <path d="M 70 100 C 70 88, 85 85, 85 70 L 85 30" />
+                    <circle cx="67" cy="100" r="6" fill="#1A1A1A" />
+                  </svg>
+                </div>
+              )}
+              <span class="absolute top-3 left-3 bg-ivoire/90 backdrop-blur text-encre/80 text-[10px] font-sans tracking-widest2 uppercase px-3 py-1">
+                {p.instrument}
+              </span>
+            </div>
+
+            <div class="p-6 flex flex-col gap-3 flex-1">
+              <h3 class="font-serif text-2xl text-encre">{p.titre}</h3>
+              <p class="text-sm text-encre/70 font-sans leading-relaxed flex-1">{p.description}</p>
+
+              <div class="flex items-center justify-between mt-4 pt-4 border-t border-encre/10">
+                <span class="font-serif text-2xl text-encre">{p.prix}</span>
+                <a
+                  href={indisponible ? '#boutique' : p.acheterUrl}
+                  target={indisponible ? undefined : '_blank'}
+                  rel={indisponible ? undefined : 'noopener noreferrer'}
+                  aria-disabled={indisponible}
+                  class={`btn-or text-xs px-5 py-2 ${indisponible ? 'pointer-events-none opacity-40' : ''}`}
+                >
+                  {indisponible ? 'Bientôt' : 'Acheter le PDF'}
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    {/* Texte rassurant */}
+    <p class="text-center mt-12 text-sm text-encre/60 font-sans reveal">
+      <span class="inline-flex items-center gap-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-4 h-4">
+          <path d="M12 22c5-2 9-7 9-13V5l-9-3-9 3v4c0 6 4 11 9 13Z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        Paiement sécurisé · Téléchargement immédiat du PDF après l'achat
+      </span>
+    </p>
+  </div>
+</section>

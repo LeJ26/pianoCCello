@@ -1,0 +1,22 @@
+---
+import { site } from '../contenu/site';
+---
+
+<header class="absolute top-0 left-0 right-0 z-30">
+  <div class="container-prose flex items-center justify-between py-6 sm:py-8">
+    <a href="#hero" class="group" aria-label={`${site.nom} — accueil`}>
+      <span class="font-script text-2xl sm:text-3xl text-encre leading-none transition-colors group-hover:text-or">
+        {site.nom}
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-10 text-sm font-sans tracking-widest2 uppercase">
+      <a href="#qui" class="lien-trait text-encre/80 hover:text-encre">Le duo</a>
+      <a href="#boutique" class="lien-trait text-encre/80 hover:text-encre">Partitions</a>
+      <a href="#galerie" class="lien-trait text-encre/80 hover:text-encre">Galerie</a>
+      <a href="#reserver" class="lien-trait text-encre/80 hover:text-encre">Nous engager</a>
+    </nav>
+
+    <a href="#reserver" class="hidden md:inline-flex btn-or text-xs px-5 py-2">Réserver</a>
+  </div>
+</header>

@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ════════════════════════════════════════════════════════════════════════
+   BASE — typographie, couleurs, texture papier
+   ════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    --c-ivoire: #FAF7F0;
+    --c-encre: #1A1A1A;
+    --c-or: #B89B5E;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ivoire text-encre font-sans;
+    background-image:
+      radial-gradient(at 20% 10%, rgba(184, 155, 94, 0.04), transparent 50%),
+      radial-gradient(at 80% 90%, rgba(184, 155, 94, 0.05), transparent 55%),
+      /* texture grain papier subtile */
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-attachment: fixed;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif text-encre;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  ::selection {
+    background: var(--c-or);
+    color: var(--c-ivoire);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--c-or);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   COMPOSANTS UTILITAIRES
+   ════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-12;
+  }
+
+  /* Bouton or « premium » avec léger lift au hover */
+  .btn-or {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3
+           font-sans text-sm tracking-widest2 uppercase
+           border border-or text-or
+           transition-all duration-300 ease-soft
+           hover:bg-or hover:text-ivoire hover:-translate-y-0.5 hover:shadow-soft
+           active:translate-y-0 active:shadow-none
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-or disabled:hover:translate-y-0 disabled:hover:shadow-none;
+  }
+
+  .btn-encre {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3
+           font-sans text-sm tracking-widest2 uppercase
+           bg-encre text-ivoire
+           transition-all duration-300 ease-soft
+           hover:bg-or hover:-translate-y-0.5 hover:shadow-lift
+           active:translate-y-0 active:shadow-none;
+  }
+
+  /* Lien souligné au trait qui se trace au hover */
+  .lien-trait {
+    @apply relative inline-block transition-colors duration-300;
+  }
+  .lien-trait::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform-origin: right center;
+    transform: scaleX(0);
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lien-trait:hover::after,
+  .lien-trait:focus-visible::after {
+    transform-origin: left center;
+    transform: scaleX(1);
+  }
+
+  /* Carte « papier » avec ombre douce multi-couches */
+  .carte {
+    @apply bg-ivoire-50 border border-encre/5 shadow-soft
+           transition-all duration-500 ease-soft;
+  }
+  .carte:hover {
+    @apply shadow-lift -translate-y-1;
+  }
+
+  /* Titre de section ornementé */
+  .titre-section {
+    @apply font-serif text-4xl sm:text-5xl lg:text-6xl text-encre;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+
+  .surtitre {
+    @apply font-sans text-xs tracking-widest2 uppercase text-or;
+  }
+
+  /* Texte serif lisible pour les paragraphes longs */
+  .prose-serif {
+    @apply font-serif text-encre/80 text-lg;
+    line-height: 1.7;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   ANIMATIONS AU SCROLL
+   ════════════════════════════════════════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tracé de trait SVG (line art qui se dessine) */
+.trait-anim path,
+.trait-anim line,
+.trait-anim polyline,
+.trait-anim circle {
+  stroke-dasharray: var(--len, 1000);
+  stroke-dashoffset: var(--len, 1000);
+  transition: stroke-dashoffset 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.trait-anim.is-visible path,
+.trait-anim.is-visible line,
+.trait-anim.is-visible polyline,
+.trait-anim.is-visible circle {
+  stroke-dashoffset: 0;
+}
+
+/* Image qui zoome doucement au hover */
+.zoom-doux {
+  overflow: hidden;
+}
+.zoom-doux img {
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.zoom-doux:hover img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .trait-anim path,
+  .trait-anim line,
+  .trait-anim polyline,
+  .trait-anim circle { stroke-dashoffset: 0; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   LIGHTBOX GALERIE
+   ════════════════════════════════════════════════════════════════════════ */
+
+.lightbox {
+  @apply fixed inset-0 z-50 hidden items-center justify-center
+         bg-encre/85 backdrop-blur-sm p-4;
+}
+.lightbox.is-open {
+  @apply flex;
+}
+.lightbox img {
+  max-height: 88vh;
+  max-width: min(1200px, 95vw);
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}

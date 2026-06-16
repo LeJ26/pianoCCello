@@ -1,0 +1,55 @@
+---
+import { artistes, site } from '../contenu/site';
+import SeparateurNotes from './SeparateurNotes.astro';
+---
+
+<section id="qui" class="relative py-28 sm:py-36 bg-ivoire">
+  <div class="container-prose">
+    <div class="text-center reveal">
+      <p class="surtitre">Le duo</p>
+      <h2 class="titre-section mt-4">Qui sommes-nous</h2>
+      <p class="prose-serif max-w-2xl mx-auto mt-6 italic">
+        « Clémentine compose, Claire interprète. Le violoncelle a ce son chaud
+        qui couvre toutes les tessitures de la voix humaine — il sait à la fois
+        accompagner et chanter. »
+      </p>
+    </div>
+
+    <SeparateurNotes />
+
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-center">
+      {/* Portrait du duo */}
+      <div class="reveal zoom-doux">
+        <div class="relative">
+          <img
+            src="/images/duo-portrait-2025-10-11.jpg"
+            alt={`Portrait de ${artistes[0].prenom} ${artistes[0].nom} et ${artistes[1].prenom} ${artistes[1].nom}`}
+            class="w-full h-auto object-cover shadow-softer"
+            loading="lazy"
+          />
+          <div class="absolute -bottom-4 -left-4 h-24 w-24 border border-or/60 pointer-events-none"></div>
+          <div class="absolute -top-4 -right-4 h-24 w-24 border border-or/60 pointer-events-none"></div>
+        </div>
+      </div>
+
+      {/* Bios */}
+      <div class="space-y-12">
+        {artistes.map((a, i) => (
+          <article class="reveal" style={`--reveal-delay: ${i * 150}ms`}>
+            <div class="flex items-baseline gap-4">
+              <h3 class="font-script text-4xl text-encre">{a.prenom}</h3>
+              <span class="text-or font-sans text-xs tracking-widest2 uppercase">{a.role}</span>
+            </div>
+            <p class="font-serif text-encre/60 text-sm tracking-wider uppercase mt-1">{a.nom}</p>
+            <p class="prose-serif mt-4">{a.bio}</p>
+            {a.citation && (
+              <blockquote class="mt-5 pl-4 border-l-2 border-or/60 italic font-serif text-encre/70">
+                « {a.citation} »
+              </blockquote>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

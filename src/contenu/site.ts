@@ -1,0 +1,75 @@
+// ════════════════════════════════════════════════════════════════════════════
+//  CONTENU DU SITE — INFORMATIONS GÉNÉRALES
+//  Modifie ce fichier pour changer le nom, la baseline, les coordonnées,
+//  les bios des artistes, ou le texte du formulaire de réservation.
+//  Pas besoin de toucher au code des composants.
+// ════════════════════════════════════════════════════════════════════════════
+
+export const site = {
+  // Nom affiché partout (header, titre, footer, balises SEO)
+  nom: 'Duo pianCCello',
+
+  // Petite phrase sous le nom (hero, footer)
+  baseline: 'Compositions originales',
+
+  // Phrase d'accroche du hero, juste sous la baseline
+  accroche:
+    'Un duo violoncelle & piano qui invite au voyage — créations originales et grand répertoire de musique de chambre.',
+
+  // Ville / région — utilisée pour le SEO local
+  lieu: 'Rambouillet, Île-de-France',
+
+  // ═════ COORDONNÉES DE CONTACT ═════
+  contact: {
+    email: 'duopianccello@gmail.com',
+    telephone: '06 09 96 77 22',
+    // Variante pour le lien `tel:` (sans espaces, format international si possible)
+    telephoneLien: '+33609967722',
+    instagram: 'duopianccello',
+    instagramUrl: 'https://www.instagram.com/duopianccello/',
+  },
+
+  // ═════ LIEN DU FORMULAIRE DE RÉSERVATION ═════
+  // 👉 REMPLACE par ton lien Formspree (formspree.io) quand tu en auras créé un.
+  // Tant que c'est `FORMULAIRE_A_REMPLIR`, le formulaire ouvrira simplement
+  // le client mail de l'utilisateur (mailto:).
+  formulaireUrl: 'FORMULAIRE_A_REMPLIR',
+
+  // ═════ SEO ═════
+  seo: {
+    titre: 'Duo pianCCello — Violoncelle & piano · Compositions originales',
+    description:
+      'Duo de musique de chambre basé à Rambouillet (Île-de-France). Compositions originales pour violoncelle et piano, et grand répertoire (Schumann, Schubert, Beethoven, Mozart). Concerts et réservations.',
+    motsCles: [
+      'duo musique chambre',
+      'violoncelle piano',
+      'concert classique Rambouillet',
+      'compositions originales',
+      'Île-de-France',
+    ],
+    imageOpenGraph: '/images/duo-portrait-2025-10-11.jpg',
+  },
+};
+
+// ═════ BIOS DES ARTISTES (section « Qui sommes-nous ») ═════
+export const artistes = [
+  {
+    prenom: 'Claire',
+    nom: 'Bournonville',
+    role: 'Violoncelle',
+    photo: '/images/duo-portrait-2025-10-11.jpg',
+    bio:
+      'Masseur-kinésithérapeute et violoncelliste, Claire a étudié au conservatoire de Nice et à l’Académie de musique de Monaco. Elle joue également en trios, quatuors et orchestre au conservatoire de Rambouillet.',
+    citation:
+      'Le violoncelle a ce son chaud qui couvre toutes les tessitures de la voix humaine — il sait à la fois accompagner et chanter.',
+  },
+  {
+    prenom: 'Clémentine',
+    nom: 'Roques',
+    role: 'Piano & composition',
+    photo: '/images/duo-portrait-2025-10-11.jpg',
+    bio:
+      'Professeure des écoles et pianiste-compositrice, Clémentine a fondé une première école de musique dans l’Hérault. Elle compose pour piano seul, trio, puis pour piano et violoncelle.',
+    citation: 'La musique ne laisse personne indifférent.',
+  },
+];

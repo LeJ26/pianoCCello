@@ -1,0 +1,148 @@
+---
+// ════════════════════════════════════════════════════════════════════════
+//  SCÈNE 3D — HERO
+//
+//  Une forme filaire « line art » qui tourne doucement et réagit
+//  légèrement à la souris. Volontairement sobre pour rester
+//  dans l'esprit noir & blanc / dessin au trait du duo.
+//
+//  👉 REMPLACER LE MODÈLE 3D ICI :
+//  Si tu veux mettre ton propre modèle 3D (.glb), suis ces étapes :
+//    1. Mets ton fichier dans `public/models/mon-modele.glb`
+//    2. Décommente l'import GLTFLoader dans le script ci-dessous
+//    3. Remplace la création de la géométrie filaire par le chargement GLB
+//
+//  Le composant est isolé pour qu'on puisse le remplacer facilement
+//  sans toucher au reste du site.
+// ════════════════════════════════════════════════════════════════════════
+---
+
+<div class="relative aspect-square w-full max-w-md mx-auto">
+  {/* Cercle décoratif derrière la scène 3D */}
+  <div
+    class="absolute inset-4 rounded-full border border-or/40 pointer-events-none"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="absolute inset-12 rounded-full border border-encre/10 pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <canvas
+    id="three-canvas"
+    class="relative w-full h-full"
+    aria-label="Animation 3D décorative — silhouette filaire du duo violoncelle et piano"
+  ></canvas>
+</div>
+
+<script>
+  import * as THREE from 'three';
+
+  const canvas = document.getElementById('three-canvas') as HTMLCanvasElement | null;
+  if (canvas) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const scene = new THREE.Scene();
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      renderer.setSize(rect.width, rect.height, false);
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+    };
+
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 5);
+
+    // ══════════════════════════════════════════════════════════════
+    // Géométrie filaire — un tore noué qui évoque la fluidité musicale.
+    // À remplacer par un GLTF (voir commentaires en tête du composant).
+    // ══════════════════════════════════════════════════════════════
+    const geometry = new THREE.TorusKnotGeometry(1.1, 0.32, 220, 24, 2, 3);
+    const edges = new THREE.EdgesGeometry(geometry, 25);
+    const material = new THREE.LineBasicMaterial({
+      color: 0x1a1a1a,
+      transparent: true,
+      opacity: 0.75,
+    });
+    const lines = new THREE.LineSegments(edges, material);
+    scene.add(lines);
+
+    // Petites particules dorées en arrière-plan (poussière musicale)
+    const particleGeo = new THREE.BufferGeometry();
+    const N = 80;
+    const positions = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 6;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 6;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4 - 1;
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: 0xb89b5e,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.6,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
+
+    // Réaction à la souris (légère parallaxe)
+    const target = { x: 0, y: 0 };
+    const current = { x: 0, y: 0 };
+    window.addEventListener('pointermove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+      target.x = x;
+      target.y = y;
+    });
+
+    let raf = 0;
+    let running = true;
+    const clock = new THREE.Clock();
+    const tick = () => {
+      const t = clock.getElapsedTime();
+      current.x += (target.x - current.x) * 0.05;
+      current.y += (target.y - current.y) * 0.05;
+      if (reducedMotion) {
+        lines.rotation.set(0.2, 0.2, 0);
+      } else {
+        lines.rotation.x = current.y * 0.4 + Math.sin(t * 0.3) * 0.05;
+        lines.rotation.y = current.x * 0.6 + t * 0.18;
+        particles.rotation.y = t * 0.04;
+      }
+      renderer.render(scene, camera);
+      if (running) raf = requestAnimationFrame(tick);
+    };
+
+    // Ne tourner que quand visible — économie batterie + perf
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          running = e.isIntersecting;
+          if (running && !raf) {
+            clock.start();
+            raf = requestAnimationFrame(tick);
+          } else if (!running && raf) {
+            cancelAnimationFrame(raf);
+            raf = 0;
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(canvas);
+
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+    raf = requestAnimationFrame(tick);
+  }
+</script>
