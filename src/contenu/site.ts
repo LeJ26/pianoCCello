@@ -12,9 +12,9 @@ export const site = {
   // Petite phrase sous le nom (hero, footer)
   baseline: 'Compositions originales',
 
-  // Phrase d'accroche du hero, juste sous la baseline
+  // Phrase d'accroche du hero, juste au-dessus des boutons
   accroche:
-    'Un duo violoncelle & piano qui invite au voyage — créations originales et grand répertoire de musique de chambre.',
+    'Évadez-vous le temps d’un doux voyage plein d’émotions et de rêves.',
 
   // Ville / région — utilisée pour le SEO local
   lieu: 'Rambouillet, Île-de-France',
