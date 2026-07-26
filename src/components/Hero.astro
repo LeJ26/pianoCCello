@@ -1,23 +1,15 @@
 ---
 import { site } from '../contenu/site';
-import ThreeScene from './ThreeScene.astro';
-import LineArtCoquelicot from './LineArtCoquelicot.astro';
 ---
 
-<section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-28 pb-20">
-  {/* Coquelicot line art décoratif discret (le logo porte déjà le motif) */}
-  <div class="absolute bottom-10 -right-16 sm:right-4 w-72 sm:w-96 opacity-15 rotate-12 pointer-events-none select-none">
-    <LineArtCoquelicot />
-  </div>
+<section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden pt-28 pb-24">
+  <div class="container-prose relative">
+    <div class="reveal flex flex-col items-center">
+      <p class="surtitre mb-8">{site.lieu}</p>
 
-  <div class="container-prose relative grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-    {/* Texte + logo */}
-    <div class="reveal">
-      <p class="surtitre mb-6">{site.lieu}</p>
-
-      {/* Logo officiel du duo (calligraphie Daydream). Le fichier est dans
-          public/images/. Pour le remplacer, garde le même nom de fichier. */}
-      <h1 class="max-w-xl">
+      {/* Logo officiel du duo (calligraphie Daydream) — occupe toute la bannière.
+          Le fichier est dans public/images/. Pour le remplacer, garde le même nom. */}
+      <h1 class="w-full max-w-4xl">
         <img
           src="/images/logo-duo-pianccello.png"
           alt={`${site.nom} — ${site.baseline}`}
@@ -28,18 +20,13 @@ import LineArtCoquelicot from './LineArtCoquelicot.astro';
         />
       </h1>
 
-      <p class="mt-6 prose-serif max-w-lg">
+      <p class="mt-8 prose-serif max-w-2xl">
         {site.accroche}
       </p>
-      <div class="mt-10 flex flex-wrap gap-4">
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
         <a href="#reserver" class="btn-encre">Réserver un concert</a>
         <a href="#boutique" class="btn-or">Découvrir les partitions</a>
       </div>
-    </div>
-
-    {/* Scène 3D Three.js */}
-    <div class="reveal" style="--reveal-delay: 200ms">
-      <ThreeScene />
     </div>
   </div>
 

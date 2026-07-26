@@ -1,6 +1,4 @@
 ---
-import { site } from '../contenu/site';
-
 // Liens de navigation — ajoute/retire une entrée ici si besoin.
 const liens = [
   { href: '#qui', label: 'Le duo' },
@@ -17,12 +15,6 @@ const liens = [
   class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-soft"
 >
   <div class="container-prose flex items-center justify-between py-5 sm:py-6">
-    <a href="#hero" class="group relative z-50" aria-label={`${site.nom} — accueil`}>
-      <span class="font-script text-2xl sm:text-3xl text-encre leading-none transition-colors group-hover:text-or">
-        {site.nom}
-      </span>
-    </a>
-
     {/* Navigation desktop */}
     <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-5 lg:gap-7 text-xs lg:text-sm font-sans tracking-widest2 uppercase">
       {liens.map((l) => (
