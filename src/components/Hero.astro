@@ -5,26 +5,30 @@ import LineArtCoquelicot from './LineArtCoquelicot.astro';
 ---
 
 <section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-28 pb-20">
-  {/* Coquelicot line art décoratif en arrière-plan */}
-  <div class="absolute top-24 -left-20 sm:left-4 w-72 sm:w-96 opacity-30 pointer-events-none select-none">
-    <LineArtCoquelicot />
-  </div>
-  <div class="absolute bottom-10 -right-16 sm:right-4 w-72 sm:w-96 opacity-25 rotate-12 pointer-events-none select-none">
+  {/* Coquelicot line art décoratif discret (le logo porte déjà le motif) */}
+  <div class="absolute bottom-10 -right-16 sm:right-4 w-72 sm:w-96 opacity-15 rotate-12 pointer-events-none select-none">
     <LineArtCoquelicot />
   </div>
 
   <div class="container-prose relative grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-    {/* Texte */}
+    {/* Texte + logo */}
     <div class="reveal">
       <p class="surtitre mb-6">{site.lieu}</p>
-      <h1 class="font-script text-6xl sm:text-7xl lg:text-[8rem] leading-[0.95] text-encre">
-        {site.nom}
+
+      {/* Logo officiel du duo (calligraphie Daydream). Le fichier est dans
+          public/images/. Pour le remplacer, garde le même nom de fichier. */}
+      <h1 class="max-w-xl">
+        <img
+          src="/images/logo-duo-pianccello.png"
+          alt={`${site.nom} — ${site.baseline}`}
+          width="1050"
+          height="600"
+          fetchpriority="high"
+          class="w-full h-auto"
+        />
       </h1>
-      <div class="mt-6 flex items-center gap-4">
-        <span class="h-px w-12 bg-or"></span>
-        <span class="surtitre">{site.baseline}</span>
-      </div>
-      <p class="mt-8 prose-serif max-w-lg">
+
+      <p class="mt-6 prose-serif max-w-lg">
         {site.accroche}
       </p>
       <div class="mt-10 flex flex-wrap gap-4">
