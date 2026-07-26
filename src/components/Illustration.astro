@@ -1,18 +1,33 @@
 ---
-// Illustration line art du duo (violoncelliste + piano d'un seul trait),
-// placée juste sous la bannière. Le fichier est dans public/images/.
-// Pour la remplacer, garde le même nom : duo-illustration.png
+// Section sous la bannière : texte d'invitation à gauche (rectangle vertical),
+// illustration du duo à droite. Le fichier image est dans public/images/.
+// Pour modifier le texte, change simplement la phrase ci-dessous.
+const invitation =
+  'Claire et Clémentine vous invitent pour une promenade musicale à la fois tendre, joyeuse et nostalgique, ponctuée de citations philosophiques et inspirantes.';
 ---
 
 <section class="relative py-20 sm:py-28 bg-ivoire overflow-hidden">
-  <div class="container-prose flex flex-col items-center">
-    <img
-      src="/images/duo-illustration.png"
-      alt="Claire & Clémentine — illustration au trait : violoncelle et piano reliés d'une seule ligne"
-      width="1050"
-      height="600"
-      loading="lazy"
-      class="reveal w-full max-w-5xl h-auto"
-    />
+  <div class="container-prose grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    {/* Texte — rectangle vertical, à gauche */}
+    <div class="reveal">
+      <div class="border border-or/30 px-8 py-12 sm:px-12 sm:py-16 flex flex-col justify-center min-h-[320px] shadow-soft bg-ivoire-50/50">
+        <span class="h-px w-12 bg-or mb-8"></span>
+        <p class="font-serif italic text-2xl sm:text-[1.7rem] leading-relaxed text-encre/85">
+          {invitation}
+        </p>
+      </div>
+    </div>
+
+    {/* Illustration — décalée à droite */}
+    <div class="reveal" style="--reveal-delay: 150ms">
+      <img
+        src="/images/duo-illustration.png"
+        alt="Claire & Clémentine — illustration au trait : violoncelle et piano reliés d'une seule ligne"
+        width="1050"
+        height="600"
+        loading="lazy"
+        class="w-full h-auto"
+      />
+    </div>
   </div>
 </section>
