@@ -1,33 +1,49 @@
 ---
-// Section sous la bannière : texte d'invitation à gauche (rectangle vertical),
-// illustration du duo à droite. Le fichier image est dans public/images/.
+// Section sous la bannière : grande illustration du duo, centrée, avec le
+// texte d'invitation dans un encadré justifié posé SOUS les notes de musique.
+// Le texte se met à l'échelle de l'image (unités "cqw") pour rester bien
+// positionné quelle que soit la taille de l'écran.
 // Pour modifier le texte, change simplement la phrase ci-dessous.
 const invitation =
   'Claire et Clémentine vous invitent pour une promenade musicale à la fois tendre, joyeuse et nostalgique, ponctuée de citations philosophiques et inspirantes.';
 ---
 
 <section class="relative py-20 sm:py-28 bg-ivoire overflow-hidden">
-  <div class="container-prose grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-    {/* Texte — rectangle vertical, à gauche */}
-    <div class="reveal">
-      <div class="border border-or/30 px-8 py-12 sm:px-12 sm:py-16 flex flex-col justify-center min-h-[320px] shadow-soft bg-ivoire-50/50">
-        <span class="h-px w-12 bg-or mb-8"></span>
-        <p class="font-serif italic text-2xl sm:text-[1.7rem] leading-relaxed text-encre/85">
-          {invitation}
-        </p>
-      </div>
-    </div>
-
-    {/* Illustration — décalée à droite */}
-    <div class="reveal" style="--reveal-delay: 150ms">
+  <div class="container-prose flex justify-center">
+    {/* Conteneur de l'image (très grand, centré). container-type permet au
+        texte de se mettre à l'échelle de l'image. */}
+    <div class="illu-wrap relative w-full max-w-5xl">
       <img
         src="/images/duo-illustration.png"
         alt="Claire & Clémentine — illustration au trait : violoncelle et piano reliés d'une seule ligne"
         width="1050"
         height="600"
         loading="lazy"
-        class="w-full h-auto"
+        class="reveal w-full h-auto"
       />
+
+      {/* Encadré du texte, posé sous les notes de musique */}
+      <div class="illu-texte absolute" style="left:27%; width:46%; top:61%;">
+        <div class="illu-cadre border border-or/40 bg-ivoire/75 shadow-soft">
+          <p class="illu-p font-serif italic text-justify text-encre/85">
+            {invitation}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .illu-wrap {
+    container-type: inline-size;
+  }
+  .illu-cadre {
+    padding: clamp(0.5rem, 2cqw, 1.5rem) clamp(0.75rem, 2.6cqw, 1.9rem);
+  }
+  .illu-p {
+    font-size: 1rem; /* repli si les unités cqw ne sont pas supportées */
+    font-size: clamp(0.68rem, 2.55cqw, 1.5rem);
+    line-height: 1.42;
+  }
+</style>
