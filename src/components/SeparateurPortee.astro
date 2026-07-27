@@ -1,0 +1,86 @@
+---
+// Séparateur animé : une portée (5 lignes) qui se dessine au défilement,
+// avec des notes qui DÉFILENT en continu le long de la portée.
+// - Les lignes et la clé se tracent à l'arrivée (classe trait-anim).
+// - Les notes glissent de droite à gauche en boucle.
+// Pour changer la couleur des notes dorées : fill="#B89B5E".
+
+// Un motif de notes sur une période de 360 px : [x relatif, y de la tête, couleur]
+const motif = [
+  [20, 100, '#1A1A1A'],
+  [90, 80, '#B89B5E'],
+  [160, 106, '#1A1A1A'],
+  [235, 74, '#1A1A1A'],
+  [300, 94, '#B89B5E'],
+];
+// On répète le motif 3 fois pour un défilement sans couture.
+const copies = [0, 360, 720];
+const BASE = 90; // départ des notes, juste après la clé
+---
+
+<div class="flex justify-center py-6 sm:py-10">
+  <svg
+    viewBox="0 0 760 150"
+    fill="none"
+    stroke="#1A1A1A"
+    stroke-width="1.3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="sep-portee trait-anim w-full max-w-2xl h-auto opacity-80"
+    aria-hidden="true"
+  >
+    <defs>
+      <clipPath id="portee-clip"><rect x="70" y="14" width="650" height="126" /></clipPath>
+    </defs>
+
+    {/* Les 5 lignes de la portée */}
+    <line x1="28" y1="64" x2="732" y2="64" />
+    <line x1="28" y1="76" x2="732" y2="76" />
+    <line x1="28" y1="88" x2="732" y2="88" />
+    <line x1="28" y1="100" x2="732" y2="100" />
+    <line x1="28" y1="112" x2="732" y2="112" />
+
+    {/* Clé de sol stylisée */}
+    <path d="M52 110 C 38 104, 40 86, 56 84 C 70 82, 70 98, 56 100 C 47 101, 46 92, 53 90" />
+    <path d="M53 90 C 58 64, 49 54, 50 44 C 64 50, 64 78, 56 100 C 52 110, 50 118, 47 120" />
+
+    {/* Notes qui défilent (rognées à la zone de la portée) */}
+    <g clip-path="url(#portee-clip)">
+      <g class="defile">
+        {copies.map((off) =>
+          motif.map(([rx, ry, c]) => {
+            const x = BASE + off + Number(rx);
+            const y = Number(ry);
+            return (
+              <g>
+                <rect x={x + 4} y={y - 40} width="1.6" height="40" fill={c} stroke="none" />
+                <ellipse cx={x} cy={y} rx="6.5" ry="5" transform={`rotate(-22 ${x} ${y})`} fill={c} stroke="none" />
+              </g>
+            );
+          })
+        )}
+      </g>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .sep-portee .defile {
+    opacity: 0;
+    animation: portee-defile 13s linear infinite;
+  }
+  .sep-portee.is-visible .defile {
+    opacity: 1;
+    transition: opacity 0.9s ease;
+  }
+
+  /* Défilement d'une période (360 px) → boucle sans couture */
+  @keyframes portee-defile {
+    from { transform: translateX(0); }
+    to { transform: translateX(-360px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sep-portee .defile { animation: none; opacity: 1; }
+  }
+</style>
