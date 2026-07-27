@@ -1,9 +1,25 @@
 ---
 import { site } from '../contenu/site';
+
+// Images du fond défilant (dans public/images/). Pour les remplacer,
+// garde les mêmes noms ou modifie la liste ci-dessous.
+const fond = ['/images/hero-cello.jpg', '/images/hero-piano.jpg'];
+// On répète la séquence 4 fois pour un défilement sans couture.
+const bande = [...fond, ...fond, ...fond, ...fond];
 ---
 
 <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden pt-28 pb-24">
-  <div class="container-prose relative">
+  {/* Fond : photos qui défilent à l'infini + voile ivoire pour la lisibilité */}
+  <div class="hero-bg absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div class="hero-track flex h-full">
+      {bande.map((src) => (
+        <img src={src} alt="" class="hero-img h-full w-auto max-w-none object-cover shrink-0" />
+      ))}
+    </div>
+    <div class="hero-veil absolute inset-0"></div>
+  </div>
+
+  <div class="container-prose relative z-10">
     <div class="reveal flex flex-col items-center">
       <p class="surtitre mb-8">{site.lieu}</p>
 
@@ -30,3 +46,31 @@ import { site } from '../contenu/site';
     </div>
   </div>
 </section>
+
+<style>
+  .hero-track {
+    width: max-content;
+    animation: hero-scroll 60s linear infinite;
+    will-change: transform;
+  }
+  .hero-img {
+    filter: blur(2px);
+  }
+  /* On défile d'un quart (la bande contient 4 copies) → boucle sans couture */
+  @keyframes hero-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-25%); }
+  }
+  /* Voile ivoire : opaque au centre (lisibilité), plus léger sur les bords */
+  .hero-veil {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(250, 247, 240, 0.88) 0%,
+      rgba(250, 247, 240, 0.7) 55%,
+      rgba(250, 247, 240, 0.55) 100%
+    );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-track { animation: none; }
+  }
+</style>
