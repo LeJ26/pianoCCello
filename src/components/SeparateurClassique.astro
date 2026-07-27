@@ -1,7 +1,16 @@
 ---
-// Séparateur classique : juste le petit losange doré, centré. Sobre.
+// Séparateur fin et élégant : un trait très fin, doré, qui s'estompe aux
+// extrémités, avec un petit losange au centre. Aucune bande grise.
 ---
 
-<div class="flex justify-center py-12 sm:py-16" aria-hidden="true">
-  <span class="block w-2 h-2 rotate-45 border border-or/80"></span>
+<div class="flex items-center justify-center gap-4 py-12 sm:py-16" aria-hidden="true">
+  <span
+    class="h-px w-28 sm:w-44"
+    style="background: linear-gradient(to right, transparent, rgba(184,155,94,0.55));"
+  ></span>
+  <span class="block w-1.5 h-1.5 rotate-45 bg-or/70"></span>
+  <span
+    class="h-px w-28 sm:w-44"
+    style="background: linear-gradient(to left, transparent, rgba(184,155,94,0.55));"
+  ></span>
 </div>
