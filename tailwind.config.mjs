@@ -26,6 +26,9 @@ export default {
       fontFamily: {
         // Calligraphie pour le nom et titres décoratifs
         script: ['"Pinyon Script"', 'cursive'],
+        // Police Daydream (voir @font-face dans global.css). En attendant le
+        // fichier de police, elle utilise "Pinyon Script" en repli.
+        daydream: ['"Daydream"', '"Pinyon Script"', 'cursive'],
         // Serif élégant pour titres et corps de texte
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         // Sans-serif fine pour l'interface

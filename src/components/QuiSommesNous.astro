@@ -28,17 +28,11 @@ import { artistes } from '../contenu/site';
       <div class="space-y-12">
         {artistes.map((a, i) => (
           <article class="reveal" style={`--reveal-delay: ${i * 150}ms`}>
-            <div class="flex items-baseline gap-4">
-              <h3 class="font-script text-4xl text-encre">{a.prenom}</h3>
-              <span class="text-or font-sans text-xs tracking-widest2 uppercase">{a.role}</span>
-            </div>
-            <p class="font-serif text-encre/60 text-sm tracking-wider uppercase mt-1">{a.nom}</p>
+            <h3 class="font-daydream text-4xl sm:text-5xl text-encre leading-tight">
+              {a.prenom} {a.nom}
+            </h3>
+            <span class="block text-or font-sans text-xs tracking-widest2 uppercase mt-2">{a.role}</span>
             <p class="prose-serif mt-4">{a.bio}</p>
-            {a.citation && (
-              <blockquote class="mt-5 pl-4 border-l-2 border-or/60 italic font-serif text-encre/70">
-                « {a.citation} »
-              </blockquote>
-            )}
           </article>
         ))}
       </div>
