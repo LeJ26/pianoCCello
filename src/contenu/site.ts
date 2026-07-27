@@ -101,9 +101,7 @@ export const artistes = [
     role: 'Violoncelle',
     photo: '/images/duo-portrait-2025-10-11.jpg',
     bio:
-      'Masseur-kinésithérapeute et violoncelliste, Claire a étudié au conservatoire de Nice et à l’Académie de musique de Monaco. Elle joue également en trios, quatuors et orchestre au conservatoire de Rambouillet.',
-    citation:
-      'Le violoncelle a ce son chaud qui couvre toutes les tessitures de la voix humaine — il sait à la fois accompagner et chanter.',
+      'Claire effectue ses études musicales au Conservatoire de Nice et à l’Académie de Musique de Monaco et n’aura de cesse de jouer de son instrument en parallèle de sa vie professionnelle dans le domaine médical (masseur-kinésithérapeute). Elle est très active au sein de diverses formations du Conservatoire de Rambouillet : trio, quatuor, orchestre…',
   },
   {
     prenom: 'Clémentine',
@@ -111,7 +109,6 @@ export const artistes = [
     role: 'Piano & composition',
     photo: '/images/duo-portrait-2025-10-11.jpg',
     bio:
-      'Professeure des écoles et pianiste-compositrice, Clémentine a fondé une première école de musique dans l’Hérault. Elle compose pour piano seul, trio, puis pour piano et violoncelle.',
-    citation: 'La musique ne laisse personne indifférent.',
+      'Après des études musicales au Conservatoire et à l’Université de Montpellier, elle crée sa propre école de musique dans l’Hérault puis devient professeur des écoles à l’occasion de son déménagement dans les Yvelines. Elle intègre alors la classe de musique de chambre du Conservatoire de Rambouillet. Passionnée par la composition, elle écrit des pièces pour piano seul d’abord puis pour trio et enfin pour piano et violoncelle.',
   },
 ];
