@@ -9,33 +9,33 @@ import { artistes } from '../contenu/site';
       <h2 class="titre-section mt-4">Qui sommes-nous&nbsp;?</h2>
     </div>
 
-    <div class="mt-16 grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-center">
-      {/* Portrait du duo */}
-      <div class="reveal zoom-doux">
-        <div class="relative">
-          <img
-            src="/images/duo-portrait-2025-10-11.jpg"
-            alt={`Portrait de ${artistes[0].prenom} ${artistes[0].nom} et ${artistes[1].prenom} ${artistes[1].nom}`}
-            class="w-full h-auto object-cover shadow-softer"
-            loading="lazy"
-          />
-          <div class="absolute -bottom-4 -left-4 h-24 w-24 border border-or/60 pointer-events-none"></div>
-          <div class="absolute -top-4 -right-4 h-24 w-24 border border-or/60 pointer-events-none"></div>
-        </div>
-      </div>
+    {/* Une ligne par artiste : photo à gauche, texte à droite */}
+    <div class="mt-16 sm:mt-20 space-y-16 sm:space-y-24">
+      {artistes.map((a) => (
+        <article class="reveal grid md:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
+          {/* Photo à gauche */}
+          <div class="zoom-doux relative">
+            <img
+              src={a.photo}
+              alt={`Portrait de ${a.prenom} ${a.nom}`}
+              width="800"
+              height="1000"
+              loading="lazy"
+              class="w-full aspect-[4/5] object-cover object-top shadow-softer"
+            />
+            <div class="absolute -bottom-4 -left-4 h-20 w-20 border border-or/60 pointer-events-none"></div>
+          </div>
 
-      {/* Bios */}
-      <div class="space-y-12">
-        {artistes.map((a, i) => (
-          <article class="reveal" style={`--reveal-delay: ${i * 150}ms`}>
+          {/* Texte à droite */}
+          <div>
             <h3 class="font-daydream text-4xl sm:text-5xl text-encre leading-tight">
               {a.prenom} {a.nom}
             </h3>
             <span class="block text-or font-sans text-xs tracking-widest2 uppercase mt-2">{a.role}</span>
-            <p class="prose-serif mt-4">{a.bio}</p>
-          </article>
-        ))}
-      </div>
+            <p class="prose-serif mt-5">{a.bio}</p>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>

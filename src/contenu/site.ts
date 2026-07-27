@@ -99,7 +99,7 @@ export const artistes = [
     prenom: 'Claire',
     nom: 'Bournonville',
     role: 'Violoncelle',
-    photo: '/images/duo-portrait-2025-10-11.jpg',
+    photo: '/images/claire.jpg',
     bio:
       'Claire effectue ses études musicales au Conservatoire de Nice et à l’Académie de Musique de Monaco et n’aura de cesse de jouer de son instrument en parallèle de sa vie professionnelle dans le domaine médical (masseur-kinésithérapeute). Elle est très active au sein de diverses formations du Conservatoire de Rambouillet : trio, quatuor, orchestre…',
   },
@@ -107,7 +107,7 @@ export const artistes = [
     prenom: 'Clémentine',
     nom: 'Roques',
     role: 'Piano & composition',
-    photo: '/images/duo-portrait-2025-10-11.jpg',
+    photo: '/images/clementine.jpg',
     bio:
       'Après des études musicales au Conservatoire et à l’Université de Montpellier, elle crée sa propre école de musique dans l’Hérault puis devient professeur des écoles à l’occasion de son déménagement dans les Yvelines. Elle intègre alors la classe de musique de chambre du Conservatoire de Rambouillet. Passionnée par la composition, elle écrit des pièces pour piano seul d’abord puis pour trio et enfin pour piano et violoncelle.',
   },
