@@ -1,0 +1,9 @@
+{
+  // Configuration pour déployer le site statique sur Cloudflare (Workers).
+  // "assets.directory" indique le dossier produit par "npm run build".
+  "name": "pianoccello",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
