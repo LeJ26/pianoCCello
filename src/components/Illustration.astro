@@ -1,16 +1,16 @@
 ---
-// Section « Claire & Clémentine » : à gauche le dessin au trait (le logo) +
-// le texte d'invitation ; à droite, une photo du duo.
-// Pour modifier le texte, change la phrase ci-dessous. Pour changer la photo,
-// remplace public/images/duo-photo.jpg (garde le même nom).
+// Section « Claire & Clémentine » : à gauche le dessin au trait avec le texte
+// d'invitation posé SOUS les notes (overlay) ; à droite, la photo du duo.
+// Les deux colonnes sont de taille égale (50/50) et en grand.
+// Le texte se met à l'échelle du dessin (unités cqw) pour rester bien placé.
 const invitation =
   'Claire et Clémentine vous invitent pour une promenade musicale à la fois tendre, joyeuse et nostalgique, ponctuée de citations philosophiques et inspirantes.';
 ---
 
 <section class="relative py-16 sm:py-24 bg-ivoire overflow-hidden">
-  <div class="container-prose grid lg:grid-cols-[1.45fr_0.55fr] gap-8 lg:gap-12 items-center">
-    {/* Gauche : le dessin + le texte d'invitation */}
-    <div class="reveal">
+  <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    {/* Gauche : le dessin + le texte d'invitation sous les notes */}
+    <div class="illu-wrap reveal relative w-full">
       <img
         src="/images/duo-illustration.png"
         alt="Claire & Clémentine — illustration au trait : violoncelle et piano reliés d'une seule ligne"
@@ -19,10 +19,12 @@ const invitation =
         loading="lazy"
         class="w-full h-auto"
       />
-      <div class="mt-4 border border-or/40 bg-ivoire-50/50 px-6 py-6 sm:px-8 sm:py-7 shadow-soft">
-        <p class="font-serif italic text-justify text-encre/85 text-lg sm:text-xl leading-relaxed">
-          {invitation}
-        </p>
+      <div class="illu-texte absolute" style="left:27%; width:46%; top:67%;">
+        <div class="illu-cadre border border-or/40 bg-ivoire/75 shadow-soft">
+          <p class="illu-p font-serif italic text-justify text-encre/85">
+            {invitation}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -39,3 +41,17 @@ const invitation =
     </div>
   </div>
 </section>
+
+<style>
+  .illu-wrap {
+    container-type: inline-size;
+  }
+  .illu-cadre {
+    padding: clamp(0.4rem, 1.8cqw, 1.2rem) clamp(0.7rem, 2.5cqw, 1.8rem);
+  }
+  .illu-p {
+    font-size: 1rem; /* repli si cqw non supporté */
+    font-size: clamp(0.68rem, 2.5cqw, 1.45rem);
+    line-height: 1.4;
+  }
+</style>
