@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Police Daydream (fichier dans public/fonts/). La version gratuite ne
+   contient pas les accents : le "é" etc. tombent sur la police de secours
+   définie dans la pile `font-daydream` (voir tailwind.config.mjs). */
+@font-face {
+  font-family: 'Daydream';
+  src: url('/fonts/daydream.ttf') format('truetype');
+  font-display: swap;
+}
+
 /* ════════════════════════════════════════════════════════════════════════
    BASE — typographie, couleurs, texture papier
    ════════════════════════════════════════════════════════════════════════ */

@@ -26,9 +26,9 @@ export default {
       fontFamily: {
         // Calligraphie pour le nom et titres décoratifs
         script: ['"Pinyon Script"', 'cursive'],
-        // Police Daydream (voir @font-face dans global.css). En attendant le
-        // fichier de police, elle utilise "Pinyon Script" en repli.
-        daydream: ['"Daydream"', '"Pinyon Script"', 'cursive'],
+        // Police Daydream (voir @font-face dans global.css). Daydream n'ayant
+        // pas les accents, "Dancing Script" prend le relais pour le "é" etc.
+        daydream: ['"Daydream"', '"Dancing Script"', 'cursive'],
         // Serif élégant pour titres et corps de texte
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         // Sans-serif fine pour l'interface
