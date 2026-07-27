@@ -1,49 +1,41 @@
 ---
-// Section sous la bannière : grande illustration du duo, centrée, avec le
-// texte d'invitation dans un encadré justifié posé SOUS les notes de musique.
-// Le texte se met à l'échelle de l'image (unités "cqw") pour rester bien
-// positionné quelle que soit la taille de l'écran.
-// Pour modifier le texte, change simplement la phrase ci-dessous.
+// Section « Claire & Clémentine » : à gauche le dessin au trait (le logo) +
+// le texte d'invitation ; à droite, une photo du duo.
+// Pour modifier le texte, change la phrase ci-dessous. Pour changer la photo,
+// remplace public/images/duo-photo.jpg (garde le même nom).
 const invitation =
   'Claire et Clémentine vous invitent pour une promenade musicale à la fois tendre, joyeuse et nostalgique, ponctuée de citations philosophiques et inspirantes.';
 ---
 
-<section class="relative py-20 sm:py-28 bg-ivoire overflow-hidden">
-  <div class="container-prose flex justify-center">
-    {/* Conteneur de l'image (très grand, centré). container-type permet au
-        texte de se mettre à l'échelle de l'image. */}
-    <div class="illu-wrap relative w-full max-w-5xl">
+<section class="relative py-16 sm:py-24 bg-ivoire overflow-hidden">
+  <div class="container-prose grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+    {/* Gauche : le dessin + le texte d'invitation */}
+    <div class="reveal">
       <img
         src="/images/duo-illustration.png"
         alt="Claire & Clémentine — illustration au trait : violoncelle et piano reliés d'une seule ligne"
         width="1050"
         height="600"
         loading="lazy"
-        class="reveal w-full h-auto"
+        class="w-full h-auto"
       />
-
-      {/* Encadré du texte, posé sous les notes de musique */}
-      <div class="illu-texte absolute" style="left:27%; width:46%; top:67%;">
-        <div class="illu-cadre border border-or/40 bg-ivoire/75 shadow-soft">
-          <p class="illu-p font-serif italic text-justify text-encre/85">
-            {invitation}
-          </p>
-        </div>
+      <div class="mt-4 border border-or/40 bg-ivoire-50/50 px-6 py-6 sm:px-8 sm:py-7 shadow-soft">
+        <p class="font-serif italic text-justify text-encre/85 text-lg sm:text-xl leading-relaxed">
+          {invitation}
+        </p>
       </div>
+    </div>
+
+    {/* Droite : la photo du duo */}
+    <div class="reveal zoom-doux" style="--reveal-delay: 150ms">
+      <img
+        src="/images/duo-photo.jpg"
+        alt="Claire et Clémentine, le Duo pianCCello"
+        width="1100"
+        height="825"
+        loading="lazy"
+        class="w-full h-auto object-cover shadow-softer"
+      />
     </div>
   </div>
 </section>
-
-<style>
-  .illu-wrap {
-    container-type: inline-size;
-  }
-  .illu-cadre {
-    padding: clamp(0.4rem, 1.7cqw, 1.1rem) clamp(0.7rem, 2.4cqw, 1.7rem);
-  }
-  .illu-p {
-    font-size: 1rem; /* repli si les unités cqw ne sont pas supportées */
-    font-size: clamp(0.66rem, 2.4cqw, 1.35rem);
-    line-height: 1.4;
-  }
-</style>
