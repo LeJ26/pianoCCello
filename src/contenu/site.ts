@@ -82,7 +82,7 @@ export const repertoire = {
   creations: {
     titre: 'Créations originales',
     texte:
-      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle — un univers poétique, intime et chaleureux.',
+      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.',
     pieces: ['Voyage', 'Rêverie', 'Suite poétique', '… et bien d’autres en concert'],
   },
   grandRepertoire: {
