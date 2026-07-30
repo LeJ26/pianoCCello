@@ -27,6 +27,8 @@ export const site = {
     telephoneLien: '+33609967722',
     instagram: 'duopianccello',
     instagramUrl: 'https://www.instagram.com/duopianccello/',
+    youtubeUrl: 'https://youtube.com/@duopianccello',
+    facebookUrl: 'https://www.facebook.com/profile.php?id=61582509853319',
   },
 
   // ═════ LIEN DU FORMULAIRE DE RÉSERVATION ═════
@@ -89,6 +91,8 @@ export const repertoire = {
   recueils: [
     {
       titre: 'L’année de Clémentine',
+      // Image de fond de la carte (facultatif). Fichier dans public/images/.
+      fond: '/images/recueil-annee.jpg',
       pieces: [
         'Septembre', 'Octobre', 'Novembre', 'Décembre', 'Janvier', 'Février',
         'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', '13e mois',
@@ -140,7 +144,33 @@ export const repertoire = {
       ],
     },
   ],
+  // Vidéos YouTube incrustées dans la section « Notre répertoire ».
+  // `id` = l'identifiant de la vidéo (dans l'URL après youtu.be/ ou watch?v=).
+  videos: [
+    { titre: 'Résilience', id: 'pic4IY6xBaM' },
+    { titre: 'Forest', id: 'boXu2-5aNEE' },
+  ],
 };
+
+// ═════ AVIS (section « Ils en parlent ») ═════
+// Ajoute ou retire simplement un avis dans la liste.
+export const avis: string[] = [
+  'Beaucoup de plaisir à vous entendre',
+  'Super moment pour les patients et les soignants',
+  'Un moment magique',
+  'Merci pour ce merveilleux moment qui nous a permis de rêver',
+  'Grand plaisir musical, soleil dans l’automne de sa vie',
+  'Votre musique m’a enveloppée dans un doux instant de sérénité',
+  'Merci pour ce partage et votre talent',
+  'Bravo pour ce superbe concert',
+  'Que d’inspiration ! Les citations aident à bien entrer dans la musique et ajoutent une touche de poésie.',
+  'Un moment musical apaisant et inspiré, qui fait du bien',
+  'Un duo merveilleux',
+  'C’était magnifique ! Vous nous avez fait rêver',
+  'Beau moment de poésie',
+  'J’ai eu l’impression d’être au Paradis !',
+  'Un grand merci pour le concert proposé à toutes les classes de l’école. Une très belle façon de donner goût à la musique et d’inviter les élèves à ressentir des émotions à travers différentes mélodies.',
+];
 
 // ═════ BIOS DES ARTISTES (section « Qui sommes-nous ») ═════
 export const artistes = [

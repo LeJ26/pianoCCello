@@ -1,0 +1,27 @@
+---
+import { avis } from '../contenu/site';
+---
+
+<section id="avis" class="relative py-28 sm:py-36 bg-ivoire overflow-hidden">
+  <div class="container-prose">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">Ils en parlent</p>
+      <h2 class="titre-section mt-4">Vos avis</h2>
+    </div>
+
+    {/* Mur de témoignages (colonnes façon « masonry ») */}
+    <div class="mt-14 sm:mt-16 columns-1 sm:columns-2 lg:columns-3 gap-6">
+      {avis.map((a, i) => (
+        <figure
+          class="carte reveal break-inside-avoid mb-6 p-6 sm:p-7"
+          style={`--reveal-delay: ${(i % 6) * 80}ms`}
+        >
+          <span class="block font-serif text-5xl leading-none text-or/50 select-none" aria-hidden="true">“</span>
+          <blockquote class="mt-1 font-serif italic text-encre/85 text-lg leading-relaxed">
+            {a}
+          </blockquote>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
