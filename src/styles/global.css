@@ -72,7 +72,7 @@
 
   /* Bouton or « premium » avec léger lift au hover */
   .btn-or {
-    @apply inline-flex items-center justify-center gap-2 px-7 py-3
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3 min-h-11
            font-sans text-sm tracking-widest2 uppercase
            border border-or text-or
            transition-all duration-300 ease-soft
@@ -82,7 +82,7 @@
   }
 
   .btn-encre {
-    @apply inline-flex items-center justify-center gap-2 px-7 py-3
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3 min-h-11
            font-sans text-sm tracking-widest2 uppercase
            bg-encre text-ivoire
            transition-all duration-300 ease-soft

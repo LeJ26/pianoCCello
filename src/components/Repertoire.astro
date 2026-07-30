@@ -27,7 +27,10 @@ const { creations } = repertoire;
     {/* Créations originales */}
     <div class="mt-12 sm:mt-14 reveal max-w-2xl mx-auto text-center">
       <h3 class="font-serif text-3xl text-encre flex items-center justify-center gap-3">
-        <span class="text-or text-2xl">♪</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-or shrink-0" aria-hidden="true">
+          <circle cx="8" cy="18" r="4" />
+          <path d="M12 18V2l7 4" />
+        </svg>
         {creations.titre}
       </h3>
       <p class="prose-serif mt-4 text-base whitespace-pre-line">{creations.texte}</p>
