@@ -16,12 +16,12 @@ import LineArtPartition from './LineArtPartition.astro';
       </p>
     </div>
 
-    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="mt-16 flex flex-wrap justify-center gap-8">
       {partitions.map((p, i) => {
         const indisponible = p.acheterUrl === 'LIEN_PAIEMENT_A_REMPLIR';
         return (
           <article
-            class="carte reveal flex flex-col"
+            class="carte reveal flex flex-col w-full sm:w-[340px]"
             style={`--reveal-delay: ${i * 100}ms`}
           >
             {/* Visuel de la partition */}
@@ -42,16 +42,16 @@ import LineArtPartition from './LineArtPartition.astro';
               <h3 class="font-serif text-2xl text-encre">{p.titre}</h3>
               <p class="text-sm text-encre/70 font-sans leading-relaxed flex-1">{p.description}</p>
 
-              <div class="flex items-center justify-between mt-4 pt-4 border-t border-encre/10">
-                <span class="font-serif text-2xl text-encre">{p.prix}</span>
+              <div class="flex items-center justify-between gap-3 mt-4 pt-4 border-t border-encre/10">
+                {p.prix && <span class="font-serif text-2xl text-encre">{p.prix}</span>}
                 <a
                   href={indisponible ? '#boutique' : p.acheterUrl}
                   target={indisponible ? undefined : '_blank'}
                   rel={indisponible ? undefined : 'noopener noreferrer'}
                   aria-disabled={indisponible}
-                  class={`btn-or text-xs px-5 py-2 ${indisponible ? 'pointer-events-none opacity-40' : ''}`}
+                  class={`btn-or text-xs px-5 py-2 ${p.prix ? '' : 'w-full justify-center'} ${indisponible ? 'pointer-events-none opacity-40' : ''}`}
                 >
-                  {indisponible ? 'Bientôt' : 'Acheter le PDF'}
+                  {indisponible ? 'Bientôt' : (p.bouton ?? 'Acheter le PDF')}
                 </a>
               </div>
             </div>
