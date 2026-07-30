@@ -76,21 +76,70 @@ export const legal = {
 };
 
 // ═════ RÉPERTOIRE (section « Notre répertoire ») ═════
-// Deux colonnes : les créations du duo, et le grand répertoire interprété.
-// Ajoute ou retire simplement une ligne dans les listes.
+// Le texte d'introduction + les 6 recueils de compositions.
+// Pour modifier un recueil : change son titre ou sa liste de morceaux.
+// Pour ajouter un morceau : ajoute une ligne dans `pieces`.
 export const repertoire = {
   creations: {
     titre: 'Créations originales',
     texte:
       'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.',
-    pieces: ['Voyage', 'Rêverie', 'Poésie'],
   },
-  grandRepertoire: {
-    titre: 'Grand répertoire',
-    texte:
-      'Le duo revisite aussi les grandes pages de la musique de chambre, choisies pour leur émotion et leur lyrisme.',
-    compositeurs: ['Robert Schumann', 'Franz Schubert', 'Ludwig van Beethoven', 'Wolfgang A. Mozart'],
-  },
+  // Les 6 recueils (chaque recueil = un titre + la liste de ses morceaux)
+  recueils: [
+    {
+      titre: 'L’année de Clémentine',
+      pieces: [
+        'Septembre', 'Octobre', 'Novembre', 'Décembre', 'Janvier', 'Février',
+        'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', '13e mois',
+      ],
+    },
+    {
+      titre: 'Miniatures',
+      pieces: [
+        'Doux souvenirs de l’enfance',
+        'Ronde malicieuse des gens contents',
+        'Au galop à travers plaines et forêts d’Yvelines',
+        'L’impossible choix',
+        'Insouciante valse d’été',
+        'Nostalgie d’un rêve inachevé',
+        'En toute confiance vers l’inconnu',
+        'Une vie bien remplie',
+        'Danse gracieuse d’une maman à plein temps',
+        'À l’abri dans mon jardin sous la pluie',
+        'Prêt pour la grande traversée',
+        'Genèse d’une merveilleuse aventure',
+      ],
+    },
+    {
+      titre: 'Inspirations',
+      pieces: [
+        'Forest', 'Résilience', 'Eveil', 'Time', 'À vélo', 'Valse des pensées',
+        'Ondée', 'Solitude', 'Danse', 'La Promesse', 'Influx', 'Hope',
+      ],
+    },
+    {
+      titre: 'Mirror',
+      pieces: ['Life', 'Earth', 'Sky', 'Waiting for you', 'Tears', 'Home'],
+    },
+    {
+      titre: 'Flowers',
+      pieces: ['Bruyère', 'Le Coquelicot', 'Fleur d’oranger', 'Rose des vents', 'Butterfly', 'Sunflower'],
+    },
+    {
+      titre: 'Noël',
+      pieces: [
+        'Entre le bœuf et l’âne gris',
+        'Vive le vent',
+        'Les anges dans nos campagnes',
+        'Minuit Chrétien',
+        'Étoile des neiges',
+        'Petit Papa Noël',
+        'Douce nuit',
+        'We wish you a Merry Christmas',
+      ],
+    },
+  ],
 };
 
 // ═════ BIOS DES ARTISTES (section « Qui sommes-nous ») ═════

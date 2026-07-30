@@ -1,7 +1,7 @@
 ---
 import { repertoire } from '../contenu/site';
 
-const { creations } = repertoire;
+const { creations, recueils } = repertoire;
 ---
 
 <section id="repertoire" class="relative py-28 sm:py-36 bg-ivoire-50 border-y border-encre/5 overflow-hidden">
@@ -22,26 +22,30 @@ const { creations } = repertoire;
     <div class="text-center reveal max-w-2xl mx-auto">
       <p class="surtitre">Au programme</p>
       <h2 class="titre-section mt-4">Notre répertoire</h2>
+      <p class="prose-serif mt-6 text-base whitespace-pre-line">{creations.texte}</p>
     </div>
 
-    {/* Créations originales */}
-    <div class="mt-12 sm:mt-14 reveal max-w-2xl mx-auto text-center">
-      <h3 class="font-serif text-3xl text-encre flex items-center justify-center gap-3">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-or shrink-0" aria-hidden="true">
-          <circle cx="8" cy="18" r="4" />
-          <path d="M12 18V2l7 4" />
-        </svg>
-        {creations.titre}
-      </h3>
-      <p class="prose-serif mt-4 text-base whitespace-pre-line">{creations.texte}</p>
-      <ul class="mt-6 inline-block text-left space-y-2 font-serif text-lg text-encre/80">
-        {creations.pieces.map((p) => (
-          <li class="flex items-center gap-3">
-            <span class="h-px w-5 bg-or shrink-0"></span>
-            {p}
-          </li>
-        ))}
-      </ul>
+    {/* Les 6 recueils */}
+    <div class="mt-14 sm:mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {recueils.map((r, i) => (
+        <article class="carte reveal p-6 sm:p-7 flex flex-col" style={`--reveal-delay: ${i * 90}ms`}>
+          <h3 class="font-serif text-2xl text-encre flex items-center gap-2.5 pb-3 border-b border-encre/10">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-or shrink-0" aria-hidden="true">
+              <circle cx="8" cy="18" r="4" />
+              <path d="M12 18V2l7 4" />
+            </svg>
+            {r.titre}
+          </h3>
+          <ul class="mt-4 space-y-1.5 font-serif text-encre/75">
+            {r.pieces.map((p) => (
+              <li class="flex items-start gap-2.5 leading-snug">
+                <span class="h-px w-3 bg-or shrink-0 mt-2.5"></span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
     </div>
   </div>
 </section>
