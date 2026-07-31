@@ -20,15 +20,20 @@ import { galerie } from '../contenu/concerts';
       class="galerie-track flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-6 sm:px-10"
       data-track
     >
-      {galerie.map((src, i) => (
-        <div class="galerie-slide snap-start shrink-0 h-[280px] sm:h-[440px]">
+      {galerie.map((g, i) => (
+        <div class="galerie-slide snap-start shrink-0 h-[280px] sm:h-[440px] relative overflow-hidden rounded-sm shadow-soft">
           <img
-            src={src}
-            alt={`Duo pianCCello en concert — photo ${i + 1}`}
-            class="h-full w-auto max-w-none object-cover rounded-sm shadow-soft select-none"
+            src={g.photo}
+            alt={`Duo pianCCello — ${g.legende || 'en concert'}`}
+            class="h-full w-auto max-w-none object-cover select-none"
             loading={i < 2 ? 'eager' : 'lazy'}
             draggable="false"
           />
+          {g.legende && (
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-encre/85 via-encre/40 to-transparent px-3 pt-10 pb-3">
+              <p class="text-ivoire font-serif text-sm sm:text-base text-center leading-tight">{g.legende}</p>
+            </div>
+          )}
         </div>
       ))}
     </div>
