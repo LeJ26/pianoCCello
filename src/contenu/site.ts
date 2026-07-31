@@ -85,7 +85,7 @@ export const repertoire = {
   creations: {
     titre: 'Créations originales',
     texte:
-      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.\nNous vous proposons également quelques arrangements libres autour des chants de Noël.',
+      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.\nLes miniatures existent aussi sous la forme d’un conte musical nommé « À la poursuite de nos rêves », interactif et adapté à un jeune public.\nNous vous proposons également quelques arrangements libres autour des chants de Noël.',
   },
   // Les 6 recueils (chaque recueil = un titre + la liste de ses morceaux)
   recueils: [
