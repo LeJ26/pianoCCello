@@ -79,26 +79,29 @@ const { creations, recueils, videos, audios } = repertoire;
       </div>
     )}
 
-    {/* Extraits audio */}
+    {/* Extraits audio (lecteur sur-mesure : lecture/pause + barre) */}
     {audios && audios.length > 0 && (
       <div class="mt-16 sm:mt-20">
         <p class="surtitre text-center">Extraits audio</p>
         <div class="mt-8 max-w-2xl mx-auto space-y-4">
           {audios.map((a) => (
-            <div class="carte reveal flex items-center gap-4 p-4 sm:p-5">
-              <span class="w-11 h-11 border border-or/60 flex items-center justify-center shrink-0 text-or">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                  <circle cx="8" cy="18" r="4" />
-                  <path d="M12 18V2l7 4" />
-                </svg>
-              </span>
+            <div class="carte reveal flex items-center gap-4 p-4 sm:p-5" data-audio>
+              <button
+                type="button"
+                data-play
+                aria-label={`Écouter ${a.titre}`}
+                class="w-12 h-12 rounded-full border border-or/60 flex items-center justify-center text-or hover:bg-or hover:text-ivoire transition-colors duration-300 shrink-0"
+              >
+                <svg data-icon-play viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ml-0.5"><path d="M8 5v14l11-7z" /></svg>
+                <svg data-icon-pause viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 hidden"><path d="M6 5h3v14H6zM15 5h3v14h-3z" /></svg>
+              </button>
               <div class="flex-1 min-w-0">
                 <p class="font-serif text-lg text-encre">{a.titre}</p>
-                <audio controls preload="none" class="w-full mt-2 h-9">
-                  <source src={a.fichier} type="audio/mpeg" />
-                  Votre navigateur ne peut pas lire l'audio.
-                </audio>
+                <div data-track class="mt-2.5 h-1.5 bg-encre/10 rounded-full cursor-pointer overflow-hidden">
+                  <div data-fill class="h-full bg-or rounded-full" style="width:0%"></div>
+                </div>
               </div>
+              <audio data-el src={a.fichier} preload="none"></audio>
             </div>
           ))}
         </div>
@@ -106,3 +109,40 @@ const { creations, recueils, videos, audios } = repertoire;
     )}
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-audio]').forEach((p) => {
+    const audio = p.querySelector('audio');
+    const btn = p.querySelector('[data-play]');
+    const iconPlay = p.querySelector('[data-icon-play]');
+    const iconPause = p.querySelector('[data-icon-pause]');
+    const track = p.querySelector<HTMLElement>('[data-track]');
+    const fill = p.querySelector<HTMLElement>('[data-fill]');
+    if (!audio || !btn || !track || !fill) return;
+
+    const setPlaying = (on: boolean) => {
+      iconPlay?.classList.toggle('hidden', on);
+      iconPause?.classList.toggle('hidden', !on);
+    };
+
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        document.querySelectorAll('audio').forEach((o) => { if (o !== audio) o.pause(); });
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener('play', () => setPlaying(true));
+    audio.addEventListener('pause', () => setPlaying(false));
+    audio.addEventListener('ended', () => { setPlaying(false); fill.style.width = '0%'; });
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) fill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+    });
+    track.addEventListener('click', (e) => {
+      const rect = track.getBoundingClientRect();
+      const ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+      if (audio.duration) audio.currentTime = ratio * audio.duration;
+    });
+  });
+</script>
