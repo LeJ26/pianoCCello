@@ -36,8 +36,8 @@ export const partitions: Partition[] = [
     description:
       'La collection des compositions originales de Clémentine, en partitions PDF pour piano et violoncelle. Certaines sont arrangées pour piano seul ou pour trio.',
     prix: '',
-    instrument: 'Piano & violoncelle',
-    image: null,
+    instrument: 'Piano',
+    image: '/images/recueil-annee.jpg',
     bouton: 'Voir la collection',
     acheterUrl: 'https://payhip.com/Clemsmusic/collection/l-annee-de-clementine',
   },
