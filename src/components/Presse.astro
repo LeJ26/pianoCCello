@@ -1,55 +1,40 @@
 ---
-// Section Presse : article(s) de presse en image, cliquable pour agrandir.
+// Section Presse : carrousel d'articles. Clic/tap → agrandir (lightbox).
 // Pour ajouter un article : mets l'image dans public/images/ et ajoute un bloc.
 const articles = [
-  {
-    image: '/images/presse-1.jpg',
-    largeur: 1392,
-    hauteur: 2022,
-    source: 'actu.fr / 78actu — Rambouillet, 26 juin 2024',
-  },
-  {
-    image: '/images/presse-2.jpg',
-    largeur: 1400,
-    hauteur: 1893,
-    source: 'Le Petit Rambolitain — sept. / oct. 2023',
-  },
-  {
-    image: '/images/presse-3.jpg',
-    largeur: 1260,
-    hauteur: 1959,
-    source: 'Le Petit Rambolitain — l’interview (1/2)',
-  },
-  {
-    image: '/images/presse-4.jpg',
-    largeur: 1273,
-    hauteur: 1959,
-    source: 'Le Petit Rambolitain — l’interview (2/2)',
-  },
+  { image: '/images/presse-1.jpg', largeur: 1443, hauteur: 1115, source: 'actu.fr / 78actu — Rambouillet, 26 juin 2024' },
+  { image: '/images/presse-2.jpg', largeur: 1400, hauteur: 1893, source: 'Le Petit Rambolitain — sept. / oct. 2023' },
+  { image: '/images/presse-3.jpg', largeur: 1260, hauteur: 1959, source: 'Le Petit Rambolitain — l’interview (1/2)' },
+  { image: '/images/presse-4.jpg', largeur: 1273, hauteur: 1959, source: 'Le Petit Rambolitain — l’interview (2/2)' },
 ];
 ---
 
-<section id="presse" class="relative py-24 sm:py-32 bg-ivoire-50 border-y border-encre/5">
+<section id="presse" class="relative py-24 sm:py-32 bg-ivoire-50 border-y border-encre/5 overflow-hidden">
   <div class="container-prose">
     <div class="text-center reveal max-w-2xl mx-auto">
       <p class="surtitre">Dans les médias</p>
       <h2 class="titre-section mt-4">Presse</h2>
       <p class="prose-serif mt-6 text-base">
-        Ils parlent de nous. Cliquez sur l'article pour l'agrandir.
+        Ils parlent de nous. Cliquez sur un article pour le lire en grand.
       </p>
     </div>
+  </div>
 
-    <div class="mt-12 flex flex-wrap justify-center gap-10">
+  <div class="presse-carrousel relative mt-12 reveal" data-carrousel>
+    <div
+      class="presse-track flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-6 sm:px-12"
+      data-track
+    >
       {articles.map((a) => (
-        <figure class="reveal w-full max-w-2xl">
+        <figure class="presse-slide snap-center shrink-0 flex flex-col">
           <button
             type="button"
             data-lightbox
             data-src={a.image}
             data-alt="Article de presse — Duo pianCCello"
             data-caption={a.source}
-            aria-label="Agrandir l'article de presse"
-            class="block w-full overflow-hidden shadow-softer zoom-doux cursor-zoom-in bg-ivoire border border-encre/10"
+            aria-label="Agrandir l'article"
+            class="block h-[400px] sm:h-[560px] cursor-zoom-in"
           >
             <img
               src={a.image}
@@ -57,14 +42,61 @@ const articles = [
               width={a.largeur}
               height={a.hauteur}
               loading="lazy"
-              class="w-full h-auto"
+              class="h-full w-auto max-w-none object-contain bg-ivoire shadow-soft border border-encre/10"
             />
           </button>
-          <figcaption class="mt-4 text-center text-sm text-encre/60 font-sans italic">
+          <figcaption class="mt-3 text-center text-xs text-encre/60 font-sans italic max-w-[280px] mx-auto">
             {a.source}
           </figcaption>
         </figure>
       ))}
     </div>
+
+    <button type="button" data-prev aria-label="Article précédent" class="presse-fleche left-2 sm:left-4">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5"><path d="m15 18-6-6 6-6" /></svg>
+    </button>
+    <button type="button" data-next aria-label="Article suivant" class="presse-fleche right-2 sm:right-4">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5"><path d="m9 18 6-6-6-6" /></svg>
+    </button>
   </div>
 </section>
+
+<style>
+  .presse-track {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .presse-track::-webkit-scrollbar { display: none; }
+
+  .presse-fleche {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: rgba(250, 247, 240, 0.92);
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(26,26,26,0.06), 0 12px 30px rgba(26,26,26,0.12);
+    backdrop-filter: blur(4px);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .presse-fleche:hover { background: #b89b5e; color: #faf7f0; }
+  .presse-fleche:active { transform: translateY(-50%) scale(0.94); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.presse-carrousel').forEach((car) => {
+    const track = car.querySelector<HTMLElement>('[data-track]');
+    const prev = car.querySelector('[data-prev]');
+    const next = car.querySelector('[data-next]');
+    if (!track) return;
+    const pas = () => Math.max(track.clientWidth * 0.75, 300);
+    next?.addEventListener('click', () => track.scrollBy({ left: pas(), behavior: 'smooth' }));
+    prev?.addEventListener('click', () => track.scrollBy({ left: -pas(), behavior: 'smooth' }));
+  });
+</script>
