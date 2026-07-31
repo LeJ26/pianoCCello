@@ -131,6 +131,7 @@ export const repertoire = {
     },
     {
       titre: 'Flowers',
+      fond: '/images/recueil-flowers.jpg',
       pieces: ['Bruyère', 'Le Coquelicot', 'Fleur d’oranger', 'Rose des vents', 'Butterfly', 'Sunflower'],
     },
     {
