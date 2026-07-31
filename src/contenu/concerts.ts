@@ -3,10 +3,8 @@
 //
 //  Pour AJOUTER une photo :
 //  1. Mets ton image dans le dossier  public/images/galerie/
-//  2. Ajoute son chemin dans la liste ci-dessous (une ligne par photo).
-//
-//  Pour RETIRER une photo : supprime simplement sa ligne.
-//  L'ordre de la liste = l'ordre d'affichage dans le carrousel.
+//  2. Ajoute son chemin dans la liste ci-dessous.
+//  Pour RETIRER une photo : supprime sa ligne. L ordre = ordre d affichage.
 // ════════════════════════════════════════════════════════════════════════════
 
 export const galerie: string[] = [
@@ -35,4 +33,29 @@ export const galerie: string[] = [
   '/images/galerie/23.jpg',
   '/images/galerie/24.jpg',
   '/images/galerie/25.jpg',
+  '/images/galerie/26.jpg',
+  '/images/galerie/27.jpg',
+  '/images/galerie/28.jpg',
+  '/images/galerie/29.jpg',
+  '/images/galerie/30.jpg',
+  '/images/galerie/31.jpg',
+  '/images/galerie/32.jpg',
+  '/images/galerie/33.jpg',
+  '/images/galerie/34.jpg',
+  '/images/galerie/35.jpg',
+  '/images/galerie/36.jpg',
+  '/images/galerie/37.jpg',
+  '/images/galerie/38.jpg',
+  '/images/galerie/39.jpg',
+  '/images/galerie/40.jpg',
+  '/images/galerie/41.jpg',
+  '/images/galerie/42.jpg',
+  '/images/galerie/43.jpg',
+  '/images/galerie/44.jpg',
+  '/images/galerie/45.jpg',
+  '/images/galerie/46.jpg',
+  '/images/galerie/47.jpg',
+  '/images/galerie/48.jpg',
+  '/images/galerie/49.jpg',
+  '/images/galerie/50.jpg',
 ];
