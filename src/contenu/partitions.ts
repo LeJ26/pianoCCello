@@ -41,4 +41,15 @@ export const partitions: Partition[] = [
     bouton: 'Voir la collection',
     acheterUrl: 'https://payhip.com/Clemsmusic/collection/l-annee-de-clementine',
   },
+  {
+    id: 'miniatures',
+    titre: 'Miniatures',
+    description:
+      'Un recueil de pièces courtes et évocatrices, en partitions PDF. Chaque miniature raconte une scène, une émotion, un souvenir.',
+    prix: '',
+    instrument: 'Piano',
+    image: '/images/recueil-miniatures.jpg',
+    bouton: 'Voir la collection',
+    acheterUrl: 'https://payhip.com/Clemsmusic/collection/miniatures',
+  },
 ];
