@@ -1,0 +1,7 @@
+# Le HTML est revalidé à chaque visite → les mises à jour s'affichent tout de suite.
+/*
+  Cache-Control: no-cache
+
+# Les fichiers versionnés (JS/CSS avec hash) peuvent être mis en cache longtemps.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
