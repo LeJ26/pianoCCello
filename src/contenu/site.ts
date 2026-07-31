@@ -155,6 +155,13 @@ export const repertoire = {
     { titre: 'Forest', id: 'pic4IY6xBaM' },
     { titre: 'Résilience', id: 'boXu2-5aNEE' },
   ],
+  // Extraits audio (fichiers dans public/audio/). Pour en ajouter un :
+  // mets le .mp3 dans public/audio/ puis ajoute une ligne ici.
+  audios: [
+    { titre: 'Fleur d’oranger', fichier: '/audio/fleur-oranger.mp3' },
+    { titre: 'Life', fichier: '/audio/life.mp3' },
+    { titre: 'Tears', fichier: '/audio/tears.mp3' },
+  ],
 };
 
 // ═════ AVIS (section « Ils en parlent ») ═════

@@ -1,7 +1,7 @@
 ---
 import { repertoire } from '../contenu/site';
 
-const { creations, recueils, videos } = repertoire;
+const { creations, recueils, videos, audios } = repertoire;
 ---
 
 <section id="repertoire" class="relative py-28 sm:py-36 bg-ivoire-50 border-y border-encre/5 overflow-hidden">
@@ -74,6 +74,32 @@ const { creations, recueils, videos } = repertoire;
               </div>
               <figcaption class="mt-3 text-center font-serif italic text-encre/70">{v.titre}</figcaption>
             </figure>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Extraits audio */}
+    {audios && audios.length > 0 && (
+      <div class="mt-16 sm:mt-20">
+        <p class="surtitre text-center">Extraits audio</p>
+        <div class="mt-8 max-w-2xl mx-auto space-y-4">
+          {audios.map((a) => (
+            <div class="carte reveal flex items-center gap-4 p-4 sm:p-5">
+              <span class="w-11 h-11 border border-or/60 flex items-center justify-center shrink-0 text-or">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                  <circle cx="8" cy="18" r="4" />
+                  <path d="M12 18V2l7 4" />
+                </svg>
+              </span>
+              <div class="flex-1 min-w-0">
+                <p class="font-serif text-lg text-encre">{a.titre}</p>
+                <audio controls preload="none" class="w-full mt-2 h-9">
+                  <source src={a.fichier} type="audio/mpeg" />
+                  Votre navigateur ne peut pas lire l'audio.
+                </audio>
+              </div>
+            </div>
           ))}
         </div>
       </div>
