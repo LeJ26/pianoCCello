@@ -100,6 +100,7 @@ export const repertoire = {
     },
     {
       titre: 'Miniatures',
+      fond: '/images/recueil-miniatures.jpg',
       pieces: [
         'Doux souvenirs de l’enfance',
         'Ronde malicieuse des gens contents',
@@ -117,6 +118,7 @@ export const repertoire = {
     },
     {
       titre: 'Inspirations',
+      fond: '/images/recueil-inspirations.jpg',
       pieces: [
         'Forest', 'Résilience', 'Eveil', 'Time', 'À vélo', 'Valse des pensées',
         'Ondée', 'Solitude', 'Danse', 'La Promesse', 'Influx', 'Hope',
@@ -124,6 +126,7 @@ export const repertoire = {
     },
     {
       titre: 'Mirror',
+      fond: '/images/recueil-mirror.jpg',
       pieces: ['Life', 'Earth', 'Sky', 'Waiting for you', 'Tears', 'Home'],
     },
     {
@@ -132,6 +135,7 @@ export const repertoire = {
     },
     {
       titre: 'Noël',
+      fond: '/images/recueil-noel.jpg',
       pieces: [
         'Entre le bœuf et l’âne gris',
         'Vive le vent',
@@ -147,8 +151,8 @@ export const repertoire = {
   // Vidéos YouTube incrustées dans la section « Notre répertoire ».
   // `id` = l'identifiant de la vidéo (dans l'URL après youtu.be/ ou watch?v=).
   videos: [
-    { titre: 'Résilience', id: 'pic4IY6xBaM' },
-    { titre: 'Forest', id: 'boXu2-5aNEE' },
+    { titre: 'Forest', id: 'pic4IY6xBaM' },
+    { titre: 'Résilience', id: 'boXu2-5aNEE' },
   ],
 };
 
