@@ -1,0 +1,52 @@
+---
+// Section Presse : article(s) de presse en image, cliquable pour agrandir.
+// Pour ajouter un article : mets l'image dans public/images/ et ajoute un bloc.
+const articles = [
+  {
+    image: '/images/presse-1.jpg',
+    largeur: 1392,
+    hauteur: 2022,
+    source: 'actu.fr / 78actu — Rambouillet, 26 juin 2024',
+  },
+];
+---
+
+<section id="presse" class="relative py-24 sm:py-32 bg-ivoire-50 border-y border-encre/5">
+  <div class="container-prose">
+    <div class="text-center reveal max-w-2xl mx-auto">
+      <p class="surtitre">Dans les médias</p>
+      <h2 class="titre-section mt-4">Presse</h2>
+      <p class="prose-serif mt-6 text-base">
+        Ils parlent de nous. Cliquez sur l'article pour l'agrandir.
+      </p>
+    </div>
+
+    <div class="mt-12 flex flex-wrap justify-center gap-10">
+      {articles.map((a) => (
+        <figure class="reveal w-full max-w-2xl">
+          <button
+            type="button"
+            data-lightbox
+            data-src={a.image}
+            data-alt="Article de presse — Duo pianCCello"
+            data-caption={a.source}
+            aria-label="Agrandir l'article de presse"
+            class="block w-full overflow-hidden shadow-softer zoom-doux cursor-zoom-in bg-ivoire border border-encre/10"
+          >
+            <img
+              src={a.image}
+              alt={`Article de presse — Duo pianCCello (${a.source})`}
+              width={a.largeur}
+              height={a.hauteur}
+              loading="lazy"
+              class="w-full h-auto"
+            />
+          </button>
+          <figcaption class="mt-4 text-center text-sm text-encre/60 font-sans italic">
+            {a.source}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
