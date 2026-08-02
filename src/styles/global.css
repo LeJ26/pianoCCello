@@ -30,6 +30,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Lenis anime lui-même le défilement : on rend la main au natif quand il est
+     actif, sinon les deux animations se superposent. */
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
   body {
     @apply bg-ivoire text-encre font-sans;
     background-image:

@@ -120,14 +120,14 @@ const liens = [
     menu?.classList.remove('is-open');
     toggle?.setAttribute('aria-expanded', 'false');
     toggle?.setAttribute('aria-label', 'Ouvrir le menu');
-    document.body.style.overflow = '';
+    window.verrouillerDefilement?.(false);
   };
   const openMenu = () => {
     toggle?.classList.add('is-open');
     menu?.classList.add('is-open');
     toggle?.setAttribute('aria-expanded', 'true');
     toggle?.setAttribute('aria-label', 'Fermer le menu');
-    document.body.style.overflow = 'hidden';
+    window.verrouillerDefilement?.(true);
   };
   toggle?.addEventListener('click', () => {
     if (menu?.classList.contains('is-open')) closeMenu();
