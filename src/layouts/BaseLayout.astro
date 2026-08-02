@@ -101,8 +101,11 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
       </svg>
     </button>
 
-    {/* Script global : révélations au scroll + lightbox + tracé de traits */}
+    {/* Script global : défilement doux + révélations au scroll + lightbox + tracé de traits */}
     <script>
+      // — Défilement doux (Lenis) : expose defilerVers / verrouillerDefilement —
+      import '../scripts/defilement-doux';
+
       // — Révélations au scroll —
       const observer = new IntersectionObserver(
         (entries) => {
@@ -138,19 +141,19 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
           lightboxImg.alt = el.dataset.alt ?? '';
           if (lightboxCaption) lightboxCaption.textContent = el.dataset.caption ?? '';
           lightbox.classList.add('is-open');
-          document.body.style.overflow = 'hidden';
+          window.verrouillerDefilement?.(true);
         });
       });
       lightbox?.addEventListener('click', (e) => {
         if (e.target === lightbox || (e.target as HTMLElement).hasAttribute('data-lightbox-close')) {
           lightbox.classList.remove('is-open');
-          document.body.style.overflow = '';
+          window.verrouillerDefilement?.(false);
         }
       });
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          lightbox?.classList.remove('is-open');
-          document.body.style.overflow = '';
+        if (e.key === 'Escape' && lightbox?.classList.contains('is-open')) {
+          lightbox.classList.remove('is-open');
+          window.verrouillerDefilement?.(false);
         }
       });
 
@@ -170,9 +173,7 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
       };
       onScrollUI();
       window.addEventListener('scroll', onScrollUI, { passive: true });
-      backToTop?.addEventListener('click', () =>
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      );
+      backToTop?.addEventListener('click', () => window.defilerVers?.(0));
     </script>
 
     {/* Lightbox commune — utilisée par la galerie */}
