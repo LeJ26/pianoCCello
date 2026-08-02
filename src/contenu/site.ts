@@ -54,26 +54,33 @@ export const site = {
 };
 
 // ═════ MENTIONS LÉGALES (page /mentions-legales) ═════
-// 👉 Complète les champs marqués « À COMPLÉTER » avant la mise en ligne.
-// Si tu n'es pas une société (simple particulier / association), tu peux
-// laisser le SIRET vide — il sera alors masqué sur la page.
+// Tous les champs facultatifs peuvent rester vides ('') : ils sont alors
+// simplement masqués sur la page, rien ne s'affiche à leur place.
 export const legal = {
-  // Qui édite le site (toi / le duo)
+  // Qui édite le site (le duo)
   editeur: {
     nom: 'Duo pianCCello',
-    statut: 'À COMPLÉTER (ex. association, micro-entreprise, particulier)',
-    adresse: 'À COMPLÉTER (adresse postale, facultatif)',
+    statut: 'association loi 1901',
+    // Nom exact de l'association tel qu'il a été déclaré en préfecture,
+    // s'il diffère du nom d'artiste. Laisse vide si c'est le même.
+    associationNom: '',
+    // Numéro RNA de l'association (format W123456789), sur le récépissé de
+    // déclaration. Facultatif : laisse vide pour ne pas l'afficher.
+    rna: '',
+    // Adresse postale — volontairement vide : avec un email et un téléphone
+    // affichés, publier une adresse privée n'est pas nécessaire.
+    adresse: '',
     siret: '', // laisse vide si non applicable
     email: 'duopianccello@gmail.com',
     telephone: '06 09 96 77 22',
-    // Personne responsable du contenu du site
-    directeurPublication: 'À COMPLÉTER (nom du responsable)',
+    // Personnes responsables du contenu du site
+    directeurPublication: 'Claire Bournonville et Clémentine Roques',
   },
-  // Qui héberge le site (à remplir selon ton choix de mise en ligne)
+  // Qui héberge le site — le site est déployé sur Cloudflare (voir wrangler.jsonc)
   hebergeur: {
-    nom: 'À COMPLÉTER (ex. Netlify, Inc. ou Vercel Inc.)',
-    adresse: 'À COMPLÉTER (adresse de l’hébergeur)',
-    site: 'À COMPLÉTER (ex. https://www.netlify.com)',
+    nom: 'Cloudflare, Inc.',
+    adresse: '101 Townsend St, San Francisco, CA 94107, États-Unis',
+    site: 'https://www.cloudflare.com',
   },
 };
 

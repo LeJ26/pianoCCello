@@ -62,7 +62,11 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
       genre: 'Musique de chambre',
       url: canonical,
       image: ogImage,
-      sameAs: [site.contact.instagramUrl],
+      sameAs: [
+        site.contact.instagramUrl,
+        site.contact.facebookUrl,
+        site.contact.youtubeUrl,
+      ].filter(Boolean),
       member: [
         { '@type': 'Person', name: 'Claire Bournonville' },
         { '@type': 'Person', name: 'Clémentine Roques' },
@@ -131,6 +135,19 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
       const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = lightbox?.querySelector<HTMLElement>('[data-lightbox-close]');
+      // Élément qui avait le focus avant l'ouverture : on le lui rend à la fermeture,
+      // pour qu'une personne naviguant au clavier retrouve sa place dans la galerie.
+      let dernierFocus: HTMLElement | null = null;
+
+      const fermerLightbox = () => {
+        if (!lightbox?.classList.contains('is-open')) return;
+        lightbox.classList.remove('is-open');
+        document.body.style.overflow = '';
+        dernierFocus?.focus();
+        dernierFocus = null;
+      };
+
       document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach((el) => {
         el.addEventListener('click', () => {
           if (!lightbox || !lightboxImg) return;
@@ -139,18 +156,22 @@ const ogImage = new URL(site.seo.imageOpenGraph, Astro.site ?? 'https://duopianc
           if (lightboxCaption) lightboxCaption.textContent = el.dataset.caption ?? '';
           lightbox.classList.add('is-open');
           document.body.style.overflow = 'hidden';
+          dernierFocus = el;
+          lightboxClose?.focus();
         });
       });
       lightbox?.addEventListener('click', (e) => {
         if (e.target === lightbox || (e.target as HTMLElement).hasAttribute('data-lightbox-close')) {
-          lightbox.classList.remove('is-open');
-          document.body.style.overflow = '';
+          fermerLightbox();
         }
       });
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          lightbox?.classList.remove('is-open');
-          document.body.style.overflow = '';
+        if (e.key === 'Escape') fermerLightbox();
+        // Tant que la photo est ouverte, le focus reste sur le bouton « fermer » :
+        // impossible de tabuler « derrière » l'image agrandie.
+        if (e.key === 'Tab' && lightbox?.classList.contains('is-open')) {
+          e.preventDefault();
+          lightboxClose?.focus();
         }
       });
 

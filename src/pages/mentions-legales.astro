@@ -35,6 +35,8 @@ const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'lon
           <h2 class="font-serif text-2xl text-encre mb-3">Éditeur du site</h2>
           <div class="prose-serif text-base space-y-1">
             <p>{editeur.nom}{editeur.statut && ` — ${editeur.statut}`}</p>
+            {editeur.associationNom && <p>Association : {editeur.associationNom}</p>}
+            {editeur.rna && <p>N° RNA : {editeur.rna}</p>}
             {editeur.adresse && <p>{editeur.adresse}</p>}
             {editeur.siret && <p>SIRET : {editeur.siret}</p>}
             <p>
@@ -51,7 +53,13 @@ const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'lon
           <div class="prose-serif text-base space-y-1">
             <p>{hebergeur.nom}</p>
             {hebergeur.adresse && <p>{hebergeur.adresse}</p>}
-            {hebergeur.site && <p>{hebergeur.site}</p>}
+            {hebergeur.site && (
+              <p>
+                <a href={hebergeur.site} target="_blank" rel="noopener noreferrer" class="lien-trait text-or">
+                  {hebergeur.site.replace(/^https?:\/\//, '')}
+                </a>
+              </p>
+            )}
           </div>
         </section>
 
@@ -97,8 +105,8 @@ const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'lon
         <section>
           <h2 class="font-serif text-2xl text-encre mb-3">Achat de partitions</h2>
           <p class="prose-serif text-base">
-            Les partitions sont vendues et livrées via une plateforme de paiement
-            externe sécurisée. Le paiement et l'envoi du fichier PDF sont gérés par
+            Les partitions sont vendues et livrées via la plateforme externe
+            sécurisée Payhip. Le paiement et l'envoi du fichier PDF sont gérés par
             cette plateforme, qui dispose de ses propres conditions de vente.
           </p>
         </section>

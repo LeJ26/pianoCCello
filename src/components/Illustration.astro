@@ -19,7 +19,7 @@ const invitation =
         loading="lazy"
         class="w-full h-auto"
       />
-      <div class="illu-texte absolute" style="left:27%; width:46%; top:67%;">
+      <div class="illu-texte">
         <div class="illu-cadre border border-or/40 bg-ivoire/75 shadow-soft">
           <p class="illu-p font-serif italic text-justify text-encre/85">
             {invitation}
@@ -53,5 +53,26 @@ const invitation =
     font-size: 1rem; /* repli si cqw non supporté */
     font-size: clamp(0.68rem, 2.5cqw, 1.45rem);
     line-height: 1.4;
+  }
+
+  /* Par défaut (mobile / tablette) le texte est posé SOUS le dessin, dans le
+     flux normal : le dessin y est trop petit pour accueillir le cartouche
+     sans le faire déborder sur la photo qui suit. */
+  .illu-texte {
+    margin-top: 1.25rem;
+  }
+
+  /* À partir du grand écran seulement, le cartouche revient en surimpression,
+     posé sous les notes. Il est ancré par le BAS (et non par le haut) : sa
+     hauteur dépend de la longueur du texte, donc l'ancrer en haut le faisait
+     déborder hors du dessin. */
+  @media (min-width: 1280px) {
+    .illu-texte {
+      position: absolute;
+      left: 27%;
+      width: 46%;
+      bottom: 4%;
+      margin-top: 0;
+    }
   }
 </style>
