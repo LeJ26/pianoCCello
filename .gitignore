@@ -20,3 +20,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Python (scripts de skills)
+__pycache__/
+*.py[cod]
