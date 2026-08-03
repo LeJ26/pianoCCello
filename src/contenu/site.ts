@@ -75,7 +75,7 @@ export const legal = {
     // SIRET de l'association (obtenu via le guichet des formalités des entreprises)
     siret: '',
     // Adresse du siège social — obligatoire en vente à distance
-    adresse: '',
+    adresse: '33 rue d’Angiviller, 78120 Rambouillet',
     email: 'duopianccello@gmail.com',
     telephone: '06 09 96 77 22',
     // Responsable du contenu du site
