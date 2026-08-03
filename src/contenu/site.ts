@@ -69,11 +69,12 @@ export const legal = {
     // Personne responsable du contenu du site
     directeurPublication: 'À COMPLÉTER (nom du responsable)',
   },
-  // Qui héberge le site (à remplir selon ton choix de mise en ligne)
+  // Qui héberge le site — le site tourne sur Cloudflare Workers (voir
+  // wrangler.jsonc). À vérifier si tu changes un jour d'hébergeur.
   hebergeur: {
-    nom: 'À COMPLÉTER (ex. Netlify, Inc. ou Vercel Inc.)',
-    adresse: 'À COMPLÉTER (adresse de l’hébergeur)',
-    site: 'À COMPLÉTER (ex. https://www.netlify.com)',
+    nom: 'Cloudflare, Inc.',
+    adresse: '101 Townsend Street, San Francisco, CA 94107, États-Unis',
+    site: 'https://www.cloudflare.com',
   },
 };
 

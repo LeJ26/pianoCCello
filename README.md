@@ -142,26 +142,40 @@ Pour arrêter le serveur : `Ctrl + C` dans le terminal.
 
 ---
 
-## 🌍 Mettre le site en ligne (gratuit)
+## 🌍 Mettre le site en ligne
 
-Le plus simple : **Netlify** ou **Vercel**. Aucune connaissance technique requise.
+Le site est hébergé sur **Cloudflare Workers**. La configuration est déjà
+faite, dans le fichier `wrangler.jsonc` à la racine :
 
-### Avec Netlify (recommandé, 5 minutes)
+```jsonc
+{
+  "name": "pianoccello",        // nom du projet côté Cloudflare
+  "assets": { "directory": "./dist" }  // dossier produit par "npm run build"
+}
+```
 
-1. Crée un compte gratuit sur [netlify.com](https://netlify.com) (tu peux te connecter avec ton compte GitHub).
-2. Clique sur **« Add new site »** → **« Import an existing project »**.
-3. Choisis ce dépôt GitHub.
-4. Netlify détecte automatiquement Astro. Laisse les réglages par défaut :
-   - **Build command** : `npm run build`
-   - **Publish directory** : `dist`
-5. Clique sur **« Deploy »**. En 1-2 minutes ton site est en ligne, avec une URL gratuite (`duopianccello.netlify.app`).
-6. Tu peux ensuite brancher ton propre nom de domaine (par ex. `duopianccello.fr`) dans les réglages.
+Cloudflare est branché au dépôt GitHub : **chaque modification poussée sur
+GitHub redéclenche le build et met le site à jour automatiquement**. Tu n'as
+donc rien à faire de particulier pour publier — il suffit de pousser.
 
-À partir de là, **chaque modification que tu pousses sur GitHub redéploie le site automatiquement**.
+Pour suivre un déploiement (ou consulter les journaux en cas d'erreur), va
+dans le tableau de bord Cloudflare, rubrique **Workers & Pages → pianoccello
+→ Builds**.
 
-### Avec Vercel (alternative, aussi simple)
+### Déployer à la main (rarement utile)
 
-Pareil sur [vercel.com](https://vercel.com) — import du repo GitHub, détection auto d'Astro, déploiement en un clic.
+Si tu veux publier sans passer par GitHub :
+
+```bash
+npm run build              # génère le dossier dist/
+npx wrangler deploy        # envoie dist/ sur Cloudflare
+```
+
+### Nom de domaine
+
+Pour brancher ton propre domaine (par ex. `duopianccello.fr`), ça se passe
+dans Cloudflare, rubrique **Workers & Pages → pianoccello → Settings →
+Domains & Routes**.
 
 ---
 
@@ -170,8 +184,7 @@ Pareil sur [vercel.com](https://vercel.com) — import du repo GitHub, détectio
 - [ ] Créer un compte **Gumroad** (ou Payhip) et y mettre tes partitions ; coller les liens dans `src/contenu/partitions.ts`.
 - [ ] (Optionnel mais recommandé) Créer un compte **Formspree** et coller l'URL du formulaire dans `src/contenu/site.ts`.
 - [ ] Remplacer / ajouter tes photos de concerts dans `public/images/` et compléter `src/contenu/concerts.ts`.
-- [ ] Mettre le site en ligne via Netlify ou Vercel.
-- [ ] (Plus tard) Acheter un nom de domaine (par ex. `duopianccello.fr`, ~12 €/an).
+- [ ] (Plus tard) Acheter un nom de domaine (par ex. `duopianccello.fr`, ~12 €/an) et le brancher dans Cloudflare.
 
 ---
 
