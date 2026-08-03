@@ -1,6 +1,6 @@
 ---
 import { galerie } from '../contenu/concerts';
-import GalerieMasonry from './GalerieMasonry.tsx';
+import GalerieCarrousel from './GalerieCarrousel.tsx';
 ---
 
 <section id="galerie" class="relative py-28 sm:py-36 bg-ivoire overflow-hidden">
@@ -12,15 +12,12 @@ import GalerieMasonry from './GalerieMasonry.tsx';
         Passionnées par la musique et la scène, nous nous produisons environ une
         cinquantaine de fois par an depuis fin 2023.
       </p>
-      <p class="mt-4 text-xs font-sans tracking-widest2 uppercase text-encre/40">
-        Cliquez sur une photo pour l'agrandir
-      </p>
     </div>
 
     {/* Island React chargé seulement quand la galerie approche de l'écran :
-        ni React ni Framer Motion ne pèsent sur le premier affichage. */}
-    <div class="mt-14 reveal">
-      <GalerieMasonry photos={galerie} client:visible />
+        React ne pèse pas sur le premier affichage. */}
+    <div class="mt-16 reveal">
+      <GalerieCarrousel photos={galerie} client:visible />
     </div>
   </div>
 </section>

@@ -156,6 +156,17 @@
   pointer-events: none;
 }
 
+/* Effet Ken Burns du carrousel de galerie : l'image dérive et zoome très
+   lentement pendant l'affichage de la diapositive. */
+@keyframes ken-burns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to   { transform: scale(1.07) translate3d(-1.2%, -1.2%, 0); }
+}
+.ken-burns {
+  animation: ken-burns 9s ease-out forwards;
+  will-change: transform;
+}
+
 /* Image qui zoome doucement au hover */
 .zoom-doux {
   overflow: hidden;
