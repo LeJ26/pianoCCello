@@ -27,6 +27,7 @@
   <canvas
     id="three-canvas"
     class="relative w-full h-full"
+    role="img"
     aria-label="Animation 3D décorative — piano à queue et violoncelle dessinés au trait"
   ></canvas>
 </div>
@@ -36,7 +37,19 @@
 
   const canvas = document.getElementById('three-canvas') as HTMLCanvasElement | null;
   if (canvas) {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Lire `.matches` une seule fois fige la préférence au chargement : si
+    // l'utilisateur active « réduire les animations » pendant sa visite, la
+    // scène continuerait de bouger. On écoute donc les changements.
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reducedMotion = motionQuery.matches;
+    motionQuery.addEventListener('change', (e) => {
+      reducedMotion = e.matches;
+      if (reducedMotion) {
+        // Revenir immédiatement à la pose fixe, sans attendre l'image suivante.
+        ensemble.rotation.set(TILT, ANGLE_VUE, 0);
+        ensemble.position.y = -0.45;
+      }
+    });
 
     // ════════════════ REGLAGES ════════════════
     const SCALE = 0.6;        // taille globale de l'ensemble

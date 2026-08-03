@@ -20,6 +20,10 @@
     --c-ivoire: #FAF7F0;
     --c-encre: #1A1A1A;
     --c-or: #B89B5E;
+    /* Or foncé réservé aux indicateurs de focus : #B89B5E ne donne que
+       2,49:1 sur l'ivoire, sous le minimum WCAG de 3:1 pour les éléments
+       non textuels. #8E7544 donne 4,11:1 sur ivoire et 3,96:1 sur encre. */
+    --c-or-focus: #8E7544;
   }
 
   html {
@@ -54,8 +58,14 @@
     color: var(--c-ivoire);
   }
 
-  a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--c-or);
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--c-or-focus);
     outline-offset: 3px;
     border-radius: 2px;
   }

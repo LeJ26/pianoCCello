@@ -101,7 +101,10 @@ import { galerie } from '../contenu/concerts';
     const next = car.querySelector<HTMLElement>('[data-next]');
     if (!track) return;
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Préférence lue en continu : figée au chargement, le défilement
+    // automatique ignorerait un changement de réglage en cours de visite.
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reduce = motionQuery.matches;
     const pas = () => Math.max(track.clientWidth * 0.8, 250); // distance d'un « clic »
 
     const avance = (dir: number) => {
@@ -123,6 +126,11 @@ import { galerie } from '../contenu/concerts';
     const demarre = () => { if (!reduce) timer = window.setInterval(() => avance(1), 4000); };
     const arrete = () => { if (timer) { clearInterval(timer); timer = undefined; } };
     const relance = () => { arrete(); demarre(); };
+
+    motionQuery.addEventListener('change', (e) => {
+      reduce = e.matches;
+      if (reduce) arrete(); else relance();
+    });
 
     car.addEventListener('mouseenter', arrete);
     car.addEventListener('mouseleave', demarre);
