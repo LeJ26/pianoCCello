@@ -180,6 +180,9 @@ Pareil sur [vercel.com](https://vercel.com) — import du repo GitHub, détectio
 - **Astro 4** — générateur de site rapide (HTML/CSS/JS produit, pas de serveur requis).
 - **Tailwind CSS** — pour les styles.
 - **Three.js** — pour la petite scène 3D du hero.
+- **GSAP** — bibliothèque d'animations, installée directement depuis le dépôt GitHub officiel
+  (`git+https://github.com/greensock/GSAP.git`). Tous les plugins (ScrollTrigger, SplitText,
+  MorphSVG, DrawSVG, Flip…) sont inclus et gratuits.
 - Aucun backend, aucune base de données : tout est statique → rapide, sécurisé, et gratuit à héberger.
 
 Pour remplacer le modèle 3D du hero par le tien, ouvre `src/components/ThreeScene.astro`

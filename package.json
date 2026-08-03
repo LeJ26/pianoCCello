@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/tailwind": "^5.1.4",
     "astro": "^4.16.18",
+    "gsap": "git+https://github.com/greensock/GSAP.git",
     "tailwindcss": "^3.4.17",
     "three": "^0.171.0"
   },
