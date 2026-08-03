@@ -1,4 +1,6 @@
 ---
+import { site } from '../contenu/site';
+
 // Liens de navigation — ajoute/retire une entrée ici si besoin.
 const liens = [
   { href: '#qui', label: 'Le duo' },
@@ -14,15 +16,29 @@ const liens = [
   id="site-header"
   class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-soft"
 >
-  <div class="container-prose flex items-center justify-between py-5 sm:py-6">
+  <div id="header-inner" class="container-prose flex items-center justify-between gap-6 py-5 sm:py-6">
+    {/* Signature du duo — ancre la marque en haut à gauche, sur toutes les tailles */}
+    <a
+      href="/"
+      class="header-marque relative z-50 font-script text-encre hover:text-or transition-colors duration-300 leading-none shrink-0"
+      aria-label={`${site.nom} — retour à l'accueil`}
+    >
+      {site.nom}
+    </a>
+
     {/* Navigation desktop */}
-    <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-5 lg:gap-7 text-xs lg:text-sm font-sans tracking-widest2 uppercase">
+    {/* `whitespace-nowrap` : sans lui, « Le duo » et « Nous engager » se
+        coupent en deux lignes dès que la barre se resserre. */}
+    <nav
+      aria-label="Navigation principale"
+      class="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-7 text-[11px] lg:text-xs xl:text-sm font-sans tracking-[0.18em] xl:tracking-widest2 uppercase"
+    >
       {liens.map((l) => (
-        <a href={l.href} class="lien-trait text-encre/80 hover:text-encre">{l.label}</a>
+        <a href={l.href} class="lien-trait whitespace-nowrap text-encre/80 hover:text-encre">{l.label}</a>
       ))}
     </nav>
 
-    <a href="#reserver" class="hidden md:inline-flex btn-or text-xs px-5 py-2">Réserver</a>
+    <a href="#reserver" class="hidden md:inline-flex btn-or text-xs px-5 py-2 shrink-0">Réserver</a>
 
     {/* Bouton menu mobile (hamburger) */}
     <button
@@ -60,9 +76,59 @@ const liens = [
 </header>
 
 <style>
-  /* Header : fond ivoire + ombre qui apparaissent quand on a scrollé */
+  /* ── Signature du duo ──────────────────────────────────────────────
+     Grande et aérée en haut de page, elle se resserre au défilement en
+     même temps que la barre — l'effet « truncating » qui donne au header
+     sa présence sans jamais gêner la lecture. */
+  .header-marque {
+    font-size: 1.6rem;
+    white-space: nowrap;
+    transition: font-size 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Entre 768 et 1280 px, la barre doit loger la signature, six liens et
+     le bouton : la signature reste modeste, puis s'épanouit au-delà. */
+  @media (min-width: 768px) {
+    .header-marque { font-size: 1.45rem; }
+  }
+  @media (min-width: 1280px) {
+    .header-marque { font-size: 1.9rem; }
+  }
+  #site-header.scrolled .header-marque {
+    font-size: 1.3rem;
+  }
+  @media (min-width: 1280px) {
+    #site-header.scrolled .header-marque { font-size: 1.5rem; }
+  }
+
+  /* Header : fond ivoire + filet or qui apparaissent quand on a scrollé */
   #site-header.scrolled {
     @apply bg-ivoire/90 backdrop-blur-md shadow-soft;
+  }
+  /* Filet or très fin en bas de barre — la touche qui « signe » le header */
+  #site-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(184, 155, 94, 0.5) 20%,
+      rgba(184, 155, 94, 0.5) 80%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #site-header.scrolled::after {
+    opacity: 1;
+  }
+
+  /* La barre se resserre au défilement */
+  #site-header.scrolled #header-inner {
+    @apply py-3 sm:py-3.5;
   }
   #site-header.scrolled :global(.btn-or) {
     @apply py-2;
