@@ -122,11 +122,23 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
         method={method}
         enctype={enctype}
         data-formspree={usingFormspree ? 'oui' : 'non'}
-        class="reveal bg-ivoire text-encre p-8 sm:p-10 shadow-lift"
+        class="reveal relative bg-ivoire text-encre p-8 sm:p-10 shadow-lift"
         style="--reveal-delay: 150ms"
       >
         <p class="surtitre mb-2">Formulaire</p>
         <h3 class="font-serif text-2xl mb-6">Parlez-nous de votre événement</h3>
+
+        {/* ── Anti-spam ────────────────────────────────────────────────
+            Champ « pot de miel » : invisible et hors du parcours clavier,
+            un humain ne le remplit jamais. Les robots, si — on rejette
+            alors l'envoi silencieusement. `_gotcha` est le nom reconnu
+            nativement par Formspree, qui filtre côté serveur en plus. */}
+        <div class="absolute w-px h-px overflow-hidden -left-[9999px]" aria-hidden="true">
+          <label>
+            Ne remplissez pas ce champ
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
 
         <div class="space-y-5">
           <label class="block">
@@ -135,6 +147,8 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
               type="text"
               name="nom"
               required
+              maxlength="100"
+              autocomplete="name"
               class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
             />
           </label>
@@ -145,6 +159,8 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
               type="email"
               name="email"
               required
+              maxlength="150"
+              autocomplete="email"
               class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
             />
           </label>
@@ -152,15 +168,13 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
           <div class="grid sm:grid-cols-2 gap-5">
             <label class="block">
               <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Type d'événement</span>
-              <select
+              <input
+                type="text"
                 name="type"
-                class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors"
-              >
-                <option>Concert privé</option>
-                <option>Mariage</option>
-                <option>Médiathèque / salle</option>
-                <option>Autre</option>
-              </select>
+                maxlength="120"
+                placeholder="Mariage, concert privé, médiathèque…"
+                class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg transition-colors placeholder:text-encre/30 placeholder:font-serif"
+              />
             </label>
             <label class="block">
               <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Date souhaitée</span>
@@ -178,6 +192,7 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
               name="message"
               rows="4"
               required
+              maxlength="3000"
               class="w-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-2 font-serif text-lg resize-none transition-colors"
             ></textarea>
           </label>
@@ -222,6 +237,11 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
 
 <script>
   const form = document.getElementById('form-reservation') as HTMLFormElement | null;
+
+  /* Horodatage du chargement : un envoi en moins de 3 secondes trahit un
+     robot, aucun humain n'a le temps de remplir le formulaire. */
+  const ouvertureFormulaire = Date.now();
+
   if (form && form.dataset.formspree === 'oui') {
     const merci = document.getElementById('form-merci');
     const erreur = document.getElementById('form-erreur');
@@ -231,6 +251,18 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      /* Anti-spam : pot de miel rempli ou envoi trop rapide → on fait
+         comme si tout allait bien, sans rien envoyer. Un robot n'apprend
+         donc pas qu'il a été filtré. */
+      const potDeMiel = form.querySelector<HTMLInputElement>('[name="_gotcha"]');
+      const tropRapide = Date.now() - ouvertureFormulaire < 3000;
+      if (potDeMiel?.value || tropRapide) {
+        form.classList.add('hidden');
+        merci?.classList.remove('hidden');
+        return;
+      }
+
       erreur?.classList.add('hidden');
       btn?.setAttribute('disabled', 'true');
       labelDefaut?.classList.add('hidden');

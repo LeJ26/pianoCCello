@@ -104,18 +104,58 @@ mm.add(
     if (aReveler.length) {
       gsap.set(aReveler, { opacity: 0, y: 24 });
 
+      /* `amount` répartit un temps TOTAL sur le lot, là où `each` fixe un
+         délai par élément. Avec `each`, un lot de 47 éléments — ce qui
+         arrive quand ScrollTrigger recalcule toute la page d'un coup —
+         mettrait plus de quatre secondes à se révéler. */
+      const reveler = (lot: Element[], duree = 0.8, etalement = 0.45) =>
+        gsap.to(lot, {
+          opacity: 1,
+          y: 0,
+          duration: duree,
+          stagger: { amount: etalement },
+          overwrite: true,
+        });
+
       ScrollTrigger.batch(aReveler, {
         start: 'top bottom-=60',
         once: true,
-        onEnter: (lot) =>
-          gsap.to(lot, {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.09,
-            overwrite: true,
-          }),
+        onEnter: (lot) => reveler(lot),
       });
+
+      /* Ouverture directe sur une ancre (`/#newsletter` partagé par
+         quelqu'un) ou rechargement en cours de page : le navigateur saute
+         à la section avant que ScrollTrigger n'ait mesuré la page. Ses
+         positions sont alors périmées, `onEnter` ne se déclenche jamais et
+         la section reste vide. On rattrape tout ce qui est déjà visible ou
+         dépassé — uniquement si la page s'ouvre défilée, pour ne pas
+         court-circuiter l'animation normale en haut de page. */
+      const rattraperOuvertureDefilee = () => {
+        if (window.scrollY <= 0) return;
+        ScrollTrigger.refresh();
+        /* Pas de test sur l'opacité : un élément déjà révélé est à 1, le
+           réanimer vers 1 ne fait rien. */
+        const aRattraper = aReveler.filter(
+          (el) => el.getBoundingClientRect().top < window.innerHeight
+        );
+        /* Aucun décalage ici : on rattrape un état, on ne chorégraphie pas.
+           Avec le décalage habituel de 0,09 s, 47 éléments mettraient plus
+           de quatre secondes à réapparaître. */
+        if (aRattraper.length) reveler(aRattraper, 0.4, 0);
+      };
+      /* Le saut vers l'ancre est animé (`scroll-behavior: smooth`) : au
+         chargement, `scrollY` vaut encore 0 et il n'y a rien à rattraper.
+         On attend donc que le défilement se pose, puis on rattrape. */
+      let minuteur: number;
+      const surDefilement = () => {
+        clearTimeout(minuteur);
+        minuteur = window.setTimeout(rattraperOuvertureDefilee, 150);
+      };
+      window.addEventListener('scroll', surDefilement, { passive: true });
+      window.addEventListener('load', surDefilement);
+      /* Filet de sécurité si aucun événement de défilement n'est émis
+         (saut instantané, navigateur sans défilement animé). */
+      setTimeout(rattraperOuvertureDefilee, 1200);
     }
 
     /* ── 4. Tracé des dessins au trait (line art) ───────────────────────

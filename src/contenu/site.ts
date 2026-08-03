@@ -37,6 +37,11 @@ export const site = {
   // le client mail de l'utilisateur (mailto:).
   formulaireUrl: 'FORMULAIRE_A_REMPLIR',
 
+  // ═════ LIEN DU FORMULAIRE NEWSLETTER ═════
+  // 👉 Même principe : un second formulaire Formspree (ou le même).
+  // Tant que c'est `NEWSLETTER_A_REMPLIR`, l'inscription ouvre le client mail.
+  newsletterUrl: 'NEWSLETTER_A_REMPLIR',
+
   // ═════ SEO ═════
   seo: {
     titre: 'Duo pianCCello — Violoncelle & piano · Compositions originales',

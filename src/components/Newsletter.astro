@@ -1,0 +1,135 @@
+---
+import { site } from '../contenu/site';
+
+// Même principe que le formulaire de réservation : si un lien Formspree
+// est renseigné dans `site.newsletterUrl`, on l'utilise ; sinon on bascule
+// sur un mailto pour que l'inscription ne se perde jamais.
+const usingFormspree = site.newsletterUrl !== 'NEWSLETTER_A_REMPLIR';
+const action = usingFormspree ? site.newsletterUrl : `mailto:${site.contact.email}`;
+const method = usingFormspree ? 'POST' : 'GET';
+const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/plain';
+---
+
+<section id="newsletter" class="relative py-24 sm:py-32 overflow-hidden">
+  {/* Filets or en filigrane, dans l'esprit line art du reste du site */}
+  <svg
+    viewBox="0 0 600 120"
+    fill="none"
+    stroke="#B89B5E"
+    stroke-width="0.5"
+    class="absolute inset-x-0 top-8 w-full opacity-20 pointer-events-none"
+    aria-hidden="true"
+  >
+    <path d="M0 60 Q 150 10, 300 60 T 600 60" />
+    <path d="M0 74 Q 150 24, 300 74 T 600 74" />
+  </svg>
+
+  <div class="container-prose relative">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="surtitre reveal">Restons en contact</p>
+      <h2 class="titre-section mt-4 reveal">Notre newsletter</h2>
+
+      <p class="prose-serif mt-6 reveal">
+        Quelques nouvelles par an, pas davantage : nos prochains concerts, les
+        nouvelles compositions et les partitions qui paraissent. Rien d'autre,
+        et vous vous désinscrivez en un clic.
+      </p>
+
+      <form
+        id="form-newsletter"
+        action={action}
+        method={method}
+        enctype={enctype}
+        data-formspree={usingFormspree ? 'oui' : 'non'}
+        class="reveal relative mt-10 flex flex-col sm:flex-row items-stretch gap-4 sm:gap-3 max-w-xl mx-auto"
+      >
+        {/* Pot de miel : invisible, hors du parcours clavier. Voir Reservation.astro */}
+        <div class="absolute w-px h-px overflow-hidden -left-[9999px]" aria-hidden="true">
+          <label>
+            Ne remplissez pas ce champ
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <label class="flex-1 text-left">
+          <span class="sr-only">Votre adresse email</span>
+          <input
+            type="email"
+            name="email"
+            required
+            maxlength="150"
+            autocomplete="email"
+            placeholder="votre@email.fr"
+            class="w-full h-full bg-transparent border-b border-encre/30 focus:border-or outline-none py-3 font-serif text-lg transition-colors placeholder:text-encre/30"
+          />
+        </label>
+
+        <button type="submit" class="btn-or shrink-0">
+          <span data-label-defaut>S'inscrire</span>
+          <span data-label-envoi class="hidden">Envoi…</span>
+        </button>
+      </form>
+
+      <p id="newsletter-erreur" class="hidden mt-4 text-sm text-red-700 font-sans">
+        Une erreur est survenue. Réessayez, ou écrivez-nous à
+        <a href={`mailto:${site.contact.email}`} class="underline">{site.contact.email}</a>.
+      </p>
+
+      <p id="newsletter-merci" class="hidden mt-6 prose-serif text-or">
+        Merci, votre inscription est enregistrée. À très bientôt !
+      </p>
+
+      <p class="mt-6 text-xs text-encre/50 font-sans">
+        Votre adresse ne sert qu'à cet envoi et n'est transmise à personne.
+        Voir nos <a href="/mentions-legales" class="lien-trait">mentions légales</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('form-newsletter') as HTMLFormElement | null;
+  const ouverture = Date.now();
+
+  if (form && form.dataset.formspree === 'oui') {
+    const merci = document.getElementById('newsletter-merci');
+    const erreur = document.getElementById('newsletter-erreur');
+    const btn = form.querySelector('button[type="submit"]');
+    const labelDefaut = form.querySelector('[data-label-defaut]');
+    const labelEnvoi = form.querySelector('[data-label-envoi]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Anti-spam : pot de miel rempli ou envoi en moins de 3 s → on
+      // affiche la confirmation sans rien envoyer.
+      const potDeMiel = form.querySelector<HTMLInputElement>('[name="_gotcha"]');
+      if (potDeMiel?.value || Date.now() - ouverture < 3000) {
+        form.classList.add('hidden');
+        merci?.classList.remove('hidden');
+        return;
+      }
+
+      erreur?.classList.add('hidden');
+      btn?.setAttribute('disabled', 'true');
+      labelDefaut?.classList.add('hidden');
+      labelEnvoi?.classList.remove('hidden');
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error('Réponse non OK');
+        form.classList.add('hidden');
+        merci?.classList.remove('hidden');
+      } catch {
+        erreur?.classList.remove('hidden');
+      } finally {
+        btn?.removeAttribute('disabled');
+        labelDefaut?.classList.remove('hidden');
+        labelEnvoi?.classList.add('hidden');
+      }
+    });
+  }
+</script>
