@@ -1,0 +1,280 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import { site, legal } from '../contenu/site';
+
+const { editeur, vente } = legal;
+const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Désignation complète du vendeur, reprise dans plusieurs articles
+const vendeur = `${editeur.nom}, ${editeur.statut.toLowerCase()}`;
+---
+
+<BaseLayout
+  titre={`Conditions générales de vente — ${site.nom}`}
+  description={`Conditions générales de vente des partitions numériques du ${site.nom}.`}
+>
+  {/* En-tête minimal (comme sur les mentions légales) */}
+  <header class="border-b border-encre/10">
+    <div class="container-prose flex items-center justify-between py-6">
+      <a href="/" class="font-script text-2xl sm:text-3xl text-encre hover:text-or transition-colors">
+        {site.nom}
+      </a>
+      <a href="/" class="lien-trait text-sm font-sans tracking-widest2 uppercase text-encre/70 hover:text-encre">
+        ← Retour à l'accueil
+      </a>
+    </div>
+  </header>
+
+  <main class="container-prose py-20 sm:py-28">
+    <div class="max-w-2xl mx-auto">
+      <p class="surtitre">Boutique</p>
+      <h1 class="titre-section mt-4">Conditions générales de vente</h1>
+      <p class="text-sm text-encre/50 font-sans mt-3">Dernière mise à jour : {maj}</p>
+
+      <div class="mt-12 space-y-12">
+        {/* 1 — Objet */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">1. Objet</h2>
+          <p class="prose-serif text-base">
+            Les présentes conditions générales de vente (ci-après « CGV »)
+            régissent la vente de partitions musicales au format numérique (PDF)
+            proposées par {vendeur}, à toute personne effectuant un achat depuis
+            ce site (ci-après « le client »).
+          </p>
+          <p class="prose-serif text-base mt-3">
+            Toute commande implique l'acceptation pleine et entière des présentes
+            CGV. Elles sont accessibles à tout moment sur cette page et prévalent
+            sur toute autre condition.
+          </p>
+        </section>
+
+        {/* 2 — Vendeur */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">2. Identité du vendeur</h2>
+          <div class="prose-serif text-base space-y-1">
+            <p>{editeur.nom} — {editeur.statut}</p>
+            {editeur.rna && <p>Déclarée en préfecture sous le numéro RNA {editeur.rna}</p>}
+            {editeur.siret && <p>SIRET : {editeur.siret}</p>}
+            {editeur.adresse && <p>Siège social : {editeur.adresse}</p>}
+            <p>
+              Email : <a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>
+            </p>
+            <p>Téléphone : {editeur.telephone}</p>
+          </div>
+        </section>
+
+        {/* 3 — Produits */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">3. Produits</h2>
+          <p class="prose-serif text-base">
+            Les produits vendus sont des partitions musicales sous forme de
+            fichiers numériques au format PDF, destinés à être téléchargés. Ils ne
+            font l'objet d'aucun envoi postal et aucun support matériel n'est
+            expédié.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            Le détail de chaque partition (instrumentation, nombre de pièces,
+            arrangement) est indiqué sur la page du produit. Les visuels de
+            présentation n'ont pas de valeur contractuelle.
+          </p>
+        </section>
+
+        {/* 4 — Prix */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">4. Prix</h2>
+          <p class="prose-serif text-base">
+            Les prix sont indiqués en euros sur la page de chaque partition. Le
+            prix applicable est celui affiché au moment de la validation de la
+            commande.
+          </p>
+          {vente.regimeTva === 'franchise' && (
+            <p class="prose-serif text-base mt-3">
+              TVA non applicable, article 293 B du Code général des impôts.
+            </p>
+          )}
+          <p class="prose-serif text-base mt-3">
+            {editeur.nom} se réserve le droit de modifier ses prix à tout moment.
+            Les commandes déjà validées restent facturées au prix en vigueur lors
+            de leur validation.
+          </p>
+        </section>
+
+        {/* 5 — Commande et paiement */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">5. Commande et paiement</h2>
+          <p class="prose-serif text-base">
+            Les commandes sont passées et réglées sur la plateforme
+            {' '}<a href={vente.plateformeUrl} class="lien-trait text-or" target="_blank" rel="noopener noreferrer">{vente.plateforme}</a>,
+            vers laquelle renvoient les boutons d'achat de ce site. Le paiement
+            s'effectue en ligne, par carte bancaire ou tout autre moyen proposé par
+            la plateforme, via une connexion sécurisée.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            {editeur.nom} n'a accès à aucune donnée bancaire : celles-ci sont
+            traitées directement par la plateforme et ses prestataires de paiement.
+            L'utilisation de la plateforme est également soumise à
+            {' '}<a href={vente.plateformeCgvUrl} class="lien-trait text-or" target="_blank" rel="noopener noreferrer">ses propres conditions</a>.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            La commande est définitivement validée après confirmation du paiement.
+          </p>
+        </section>
+
+        {/* 6 — Livraison */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">6. Livraison</h2>
+          <p class="prose-serif text-base">
+            Le fichier PDF est mis à disposition immédiatement après la
+            confirmation du paiement, par téléchargement direct et par un lien
+            envoyé à l'adresse email indiquée lors de la commande.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            En cas de non-réception du lien, il est conseillé de vérifier le
+            dossier « courriers indésirables ». Si le problème persiste, écrivez à
+            {' '}<a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>
+            {' '}: le fichier vous sera renvoyé.
+          </p>
+        </section>
+
+        {/* 7 — Droit de rétractation */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">7. Droit de rétractation</h2>
+          <p class="prose-serif text-base">
+            Conformément à l'article L221-28, 13° du Code de la consommation, le
+            droit de rétractation ne peut pas être exercé pour les contenus
+            numériques fournis sur un support immatériel dont l'exécution a
+            commencé après accord préalable exprès du client et renoncement exprès
+            à son droit de rétractation.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            En validant sa commande et en accédant au téléchargement, le client
+            demande expressément l'exécution immédiate de la prestation et
+            reconnaît qu'il perd de ce fait son droit de rétractation. Aucun
+            remboursement ne pourra donc être demandé à ce titre une fois le
+            fichier téléchargé.
+          </p>
+        </section>
+
+        {/* 8 — Conformité */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">8. Conformité et réclamations</h2>
+          <p class="prose-serif text-base">
+            Le client bénéficie de la garantie légale de conformité des contenus
+            numériques prévue aux articles L224-25-12 et suivants du Code de la
+            consommation.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            Si un fichier est illisible, corrompu, incomplet ou ne correspond pas à
+            sa description, écrivez à
+            {' '}<a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>
+            {' '}en précisant votre commande. Nous vous fournirons un fichier
+            conforme ou, à défaut, procéderons au remboursement.
+          </p>
+        </section>
+
+        {/* 9 — Propriété intellectuelle */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">9. Propriété intellectuelle et usage autorisé</h2>
+          <p class="prose-serif text-base">
+            Les partitions vendues restent la propriété intellectuelle de leurs
+            auteurs. L'achat confère au client un droit d'usage strictement
+            personnel et non exclusif.
+          </p>
+          <p class="prose-serif text-base mt-3">Le client est autorisé à :</p>
+          <ul class="prose-serif text-base mt-2 list-disc pl-6 space-y-1">
+            <li>imprimer la partition pour son usage personnel ;</li>
+            <li>l'interpréter dans un cadre privé, pédagogique ou d'étude.</li>
+          </ul>
+          <p class="prose-serif text-base mt-4">Il lui est interdit de :</p>
+          <ul class="prose-serif text-base mt-2 list-disc pl-6 space-y-1">
+            <li>revendre, louer, prêter ou céder le fichier, à titre gratuit ou onéreux ;</li>
+            <li>le diffuser, le partager ou le mettre en ligne, même sans contrepartie ;</li>
+            <li>en réaliser des copies au-delà de son usage personnel ;</li>
+            <li>le modifier, l'arranger ou l'adapter sans autorisation écrite préalable ;</li>
+            <li>en faire une exploitation commerciale ou une exécution publique sans accord.</li>
+          </ul>
+          <p class="prose-serif text-base mt-4">
+            Pour toute interprétation en concert public, tout enregistrement ou
+            toute utilisation collective (école de musique, chorale, orchestre),
+            merci de nous contacter au préalable : nous accordons volontiers les
+            autorisations nécessaires.
+          </p>
+        </section>
+
+        {/* 10 — Données personnelles */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">10. Données personnelles</h2>
+          <p class="prose-serif text-base">
+            Les données transmises lors d'une commande (nom, adresse email) sont
+            collectées par la plateforme {vente.plateforme} pour les besoins du
+            traitement de la commande et de la délivrance du fichier. Elles ne sont
+            ni vendues ni cédées à des tiers à des fins commerciales.
+          </p>
+          <p class="prose-serif text-base mt-3">
+            Conformément au RGPD, le client dispose d'un droit d'accès, de
+            rectification, d'opposition et de suppression de ses données, qu'il
+            peut exercer en écrivant à
+            {' '}<a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>.
+            {' '}Voir également nos
+            {' '}<a href="/mentions-legales" class="lien-trait text-or">mentions légales</a>.
+          </p>
+        </section>
+
+        {/* 11 — Médiation */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">11. Médiation en cas de litige</h2>
+          <p class="prose-serif text-base">
+            En cas de difficulté, le client est invité à nous contacter en premier
+            lieu à
+            {' '}<a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>
+            {' '}afin de rechercher une solution amiable.
+          </p>
+          {vente.mediateur.nom ? (
+            <div class="prose-serif text-base mt-3 space-y-1">
+              <p>
+                Conformément à l'article L612-1 du Code de la consommation, le
+                client peut ensuite recourir gratuitement au médiateur de la
+                consommation suivant :
+              </p>
+              <p>{vente.mediateur.nom}</p>
+              {vente.mediateur.adresse && <p>{vente.mediateur.adresse}</p>}
+              {vente.mediateur.site && (
+                <p>
+                  <a href={vente.mediateur.site} class="lien-trait text-or" target="_blank" rel="noopener noreferrer">
+                    {vente.mediateur.site}
+                  </a>
+                </p>
+              )}
+            </div>
+          ) : (
+            <p class="prose-serif text-base mt-3">
+              Conformément à l'article L612-1 du Code de la consommation, le client
+              peut recourir gratuitement à un médiateur de la consommation en vue
+              de la résolution amiable du litige. Les coordonnées du médiateur
+              compétent peuvent être obtenues sur simple demande à l'adresse
+              ci-dessus.
+            </p>
+          )}
+        </section>
+
+        {/* 12 — Droit applicable */}
+        <section>
+          <h2 class="font-serif text-2xl text-encre mb-3">12. Droit applicable</h2>
+          <p class="prose-serif text-base">
+            Les présentes CGV sont soumises au droit français. En cas de litige
+            n'ayant pu être résolu à l'amiable, les tribunaux français seront
+            seuls compétents.
+          </p>
+        </section>
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-encre/10 flex flex-wrap gap-4">
+        <a href="/" class="btn-or">← Retour à l'accueil</a>
+        <a href="/mentions-legales" class="btn-or">Mentions légales</a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

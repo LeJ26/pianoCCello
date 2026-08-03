@@ -35,7 +35,8 @@ const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'lon
           <h2 class="font-serif text-2xl text-encre mb-3">Éditeur du site</h2>
           <div class="prose-serif text-base space-y-1">
             <p>{editeur.nom}{editeur.statut && ` — ${editeur.statut}`}</p>
-            {editeur.adresse && <p>{editeur.adresse}</p>}
+            {editeur.rna && <p>Déclarée en préfecture sous le numéro RNA {editeur.rna}</p>}
+            {editeur.adresse && <p>Siège social : {editeur.adresse}</p>}
             {editeur.siret && <p>SIRET : {editeur.siret}</p>}
             <p>
               Email : <a href={`mailto:${editeur.email}`} class="lien-trait text-or">{editeur.email}</a>
@@ -101,11 +102,17 @@ const maj = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'lon
             externe sécurisée. Le paiement et l'envoi du fichier PDF sont gérés par
             cette plateforme, qui dispose de ses propres conditions de vente.
           </p>
+          <p class="prose-serif text-base mt-3">
+            Les modalités de commande, de livraison, de rétractation et d'usage des
+            partitions sont détaillées dans nos
+            {' '}<a href="/cgv" class="lien-trait text-or">conditions générales de vente</a>.
+          </p>
         </section>
       </div>
 
-      <div class="mt-16 pt-8 border-t border-encre/10">
+      <div class="mt-16 pt-8 border-t border-encre/10 flex flex-wrap gap-4">
         <a href="/" class="btn-or">← Retour à l'accueil</a>
+        <a href="/cgv" class="btn-or">Conditions générales de vente</a>
       </div>
     </div>
   </main>

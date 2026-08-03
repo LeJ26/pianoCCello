@@ -53,28 +53,60 @@ export const site = {
   },
 };
 
-// ═════ MENTIONS LÉGALES (page /mentions-legales) ═════
-// 👉 Complète les champs marqués « À COMPLÉTER » avant la mise en ligne.
-// Si tu n'es pas une société (simple particulier / association), tu peux
-// laisser le SIRET vide — il sera alors masqué sur la page.
+// ═════ MENTIONS LÉGALES & CGV (pages /mentions-legales et /cgv) ═════
+//
+// ⚠️ IMPORTANT — CHAMPS ENCORE À REMPLIR
+// Les champs laissés vides ('') ci-dessous ne s'affichent tout simplement pas
+// sur le site (plutôt que d'afficher « À COMPLÉTER » au public). Mais trois
+// d'entre eux sont **obligatoires** pour vendre en ligne à des particuliers :
+//   • editeur.adresse  → adresse du siège social de l'association
+//   • editeur.rna      → numéro de déclaration en préfecture (commence par W)
+//   • editeur.siret    → indispensable dès lors que l'association encaisse des ventes
+//   • vente.mediateur  → un médiateur de la consommation est obligatoire (art. L612-1
+//                        du Code de la consommation) pour toute vente à des consommateurs
+// Tant qu'ils sont vides, les mentions légales et les CGV sont incomplètes.
 export const legal = {
-  // Qui édite le site (toi / le duo)
+  // Qui édite le site
   editeur: {
     nom: 'Duo pianCCello',
-    statut: 'À COMPLÉTER (ex. association, micro-entreprise, particulier)',
-    adresse: 'À COMPLÉTER (adresse postale, facultatif)',
-    siret: '', // laisse vide si non applicable
+    statut: 'Association loi 1901',
+    // Numéro RNA : figure sur le récépissé de déclaration en préfecture (W…)
+    rna: '',
+    // SIRET de l'association (obtenu via le guichet des formalités des entreprises)
+    siret: '',
+    // Adresse du siège social — obligatoire en vente à distance
+    adresse: '',
     email: 'duopianccello@gmail.com',
     telephone: '06 09 96 77 22',
-    // Personne responsable du contenu du site
-    directeurPublication: 'À COMPLÉTER (nom du responsable)',
+    // Responsable du contenu du site
+    directeurPublication: 'Claire Bournonville',
+    // Mentionnée dans les CGV comme contact pour les questions de paiement
+    tresoriere: 'Clémentine Roques',
   },
+
   // Qui héberge le site — le site tourne sur Cloudflare Workers (voir
   // wrangler.jsonc). À vérifier si tu changes un jour d'hébergeur.
   hebergeur: {
     nom: 'Cloudflare, Inc.',
     adresse: '101 Townsend Street, San Francisco, CA 94107, États-Unis',
     site: 'https://www.cloudflare.com',
+  },
+
+  // ═════ DONNÉES UTILISÉES PAR LES CGV ═════
+  vente: {
+    // Plateforme qui encaisse les paiements et délivre les fichiers PDF
+    plateforme: 'Payhip',
+    plateformeUrl: 'https://payhip.com/Clemsmusic',
+    plateformeCgvUrl: 'https://payhip.com/terms',
+    // Régime de TVA : 'franchise' → mention de l'article 293 B du CGI
+    regimeTva: 'franchise' as 'franchise' | 'assujetti',
+    // Médiateur de la consommation — OBLIGATOIRE (art. L612-1 du Code de la
+    // consommation). Il faut adhérer à un médiateur agréé, puis remplir ici.
+    mediateur: {
+      nom: '',
+      site: '',
+      adresse: '',
+    },
   },
 };
 
