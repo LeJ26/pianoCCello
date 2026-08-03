@@ -1,5 +1,6 @@
 ---
 import { site } from '../contenu/site';
+import ThreeScene from './ThreeScene.astro';
 
 // Images du fond défilant (dans public/images/). Pour les remplacer,
 // garde les mêmes noms ou modifie la liste ci-dessous.
@@ -20,27 +21,37 @@ const bande = [...fond, ...fond, ...fond, ...fond];
   </div>
 
   <div class="container-prose relative z-10">
-    {/* L'apparition est pilotée par la timeline GSAP (src/scripts/animations.ts) */}
-    <div class="flex flex-col items-center">
-      {/* Logo officiel du duo (calligraphie Daydream) — occupe toute la bannière.
-          Le fichier est dans public/images/. Pour le remplacer, garde le même nom. */}
-      <h1 class="w-full max-w-4xl">
-        <img
-          src="/images/logo-duo-pianccello.png"
-          alt={`${site.nom} — ${site.baseline}`}
-          width="1050"
-          height="600"
-          fetchpriority="high"
-          class="w-full h-auto"
-        />
-      </h1>
+    {/* Deux colonnes à partir de 1024 px : le duo à gauche, la scène 3D à
+        droite. En dessous, la scène est masquée et la mise en page reste
+        centrée comme auparavant. */}
+    <div class="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-10 xl:gap-16 items-center">
+      {/* L'apparition est pilotée par la timeline GSAP (src/scripts/animations.ts) */}
+      <div class="flex flex-col items-center lg:items-start lg:text-left">
+        {/* Logo officiel du duo (calligraphie Daydream) — occupe toute la bannière.
+            Le fichier est dans public/images/. Pour le remplacer, garde le même nom. */}
+        <h1 class="w-full max-w-3xl lg:max-w-none">
+          <img
+            src="/images/logo-duo-pianccello.png"
+            alt={`${site.nom} — ${site.baseline}`}
+            width="1050"
+            height="600"
+            fetchpriority="high"
+            class="w-full h-auto"
+          />
+        </h1>
 
-      <p class="mt-8 prose-serif italic max-w-3xl mx-auto text-xl sm:text-2xl lg:text-3xl">
-        {site.accroche}
-      </p>
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a href="#reserver" class="btn-encre">Réserver un concert</a>
-        <a href="#boutique" class="btn-or">Découvrir les partitions</a>
+        <p class="mt-8 prose-serif italic max-w-3xl text-xl sm:text-2xl lg:text-3xl">
+          {site.accroche}
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
+          <a href="#reserver" class="btn-encre">Réserver un concert</a>
+          <a href="#boutique" class="btn-or">Découvrir les partitions</a>
+        </div>
+      </div>
+
+      {/* Scène 3D : piano et violoncelle dessinés au trait */}
+      <div class="hidden lg:block">
+        <ThreeScene />
       </div>
     </div>
   </div>

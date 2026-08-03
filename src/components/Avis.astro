@@ -1,5 +1,9 @@
 ---
 import { avis } from '../contenu/site';
+
+// Nombre d'avis visibles avant dépliage. Les suivants sont masqués
+// derrière le bouton « Voir plus » : la section prenait toute la page.
+const VISIBLES = 6;
 ---
 
 <section id="avis" class="relative py-28 sm:py-36 bg-ivoire overflow-hidden">
@@ -10,11 +14,11 @@ import { avis } from '../contenu/site';
     </div>
 
     {/* Mur de témoignages (colonnes façon « masonry ») */}
-    <div class="mt-14 sm:mt-16 columns-1 sm:columns-2 lg:columns-3 gap-6">
+    <div id="avis-liste" class="mt-14 sm:mt-16 columns-1 sm:columns-2 lg:columns-3 gap-6">
       {avis.map((a, i) => (
         <figure
-          class="carte reveal break-inside-avoid mb-6 p-6 sm:p-7"
-          style={`--reveal-delay: ${(i % 6) * 80}ms`}
+          class:list={['carte break-inside-avoid mb-6 p-6 sm:p-7', i < VISIBLES ? 'reveal' : 'avis-cache']}
+          data-avis-index={i}
         >
           <span class="block font-serif text-5xl leading-none text-or/50 select-none" aria-hidden="true">“</span>
           <blockquote class="mt-1 font-serif italic text-encre/85 text-lg leading-relaxed">
@@ -23,5 +27,58 @@ import { avis } from '../contenu/site';
         </figure>
       ))}
     </div>
+
+    {avis.length > VISIBLES && (
+      <div class="mt-4 flex justify-center">
+        <button
+          id="avis-toggle"
+          type="button"
+          class="btn-or"
+          aria-expanded="false"
+          aria-controls="avis-liste"
+        >
+          <span data-label-plus>Voir plus d'avis ({avis.length - VISIBLES})</span>
+          <span data-label-moins class="hidden">Réduire</span>
+        </button>
+      </div>
+    )}
   </div>
 </section>
+
+<style>
+  /* Les avis au-delà du seuil sont retirés du flux tant que la section
+     n'est pas dépliée — et restent invisibles pour les lecteurs d'écran. */
+  .avis-cache {
+    display: none;
+  }
+  #avis-liste.est-deplie .avis-cache {
+    display: block;
+  }
+</style>
+
+<script>
+  const bouton = document.getElementById('avis-toggle');
+  const liste = document.getElementById('avis-liste');
+
+  if (bouton && liste) {
+    const labelPlus = bouton.querySelector('[data-label-plus]');
+    const labelMoins = bouton.querySelector('[data-label-moins]');
+
+    bouton.addEventListener('click', () => {
+      const deplie = liste.classList.toggle('est-deplie');
+      bouton.setAttribute('aria-expanded', String(deplie));
+      labelPlus?.classList.toggle('hidden', deplie);
+      labelMoins?.classList.toggle('hidden', !deplie);
+
+      // Au repli, on remonte en haut de la section : sans cela on se
+      // retrouve dans le vide, très loin sous le contenu qui vient de
+      // disparaître.
+      if (!deplie) {
+        document.getElementById('avis')?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      }
+    });
+  }
+</script>
