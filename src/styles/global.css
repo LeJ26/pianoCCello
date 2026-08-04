@@ -156,6 +156,20 @@
   pointer-events: none;
 }
 
+/* Apparition de la légende du carrousel coverflow. Remplace la classe
+   `animate-in fade-in` du composant d'origine, qui vient du plugin
+   tailwindcss-animate — non installé ici. */
+@keyframes legende-apparait {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animation-legende {
+  animation: legende-apparait 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animation-legende { animation: none; }
+}
+
 /* Effet Ken Burns du carrousel de galerie : l'image dérive et zoome très
    lentement pendant l'affichage de la diapositive. */
 @keyframes ken-burns {

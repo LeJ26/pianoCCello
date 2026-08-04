@@ -1,6 +1,6 @@
 ---
 import { galerie } from '../contenu/concerts';
-import GalerieCarrousel from './GalerieCarrousel.tsx';
+import GalerieCoverflow from './GalerieCoverflow.tsx';
 ---
 
 <section id="galerie" class="relative py-28 sm:py-36 bg-ivoire overflow-hidden">
@@ -17,7 +17,7 @@ import GalerieCarrousel from './GalerieCarrousel.tsx';
     {/* Island React chargé seulement quand la galerie approche de l'écran :
         React ne pèse pas sur le premier affichage. */}
     <div class="mt-16 reveal">
-      <GalerieCarrousel photos={galerie} client:visible />
+      <GalerieCoverflow photos={galerie} client:visible />
     </div>
   </div>
 </section>
