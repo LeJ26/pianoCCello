@@ -38,12 +38,12 @@ export const site = {
   formulaireUrl: 'https://formspree.io/f/xaewwadg',
 
   // ═════ LIEN DU FORMULAIRE NEWSLETTER ═════
-  // Volontairement la même adresse que le formulaire de réservation : un
-  // champ `_subject` distingue les deux dans la boîte mail. Les 50 envois
-  // mensuels de l'offre gratuite sont donc partagés — largement suffisant.
-  // Pour séparer les quotas, crée un second formulaire Formspree et colle
-  // son adresse ici.
-  newsletterUrl: 'https://formspree.io/f/xaewwadg',
+  // Brevo (ex-Sendinblue) : les inscriptions arrivent directement dans la
+  // liste de diffusion, d'où les campagnes sont envoyées. Le composant
+  // Newsletter.astro reconnaît automatiquement le fournisseur d'après le
+  // domaine — Brevo et Formspree n'attendent pas les mêmes champs.
+  newsletterUrl:
+    'https://a2010eda.sibforms.com/serve/MUIFACJz-4a7dRxWeVv4bJjguUEi4XOUJTnRm4kB6R2u3PrEzR9tKka5G4kJS65OsmJI38vk5mwlhqNZzGfW6X8pglEL0HeamYPBrs1N17jToxNLOfwoviNRaAHsHRZUm_gx7rtTS1GJDgABSYfy_jHoDrDURMeTtyLNTzPZKbDjrider8zab25mYzb1bOw2CLJgCQhH6TZse6rB7Q==',
 
   // ═════ SEO ═════
   seo: {

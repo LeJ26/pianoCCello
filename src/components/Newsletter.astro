@@ -1,13 +1,19 @@
 ---
 import { site } from '../contenu/site';
 
-// Même principe que le formulaire de réservation : si un lien Formspree
-// est renseigné dans `site.newsletterUrl`, on l'utilise ; sinon on bascule
-// sur un mailto pour que l'inscription ne se perde jamais.
-const usingFormspree = site.newsletterUrl !== 'NEWSLETTER_A_REMPLIR';
-const action = usingFormspree ? site.newsletterUrl : `mailto:${site.contact.email}`;
-const method = usingFormspree ? 'POST' : 'GET';
-const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/plain';
+/* Le fournisseur est déduit du domaine : Brevo et Formspree n'attendent
+   ni les mêmes noms de champs, ni le même traitement de la réponse.
+   Pour changer de service, il suffit de coller la nouvelle adresse dans
+   `site.newsletterUrl` — rien d'autre à toucher ici. */
+const configure = site.newsletterUrl !== 'NEWSLETTER_A_REMPLIR';
+const brevo = site.newsletterUrl.includes('sibforms.com');
+
+const action = configure ? site.newsletterUrl : `mailto:${site.contact.email}`;
+const method = configure ? 'POST' : 'GET';
+const enctype = configure ? 'application/x-www-form-urlencoded' : 'text/plain';
+
+/* Brevo attend le champ en majuscules ; Formspree accepte n'importe quel nom. */
+const champEmail = brevo ? 'EMAIL' : 'email';
 ---
 
 <section id="newsletter" class="relative py-24 sm:py-32 overflow-hidden">
@@ -40,7 +46,8 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
         action={action}
         method={method}
         enctype={enctype}
-        data-formspree={usingFormspree ? 'oui' : 'non'}
+        data-configure={configure ? 'oui' : 'non'}
+        data-brevo={brevo ? 'oui' : 'non'}
         class="reveal relative mt-10 flex flex-col sm:flex-row items-stretch gap-4 sm:gap-3 max-w-xl mx-auto"
       >
         {/* Pot de miel : invisible, hors du parcours clavier. Voir Reservation.astro */}
@@ -51,15 +58,23 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
           </label>
         </div>
 
-        {/* Distingue l'inscription d'une demande de concert, les deux
-            formulaires partageant la même adresse Formspree. */}
-        <input type="hidden" name="_subject" value="Site — inscription newsletter" />
+        {brevo ? (
+          <>
+            {/* Champs attendus par Brevo : `email_address_check` est son
+                propre piège à robots, il doit être présent et vide. */}
+            <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+            <input type="hidden" name="locale" value="fr" />
+          </>
+        ) : (
+          /* Formspree : distingue l'inscription d'une demande de concert. */
+          <input type="hidden" name="_subject" value="Site — inscription newsletter" />
+        )}
 
         <label class="flex-1 text-left">
           <span class="sr-only">Votre adresse email</span>
           <input
             type="email"
-            name="email"
+            name={champEmail}
             required
             maxlength="150"
             autocomplete="email"
@@ -95,7 +110,8 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
   const form = document.getElementById('form-newsletter') as HTMLFormElement | null;
   const ouverture = Date.now();
 
-  if (form && form.dataset.formspree === 'oui') {
+  if (form && form.dataset.configure === 'oui') {
+    const estBrevo = form.dataset.brevo === 'oui';
     const merci = document.getElementById('newsletter-merci');
     const erreur = document.getElementById('newsletter-erreur');
     const btn = form.querySelector('button[type="submit"]');
@@ -119,12 +135,27 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
       labelDefaut?.classList.add('hidden');
       labelEnvoi?.classList.remove('hidden');
       try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { Accept: 'application/json' },
-        });
-        if (!res.ok) throw new Error('Réponse non OK');
+        if (estBrevo) {
+          /* Brevo n'autorise pas la lecture de sa réponse depuis un autre
+             domaine (pas d'en-têtes CORS). On envoie donc en `no-cors` :
+             la requête part bien, mais son résultat est opaque. On affiche
+             la confirmation sans pouvoir vérifier — c'est le compromis pour
+             garder le visiteur sur le site plutôt que de le rediriger vers
+             une page Brevo. Le double opt-in de Brevo, s'il est activé,
+             confirmera de toute façon l'inscription par mail. */
+          await fetch(form.action, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: new URLSearchParams(new FormData(form) as any),
+          });
+        } else {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          if (!res.ok) throw new Error('Réponse non OK');
+        }
         form.classList.add('hidden');
         merci?.classList.remove('hidden');
       } catch {
