@@ -324,9 +324,12 @@ export default function GalerieCoverflow({
       {/* Légende de la photo centrale — le texte d'origine de chaque concert.
           `key` force le remontage, ce qui rejoue la transition d'apparition
           (l'original s'appuyait sur tailwindcss-animate, absent ici). */}
-      <div key={selected} className="mt-6 min-h-[3.5rem] text-center animation-legende">
+      <div key={selected} className="mt-6 min-h-[4.25rem] text-center animation-legende">
+        {/* Pas de texte de repli : une photo sans légende n'affiche rien.
+            La hauteur minimale du bloc parent réserve la place, le compteur
+            ne saute donc pas d'une photo à l'autre. */}
         <p className="font-serif text-2xl sm:text-3xl text-encre" aria-live="polite">
-          {active?.legende || 'En concert'}
+          {active?.legende}
         </p>
         <p className="mt-2 font-sans text-xs tracking-widest2 uppercase text-or">
           {String(selected + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}

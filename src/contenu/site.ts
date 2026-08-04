@@ -84,9 +84,7 @@ export const legal = {
     email: 'duopianccello@gmail.com',
     telephone: '06 09 96 77 22',
     // Responsable du contenu du site
-    directeurPublication: 'Claire Bournonville',
-    // Mentionnée dans les CGV comme contact pour les questions de paiement
-    tresoriere: 'Clémentine Roques',
+    directeurPublication: 'Clémentine Roques',
   },
 
   // Qui héberge le site — le site tourne sur Cloudflare Workers (voir
