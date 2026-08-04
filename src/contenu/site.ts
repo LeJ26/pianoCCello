@@ -38,9 +38,12 @@ export const site = {
   formulaireUrl: 'https://formspree.io/f/xaewwadg',
 
   // ═════ LIEN DU FORMULAIRE NEWSLETTER ═════
-  // 👉 Même principe : un second formulaire Formspree (ou le même).
-  // Tant que c'est `NEWSLETTER_A_REMPLIR`, l'inscription ouvre le client mail.
-  newsletterUrl: 'NEWSLETTER_A_REMPLIR',
+  // Volontairement la même adresse que le formulaire de réservation : un
+  // champ `_subject` distingue les deux dans la boîte mail. Les 50 envois
+  // mensuels de l'offre gratuite sont donc partagés — largement suffisant.
+  // Pour séparer les quotas, crée un second formulaire Formspree et colle
+  // son adresse ici.
+  newsletterUrl: 'https://formspree.io/f/xaewwadg',
 
   // ═════ SEO ═════
   seo: {
