@@ -35,7 +35,7 @@ export const site = {
   // 👉 REMPLACE par ton lien Formspree (formspree.io) quand tu en auras créé un.
   // Tant que c'est `FORMULAIRE_A_REMPLIR`, le formulaire ouvrira simplement
   // le client mail de l'utilisateur (mailto:).
-  formulaireUrl: 'FORMULAIRE_A_REMPLIR',
+  formulaireUrl: 'https://formspree.io/f/xaewwadg',
 
   // ═════ LIEN DU FORMULAIRE NEWSLETTER ═════
   // 👉 Même principe : un second formulaire Formspree (ou le même).

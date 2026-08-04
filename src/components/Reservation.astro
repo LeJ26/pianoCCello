@@ -140,6 +140,11 @@ const enctype = usingFormspree ? 'application/x-www-form-urlencoded' : 'text/pla
           </label>
         </div>
 
+        {/* Objet du mail reçu : permet de distinguer d'un coup d'œil une
+            demande de concert d'une inscription à la newsletter, les deux
+            formulaires pouvant partager la même adresse Formspree. */}
+        <input type="hidden" name="_subject" value="Site — demande de concert" />
+
         <div class="space-y-5">
           <label class="block">
             <span class="block text-xs font-sans tracking-widest2 uppercase text-encre/60 mb-2">Nom</span>
