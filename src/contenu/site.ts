@@ -35,7 +35,15 @@ export const site = {
   // 👉 REMPLACE par ton lien Formspree (formspree.io) quand tu en auras créé un.
   // Tant que c'est `FORMULAIRE_A_REMPLIR`, le formulaire ouvrira simplement
   // le client mail de l'utilisateur (mailto:).
-  formulaireUrl: 'FORMULAIRE_A_REMPLIR',
+  formulaireUrl: 'https://formspree.io/f/xaewwadg',
+
+  // ═════ LIEN DU FORMULAIRE NEWSLETTER ═════
+  // Brevo (ex-Sendinblue) : les inscriptions arrivent directement dans la
+  // liste de diffusion, d'où les campagnes sont envoyées. Le composant
+  // Newsletter.astro reconnaît automatiquement le fournisseur d'après le
+  // domaine — Brevo et Formspree n'attendent pas les mêmes champs.
+  newsletterUrl:
+    'https://a2010eda.sibforms.com/serve/MUIFACJz-4a7dRxWeVv4bJjguUEi4XOUJTnRm4kB6R2u3PrEzR9tKka5G4kJS65OsmJI38vk5mwlhqNZzGfW6X8pglEL0HeamYPBrs1N17jToxNLOfwoviNRaAHsHRZUm_gx7rtTS1GJDgABSYfy_jHoDrDURMeTtyLNTzPZKbDjrider8zab25mYzb1bOw2CLJgCQhH6TZse6rB7Q==',
 
   // ═════ SEO ═════
   seo: {
@@ -53,27 +61,58 @@ export const site = {
   },
 };
 
-// ═════ MENTIONS LÉGALES (page /mentions-legales) ═════
-// 👉 Complète les champs marqués « À COMPLÉTER » avant la mise en ligne.
-// Si tu n'es pas une société (simple particulier / association), tu peux
-// laisser le SIRET vide — il sera alors masqué sur la page.
+// ═════ MENTIONS LÉGALES & CGV (pages /mentions-legales et /cgv) ═════
+//
+// ⚠️ IMPORTANT — CHAMPS ENCORE À REMPLIR
+// Les champs laissés vides ('') ci-dessous ne s'affichent tout simplement pas
+// sur le site (plutôt que d'afficher « À COMPLÉTER » au public). Mais trois
+// d'entre eux sont **obligatoires** pour vendre en ligne à des particuliers :
+//   • editeur.adresse  → adresse du siège social de l'association
+//   • editeur.rna      → numéro de déclaration en préfecture (commence par W)
+//   • editeur.siret    → indispensable dès lors que l'association encaisse des ventes
+//   • vente.mediateur  → un médiateur de la consommation est obligatoire (art. L612-1
+//                        du Code de la consommation) pour toute vente à des consommateurs
+// Tant qu'ils sont vides, les mentions légales et les CGV sont incomplètes.
 export const legal = {
-  // Qui édite le site (toi / le duo)
+  // Qui édite le site
   editeur: {
     nom: 'Duo pianCCello',
-    statut: 'À COMPLÉTER (ex. association, micro-entreprise, particulier)',
-    adresse: 'À COMPLÉTER (adresse postale, facultatif)',
-    siret: '', // laisse vide si non applicable
+    statut: 'Association loi 1901',
+    // Numéro RNA : figure sur le récépissé de déclaration en préfecture (W…)
+    rna: '',
+    // SIRET de l'association (obtenu via le guichet des formalités des entreprises)
+    siret: '',
+    // Adresse du siège social — obligatoire en vente à distance
+    adresse: '33 rue d’Angiviller, 78120 Rambouillet',
     email: 'duopianccello@gmail.com',
     telephone: '06 09 96 77 22',
-    // Personne responsable du contenu du site
-    directeurPublication: 'À COMPLÉTER (nom du responsable)',
+    // Responsable du contenu du site
+    directeurPublication: 'Clémentine Roques',
   },
-  // Qui héberge le site (à remplir selon ton choix de mise en ligne)
+
+  // Qui héberge le site — le site tourne sur Cloudflare Workers (voir
+  // wrangler.jsonc). À vérifier si tu changes un jour d'hébergeur.
   hebergeur: {
-    nom: 'À COMPLÉTER (ex. Netlify, Inc. ou Vercel Inc.)',
-    adresse: 'À COMPLÉTER (adresse de l’hébergeur)',
-    site: 'À COMPLÉTER (ex. https://www.netlify.com)',
+    nom: 'Cloudflare, Inc.',
+    adresse: '101 Townsend Street, San Francisco, CA 94107, États-Unis',
+    site: 'https://www.cloudflare.com',
+  },
+
+  // ═════ DONNÉES UTILISÉES PAR LES CGV ═════
+  vente: {
+    // Plateforme qui encaisse les paiements et délivre les fichiers PDF
+    plateforme: 'Payhip',
+    plateformeUrl: 'https://payhip.com/Clemsmusic',
+    plateformeCgvUrl: 'https://payhip.com/terms',
+    // Régime de TVA : 'franchise' → mention de l'article 293 B du CGI
+    regimeTva: 'franchise' as 'franchise' | 'assujetti',
+    // Médiateur de la consommation — OBLIGATOIRE (art. L612-1 du Code de la
+    // consommation). Il faut adhérer à un médiateur agréé, puis remplir ici.
+    mediateur: {
+      nom: '',
+      site: '',
+      adresse: '',
+    },
   },
 };
 
@@ -85,7 +124,10 @@ export const repertoire = {
   creations: {
     titre: 'Créations originales',
     texte:
-      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.\nLes miniatures existent aussi sous la forme d’un conte musical nommé « À la poursuite de nos rêves », interactif et adapté à un jeune public.\nNous vous proposons également quelques arrangements libres autour des chants de Noël.',
+      'Des compositions signées Clémentine Roques, écrites en dialogue pour le piano et le violoncelle,\nun univers poétique, intime et chaleureux.',
+    // Affiché plus bas, entre les recueils et les vidéos.
+    complement:
+      'Les miniatures existent aussi sous la forme d’un conte musical nommé « À la poursuite de nos rêves », interactif et adapté à un jeune public.\nNous vous proposons également quelques arrangements libres autour des chants de Noël.',
   },
   // Les 6 recueils (chaque recueil = un titre + la liste de ses morceaux)
   recueils: [

@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 // Plan du site généré automatiquement. Ajoute une ligne dans `pages`
 // si tu crées une nouvelle page.
-const pages = ['', 'mentions-legales'];
+const pages = ['', 'mentions-legales', 'cgv'];
 
 export const GET: APIRoute = ({ site }) => {
   const base = (site ?? new URL('https://duopianccello.fr')).toString().replace(/\/$/, '');

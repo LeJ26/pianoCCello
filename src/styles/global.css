@@ -143,33 +143,42 @@
    ANIMATIONS AU SCROLL
    ════════════════════════════════════════════════════════════════════════ */
 
-.reveal {
+/* Les animations sont pilotées par GSAP (src/scripts/animations.ts).
+   L'état caché n'est appliqué que si la classe `gsap-ready` a été posée sur
+   <html> : sans JavaScript, le contenu s'affiche normalement. */
+.gsap-ready .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
-/* Tracé de trait SVG (line art qui se dessine) */
-.trait-anim path,
-.trait-anim line,
-.trait-anim polyline,
-.trait-anim circle {
-  stroke-dasharray: var(--len, 1000);
-  stroke-dashoffset: var(--len, 1000);
-  transition: stroke-dashoffset 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+/* Bouton retour en haut : masqué au départ, GSAP le fait apparaître au scroll */
+.gsap-ready #back-to-top {
+  opacity: 0;
+  pointer-events: none;
 }
-.trait-anim.is-visible path,
-.trait-anim.is-visible line,
-.trait-anim.is-visible polyline,
-.trait-anim.is-visible circle {
-  stroke-dashoffset: 0;
+
+/* Apparition de la légende du carrousel coverflow. Remplace la classe
+   `animate-in fade-in` du composant d'origine, qui vient du plugin
+   tailwindcss-animate — non installé ici. */
+@keyframes legende-apparait {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animation-legende {
+  animation: legende-apparait 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animation-legende { animation: none; }
+}
+
+/* Effet Ken Burns du carrousel de galerie : l'image dérive et zoome très
+   lentement pendant l'affichage de la diapositive. */
+@keyframes ken-burns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to   { transform: scale(1.07) translate3d(-1.2%, -1.2%, 0); }
+}
+.ken-burns {
+  animation: ken-burns 9s ease-out forwards;
+  will-change: transform;
 }
 
 /* Image qui zoome doucement au hover */
@@ -192,11 +201,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1; transform: none; }
-  .trait-anim path,
-  .trait-anim line,
-  .trait-anim polyline,
-  .trait-anim circle { stroke-dashoffset: 0; }
+  /* GSAP gère lui aussi ce cas via `gsap.matchMedia()`, mais on neutralise
+     l'état caché en CSS pour couvrir l'instant avant son chargement. */
+  .gsap-ready .reveal { opacity: 1; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════

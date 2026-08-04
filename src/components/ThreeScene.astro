@@ -32,10 +32,15 @@
 </div>
 
 <script>
-  import * as THREE from 'three';
-
   const canvas = document.getElementById('three-canvas') as HTMLCanvasElement | null;
-  if (canvas) {
+
+  /* three.js pèse plusieurs centaines de kilo-octets. On l'importe
+     dynamiquement, et seulement si le canevas est réellement affiché —
+     il est masqué sous 1024 px — et proche de l'écran. Sur mobile, la
+     bibliothèque n'est donc jamais téléchargée. */
+  const demarrerScene = async () => {
+    if (!canvas) return;
+    const THREE = await import('three');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ════════════════ REGLAGES ════════════════
@@ -288,5 +293,21 @@
     resize();
     new ResizeObserver(resize).observe(canvas);
     raf = requestAnimationFrame(tick);
+  };
+
+  /* `offsetParent` vaut null dès qu'un ancêtre est en `display: none` —
+     c'est le cas du conteneur `hidden lg:block` sous 1024 px. Tester le
+     seul canevas ne suffirait pas : lui reste en `display: block`. */
+  if (canvas && canvas.offsetParent !== null) {
+    const chargeur = new IntersectionObserver(
+      (entrees) => {
+        if (entrees.some((e) => e.isIntersecting)) {
+          chargeur.disconnect();
+          demarrerScene();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    chargeur.observe(canvas);
   }
 </script>
