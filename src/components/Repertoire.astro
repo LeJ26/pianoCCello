@@ -54,6 +54,15 @@ const { creations, recueils, videos, audios } = repertoire;
       })}
     </div>
 
+    {/* Suite du texte d'introduction, placée après les recueils : le conte
+        musical et les arrangements de Noël se comprennent mieux une fois
+        les recueils parcourus. */}
+    {creations.complement && (
+      <p class="reveal mt-14 sm:mt-16 prose-serif text-base text-center max-w-2xl mx-auto whitespace-pre-line">
+        {creations.complement}
+      </p>
+    )}
+
     {/* Vidéos YouTube */}
     {videos && videos.length > 0 && (
       <div class="mt-20 sm:mt-24">
